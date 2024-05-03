@@ -40,6 +40,12 @@ export default class XoppPlugin extends Plugin {
 					.open()
             }
         });
+
+		this.addRibbonIcon('pen-tool', 'Create new Xournal++ note', (evt: MouseEvent) => {
+			new createXoppFileModal(this.app, this)
+				.setTitle("Create a new Xournal++ note")
+				.open()
+		});
     }
 
 	onFileOpen = async (file: TFile) => {
