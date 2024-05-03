@@ -1,12 +1,12 @@
 import { TFile, Plugin } from 'obsidian';
 import { createPdfToolbarButton } from 'src/pdfToolbarButton';
+import { openXournalppFile } from 'src/xoppActions';
 
 export default class XoppPlugin extends Plugin {
     onload() {
 		// on pdf file open
-        this.registerEvent(
-            this.app.workspace.on('file-open', this.onFileOpen)
-        );
+        this.registerEvent(this.app.workspace.on('file-open', this.onFileOpen));
+        this.registerEvent(this.app.workspace.on('file-menu', this.onFileMenuOpen))
     }
 
 	onFileOpen = async (file: TFile) => {
@@ -32,6 +32,42 @@ export default class XoppPlugin extends Plugin {
 				}
 			}
 		}
+	}
+
+	findCorrespondingXoppToPdf = (pdfFilePath: string): TFile => {
+		let xoppFilePath = pdfFilePath?.replace(".pdf", ".xopp");
+		let xoppFilename = xoppFilePath.substring(xoppFilePath.lastIndexOf("/") + 1)
+		const pdfFile = this.app.vault.getFileByPath(pdfFilePath);
+		
+		// set parent folder or root vault folder
+		const parentFolder = pdfFile?.parent ?? this.app.vault.getFolderByPath("/");
+		const xoppFile = parentFolder?.children.find((child) => child.name === xoppFilename) as TFile
+
+		return xoppFile
+	}
+
+
+	onFileMenuOpen = (menu, file: TFile) => {
+		if (file.extension === "xopp") {
+			this.addOpenInXournalppMenu(menu, file)
+		}
+		else if (file.extension === "pdf") {
+			let xoppFile = this.findCorrespondingXoppToPdf(file.path)
+			console.log(xoppFile)
+			if (xoppFile) {
+				this.addOpenInXournalppMenu(menu, xoppFile)
+			}
+		}		
+	}
+	
+	addOpenInXournalppMenu = (menu, xoppFile: TFile) => {
+		menu.addItem(item => {
+			item.setTitle('Open in Xournal++')
+				.setIcon('pen-tool')
+				.onClick(() => {
+					openXournalppFile(xoppFile, app)
+				});
+		});
 	}
 
     onunload() {}
