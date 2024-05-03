@@ -29,6 +29,14 @@ export default class XoppPlugin extends Plugin {
                 openXournalppFile(xoppFile, this.app);
             }
         });
+		
+		this.addCommand({
+            id: 'xournalpp:crate-new-xournalpp',
+            name: 'Create a new Xournal++ note',
+            callback: async () => {
+				createXoppFile(this);
+            }
+        });
     }
 
 	onFileOpen = async (file: TFile) => {
