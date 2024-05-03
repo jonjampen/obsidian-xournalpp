@@ -1,6 +1,7 @@
-import { TFile, Plugin } from 'obsidian';
+import { TFile, Plugin, Notice } from 'obsidian';
+import { createXoppFileModal } from 'src/modal';
 import { createPdfToolbarButton } from 'src/pdfToolbarButton';
-import { openXournalppFile } from 'src/xoppActions';
+import { annotatePdfInXournalpp, openXournalppFile } from 'src/xoppActions';
 
 export default class XoppPlugin extends Plugin {
     onload() {
@@ -34,7 +35,9 @@ export default class XoppPlugin extends Plugin {
             id: 'xournalpp:crate-new-xournalpp',
             name: 'Create a new Xournal++ note',
             callback: async () => {
-				createXoppFile(this);
+				new createXoppFileModal(this.app, this)
+					.setTitle("Create a new Xournal++ note")
+					.open()
             }
         });
     }
