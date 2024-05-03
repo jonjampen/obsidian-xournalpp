@@ -7,6 +7,28 @@ export default class XoppPlugin extends Plugin {
 		// on pdf file open
         this.registerEvent(this.app.workspace.on('file-open', this.onFileOpen));
         this.registerEvent(this.app.workspace.on('file-menu', this.onFileMenuOpen))
+
+		this.addCommand({
+            id: 'xournalpp:open-in-xournalpp',
+            name: 'Open current file in Xournal++',
+            callback: () => {
+				let pdfFilePath = this.app.workspace.getActiveFile()?.path
+				
+				if (!pdfFilePath || this.app.workspace.getActiveFile()?.extension !== "pdf") {
+					new Notice("Error: This file does not have a corresponding .xopp file.")
+					return
+				}
+
+				let xoppFile = this.findCorrespondingXoppToPdf(pdfFilePath)
+				
+				if (!xoppFile) {
+					new Notice("Error: This file does not have a corresponding .xopp file.")
+					return;
+				}
+
+                openXournalppFile(xoppFile, this.app);
+            }
+        });
     }
 
 	onFileOpen = async (file: TFile) => {
