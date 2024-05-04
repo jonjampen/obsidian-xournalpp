@@ -21,3 +21,14 @@ export async function createXoppFile(plugin: XoppPlugin, newNoteName: string) {
     
 }
 
+export function findCorrespondingXoppToPdf(pdfFilePath: string, plugin: XoppPlugin): TFile {
+    let xoppFilePath = pdfFilePath?.replace(".pdf", ".xopp");
+    let xoppFilename = xoppFilePath.substring(xoppFilePath.lastIndexOf("/") + 1)
+    const pdfFile = plugin.app.vault.getFileByPath(pdfFilePath);
+    
+    // set parent folder or root vault folder
+    const parentFolder = pdfFile?.parent ?? plugin.app.vault.getFolderByPath("/");
+    const xoppFile = parentFolder?.children.find((child) => child.name === xoppFilename) as TFile
+
+    return xoppFile
+}

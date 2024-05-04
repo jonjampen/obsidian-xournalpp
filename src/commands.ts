@@ -1,5 +1,5 @@
 import { Notice } from "obsidian";
-import { openXournalppFile } from "./xoppActions";
+import { findCorrespondingXoppToPdf, openXournalppFile } from "./xoppActions";
 import { createXoppFileModal } from "./modal";
 import XoppPlugin from "main";
 
@@ -15,7 +15,7 @@ export function createCommands(plugin: XoppPlugin) {
                 return
             }
 
-            let xoppFile = plugin.findCorrespondingXoppToPdf(pdfFilePath)
+            let xoppFile = findCorrespondingXoppToPdf(pdfFilePath, plugin)
             
             if (!xoppFile) {
                 new Notice("Error: This file does not have a corresponding .xopp file.")

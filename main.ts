@@ -4,7 +4,6 @@ import { setupListeners } from 'src/listeners';
 import { createXoppFileModal } from 'src/modal';
 import { createPdfToolbarButton } from 'src/pdfToolbarButton';
 import { createRibbonIcons } from 'src/ribbonIcons';
-import { annotatePdfInXournalpp, openXournalppFile } from 'src/xoppActions';
 
 export default class XoppPlugin extends Plugin {
     onload() {
@@ -36,57 +35,6 @@ export default class XoppPlugin extends Plugin {
 				}
 			}
 		}
-	}
-
-	findCorrespondingXoppToPdf = (pdfFilePath: string): TFile => {
-		let xoppFilePath = pdfFilePath?.replace(".pdf", ".xopp");
-		let xoppFilename = xoppFilePath.substring(xoppFilePath.lastIndexOf("/") + 1)
-		const pdfFile = this.app.vault.getFileByPath(pdfFilePath);
-		
-		// set parent folder or root vault folder
-		const parentFolder = pdfFile?.parent ?? this.app.vault.getFolderByPath("/");
-		const xoppFile = parentFolder?.children.find((child) => child.name === xoppFilename) as TFile
-
-		return xoppFile
-	}
-
-
-	onFileMenuOpen = (menu, file: TFile) => {
-		if (file.extension === "xopp") {
-			this.addOpenInXournalppMenu(menu, file)
-		}
-		else if (file.extension === "pdf") {
-			let xoppFile = this.findCorrespondingXoppToPdf(file.path)
-			if (xoppFile) {
-				this.addOpenInXournalppMenu(menu, xoppFile)
-			}
-		}
-		else if (file?.children) {
-			// folder
-			this.addACreateXournalppMenu(menu, file)
-		}
-	}
-	
-	addOpenInXournalppMenu = (menu, xoppFile: TFile) => {
-		menu.addItem(item => {
-			item.setTitle('Open in Xournal++')
-				.setIcon('pen-tool')
-				.onClick(() => {
-					openXournalppFile(xoppFile, this.app)
-				});
-		});
-	}
-
-	addACreateXournalppMenu = (menu, folder: TFile) => {
-		menu.addItem(item => {
-			item.setTitle('Create new Xournal++')
-				.setIcon('pen-tool')
-				.onClick(() => {
-					new createXoppFileModal(this.app, this, folder?.path ?? "")
-						.setTitle("Create a new Xournal++ note")
-						.open()
-				});
-		});
 	}
 
 	addCreateXournalppNavIcon = () => {
