@@ -3,10 +3,10 @@ import { createXoppFile } from "./xoppActions";
 import XoppPlugin from "main";
 
 export class createXoppFileModal extends Modal {
-    constructor(app: App, plugin: XoppPlugin) {
+    constructor(app: App, plugin: XoppPlugin, path: string = "") {
         super(app);
         this.plugin = plugin as XoppPlugin;
-
+        this.filePath = path ? path + "/" : "";
     }
 
     onOpen() {
@@ -26,7 +26,7 @@ export class createXoppFileModal extends Modal {
                 .onClick(() => {
                     fileName += ".xopp";
 
-                    createXoppFile(this.plugin, fileName)
+                    createXoppFile(this.plugin, this.filePath + fileName)
                     this.close();
                 })
         })
