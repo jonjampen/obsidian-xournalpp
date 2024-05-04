@@ -92,11 +92,14 @@ export default class XoppPlugin extends Plugin {
 		}
 		else if (file.extension === "pdf") {
 			let xoppFile = this.findCorrespondingXoppToPdf(file.path)
-			console.log(xoppFile)
 			if (xoppFile) {
 				this.addOpenInXournalppMenu(menu, xoppFile)
 			}
-		}		
+		}
+		else if (file?.children) {
+			// folder
+			this.addACreateXournalppMenu(menu, file.path)
+		}
 	}
 	
 	addOpenInXournalppMenu = (menu, xoppFile: TFile) => {
@@ -104,7 +107,17 @@ export default class XoppPlugin extends Plugin {
 			item.setTitle('Open in Xournal++')
 				.setIcon('pen-tool')
 				.onClick(() => {
-					openXournalppFile(xoppFile, app)
+					openXournalppFile(xoppFile, this.app)
+				});
+		});
+	}
+
+	addACreateXournalppMenu = (menu, pdfFile: TFile) => {
+		menu.addItem(item => {
+			item.setTitle('Create new Xournal++')
+				.setIcon('pen-tool')
+				.onClick(() => {
+					annotatePdfInXournalpp(pdfFile, this.app)
 				});
 		});
 	}
