@@ -3,18 +3,14 @@ import { createCommands } from 'src/commands';
 import { setupListeners } from 'src/listeners';
 import { createXoppFileModal } from 'src/modal';
 import { createPdfToolbarButton } from 'src/pdfToolbarButton';
+import { createRibbonIcons } from 'src/ribbonIcons';
 import { annotatePdfInXournalpp, openXournalppFile } from 'src/xoppActions';
 
 export default class XoppPlugin extends Plugin {
     onload() {
 		setupListeners(this);
 		createCommands(this);
-
-		this.addRibbonIcon('pen-tool', 'Create new Xournal++ note', (evt: MouseEvent) => {
-			new createXoppFileModal(this.app, this)
-				.setTitle("Create a new Xournal++ note")
-				.open()
-		});
+		createRibbonIcons(this);
     }
 
 	onFileOpen = async (file: TFile) => {
