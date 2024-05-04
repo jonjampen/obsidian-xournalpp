@@ -1,30 +1,20 @@
 import { TFile, Plugin, Notice, ButtonComponent } from 'obsidian';
+import { createCommands } from 'src/commands';
+import { setupListeners } from 'src/listeners';
 import { createXoppFileModal } from 'src/modal';
 import { createPdfToolbarButton } from 'src/pdfToolbarButton';
 import { annotatePdfInXournalpp, openXournalppFile } from 'src/xoppActions';
 
 export default class XoppPlugin extends Plugin {
     onload() {
-		// on pdf file open
-        this.registerEvent(this.app.workspace.on('file-open', this.onFileOpen));
-        this.registerEvent(this.app.workspace.on('file-menu', this.onFileMenuOpen))
-
-		createCommands(this)
+		setupListeners(this);
+		createCommands(this);
 
 		this.addRibbonIcon('pen-tool', 'Create new Xournal++ note', (evt: MouseEvent) => {
 			new createXoppFileModal(this.app, this)
 				.setTitle("Create a new Xournal++ note")
 				.open()
 		});
-
-		// on startup
-		this.registerEvent(this.app.workspace.on("layout-change", () => {
-			this.addCreateXournalppNavIcon()
-		}))
-
-		this.registerEvent(this.app.workspace.on('active-leaf-change', (leaf) => {
-			if (leaf?.getDisplayText() === "Files") this.addCreateXournalppNavIcon()
-		}));
     }
 
 	onFileOpen = async (file: TFile) => {
