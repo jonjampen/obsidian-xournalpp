@@ -6,7 +6,7 @@ export function	addCreateXournalppNavIcon(plugin: XoppPlugin) {
     let fileExplorers = plugin.app.workspace.getLeavesOfType("file-explorer")
 
     fileExplorers.forEach(fileExplorer => {
-        let fileExplorerIconsNav = fileExplorer.view.headerDom.navButtonsEl;
+        let fileExplorerIconsNav = (fileExplorer.view as any)?.headerDom.navButtonsEl;
         
         if (fileExplorerIconsNav && fileExplorerIconsNav.children.length > 2 && !fileExplorerIconsNav.querySelector('.xournalpp-create-icon')) {
             let createXoppButton = new ButtonComponent(fileExplorerIconsNav as HTMLElement)

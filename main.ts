@@ -5,9 +5,9 @@ import { createRibbonIcons } from 'src/ribbonIcons';
 
 export default class XoppPlugin extends Plugin {
     onload() {
-		setupListeners(this);
-		createCommands(this);
-		createRibbonIcons(this);
+      setupListeners(this);
+      createCommands(this);
+      createRibbonIcons(this);
     }
 
     onunload() {}

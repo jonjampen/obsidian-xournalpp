@@ -3,6 +3,9 @@ import { createXoppFile } from "./xoppActions";
 import XoppPlugin from "main";
 
 export class createXoppFileModal extends Modal {
+    plugin: XoppPlugin;
+    filePath: string;
+
     constructor(app: App, plugin: XoppPlugin, path: string = "") {
         super(app);
         this.plugin = plugin as XoppPlugin;
