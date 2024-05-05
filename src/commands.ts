@@ -2,6 +2,7 @@ import { Notice } from "obsidian";
 import { findCorrespondingXoppToPdf, openXournalppFile } from "./xoppActions";
 import { createXoppFileModal } from "./modal";
 import XoppPlugin from "main";
+import { exportXoppToPDF } from "./xopp2pdf";
 
 export function createCommands(plugin: XoppPlugin) {
     plugin.addCommand({
@@ -33,6 +34,14 @@ export function createCommands(plugin: XoppPlugin) {
             new createXoppFileModal(plugin.app, plugin)
                 .setTitle("Create a new Xournal++ note")
                 .open()
+        }
+    });
+
+    plugin.addCommand({
+        id: 'xournalpp:export-xournalpp-to-pdf',
+        name: 'Export all Xournal++ notes to PDF',
+        callback: async () => {
+            exportXoppToPDF(plugin)
         }
     });
 
