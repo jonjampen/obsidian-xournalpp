@@ -26,8 +26,8 @@ export function setupListeners(plugin: XoppPlugin) {
             addOpenInXournalpp(plugin);
         }
     }));
-    
+
     plugin.registerEvent(plugin.app.vault.on("modify", (file: TFile) => {
-        if (file.extension === "xopp") exportXoppToPDF(plugin, [file.path], false)
-      }))
+        if (file.extension === "xopp" && plugin.settings.autoExport) exportXoppToPDF(plugin, [file.path], false)
+    }))
 }
