@@ -2,6 +2,7 @@ import { Menu, TFile, TFolder } from "obsidian";
 import { findCorrespondingXoppToPdf, openXournalppFile } from "./xoppActions";
 import { createXoppFileModal } from "./modal";
 import XoppPlugin from "main";
+import { exportXoppToPDF } from "./xopp2pdf";
 
 export function addXournalppOptionsToFileMenu(menu: Menu, file: TFile|TFolder, plugin: XoppPlugin) {
     if (file instanceof TFile) {
@@ -28,6 +29,15 @@ function addOpenInXournalppMenu(menu: Menu, xoppFile: TFile, plugin: XoppPlugin)
             .setIcon('pen-tool')
             .onClick(() => {
                 openXournalppFile(xoppFile, plugin.app);
+            });
+    });
+    menu.addItem(item => {
+        item.setTitle('Update from Xournal++')
+            .setIcon('rotate-cw')
+            .onClick(() => {
+                let filePath = plugin.app.workspace.getActiveFile()?.path as string;
+                filePath = filePath?.replace(".pdf", ".xopp");
+                exportXoppToPDF(plugin, [filePath]);
             });
     });
 }
