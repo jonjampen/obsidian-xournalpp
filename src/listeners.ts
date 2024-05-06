@@ -30,4 +30,7 @@ export function setupListeners(plugin: XoppPlugin) {
     plugin.registerEvent(plugin.app.vault.on("modify", (file: TFile) => {
         if (file.extension === "xopp" && plugin.settings.autoExport) exportXoppToPDF(plugin, [file.path], false)
     }))
+    plugin.registerEvent(plugin.app.vault.on("create", (file: TFile) => {
+        if (file.extension === "xopp" && plugin.settings.autoExport) exportXoppToPDF(plugin, [file.path], false)
+    }))
 }
