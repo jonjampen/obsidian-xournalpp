@@ -2,6 +2,7 @@ import { Notice } from "obsidian";
 import { exec } from 'child_process';
 
 export async function checkXoppSetup(): Promise<string> {
+    let errors = []
     let aliasPath = "xournalpp";
     let windowsPath = '"c:/Program Files/Xournal++/bin/xournalpp.exe"';
     let versionCmd = " --version";
@@ -10,17 +11,18 @@ export async function checkXoppSetup(): Promise<string> {
         await executeCommand(aliasPath + versionCmd);
         return aliasPath;
     } catch (error) {
-        console.error(`Error with Xournal++ setup (${aliasPath}): ${error.message}`);
+        errors.push(error.message)
     }
     
     try {
         await executeCommand(windowsPath + versionCmd);
         return windowsPath;
     } catch (error) {
-        console.error(`Error with Xournal++ setup (${windowsPath}): ${error.message}`);
+        errors.push(error.message)
     }
 
     new Notice("Error: Xournal++ path not setup correctly. Please check docs on how to set it up.", 10000);
+    errors.forEach(error => console.error("Xournal++ Error:" + error))
     return "error";
 }
 
