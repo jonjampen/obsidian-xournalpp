@@ -1,24 +1,27 @@
-    import XoppPlugin from "main";
-    import { findCorrespondingXoppToPdf, openXournalppFile } from "./xoppActions";
+import XoppPlugin from "main";
+import { findCorrespondingXoppToPdf, openXournalppFile } from "./xoppActions";
+import { TFile } from "obsidian";
 
-    export function addOpenInXournalpp(plugin: XoppPlugin) {
-        let fileExplorers = plugin.app.workspace.getLeavesOfType("file-explorer");
+export function addOpenInXournalpp(plugin: XoppPlugin) {
+    let fileExplorers = plugin.app.workspace.getLeavesOfType("file-explorer");
 
-        fileExplorers.forEach(fileExplorer => {
-            let files = (fileExplorer.view as any)?.navFileContainerEl.querySelectorAll(".nav-file-title") as NodeListOf<HTMLElement>;
-            files.forEach((file: HTMLElement) => {
-                let xoppFile = findCorrespondingXoppToPdf(file.dataset.path as string, plugin);
+    fileExplorers.forEach(fileExplorer => {
+        let allFiles = (fileExplorer.view as any)?.fileItems;
 
-                if (xoppFile && file.dataset.path?.includes("pdf")) {
-                    let div = file.querySelector('.nav-file-tag') as HTMLElement;
-                    if (!div) return 
+        const files:Array<Array<HTMLElement|TFile>> = [];
+        Object.entries(allFiles).forEach(([filePath, value]) => {
+            if (filePath.endsWith(".pdf")) {
+                let xoppFile = findCorrespondingXoppToPdf(filePath as string, plugin)
+                if (xoppFile) files.push([(value as any).tagEl as HTMLElement, xoppFile]);
+            }
+        });
 
-                    div.innerText = "X++";
-                    div.style.setProperty("cursor", "pointer");
-                    div.onclick = () => {
-                        openXournalppFile(xoppFile, plugin.app);
-                    }                                
-                }
-            })
+        files.forEach(([div, file]: [HTMLElement, TFile]) => {
+                div.innerText = "X++";
+                div.style.setProperty("cursor", "pointer");
+                div.onclick = () => {
+                    openXournalppFile(file, plugin.app);
+                }                                
         })
-    }
+    })
+}
