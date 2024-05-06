@@ -37,6 +37,7 @@ First, fork this [repository](https://github.com/jonjampen/obsidian-xournalpp), 
 ```bash
 cd YOUR-OBSIDIAN-VAULT/.obsidian/plugins/
 git clone git@github.com:YOUR-REPOSITORY
+mv obsidian-xournalpp xournalpp
 cd obsidian-xournalpp
 git checkout -b feature-branch
 npm install
