@@ -48,4 +48,21 @@ export function createCommands(plugin: XoppPlugin) {
         }
     });
 
+    plugin.addCommand({
+        id: 'xournalpp:export-current-xournalpp-to-pdf',
+        name: 'Update current PDF from Xournal++',
+        checkCallback: (checking: boolean) => {
+            let filePath = plugin.app.workspace.getActiveFile()?.path as string;
+
+            if (filePath.includes(".pdf")) {
+                if (!checking) {
+                    filePath = filePath?.replace(".pdf", ".xopp");
+                    exportXoppToPDF(plugin, [filePath]);
+                }
+                return true;
+            }
+            return false;
+        }
+    });
+
 }
