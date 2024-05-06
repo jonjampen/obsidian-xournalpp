@@ -1,4 +1,4 @@
-import { Notice } from "obsidian";
+import { Notice, TFile } from "obsidian";
 import { findCorrespondingXoppToPdf, openXournalppFile } from "./xoppActions";
 import { createXoppFileModal } from "./modal";
 import XoppPlugin from "main";
@@ -41,7 +41,9 @@ export function createCommands(plugin: XoppPlugin) {
         id: 'xournalpp:export-xournalpp-to-pdf',
         name: 'Export all Xournal++ notes to PDF',
         callback: async () => {
-            exportXoppToPDF(plugin)
+            let files = plugin.app.vault.getFiles() as TFile[];
+            files = files.filter(file => file.extension === "xopp");
+            exportXoppToPDF(plugin, files)
         }
     });
 

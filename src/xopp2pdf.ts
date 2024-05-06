@@ -3,10 +3,8 @@ import { exec } from 'child_process';
 import XoppPlugin from "main";
 import { checkXoppSetup } from "./checks";
 
-export function exportXoppToPDF(plugin: XoppPlugin) {
+export function exportXoppToPDF(plugin: XoppPlugin, files: TFile[]) {
     let errors = false;
-    let files = plugin.app.vault.getFiles() as TFile[];
-    files = files.filter(file => file.extension === "xopp");
 
     files.forEach(async (file) => {
         let vaultPath = (plugin.app.vault.adapter as FileSystemAdapter).getBasePath();
