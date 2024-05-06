@@ -8,22 +8,15 @@ export function createCommands(plugin: XoppPlugin) {
     plugin.addCommand({
         id: 'xournalpp:open-in-xournalpp',
         name: 'Open current file in Xournal++',
-        callback: () => {
+        checkCallback: (checking: boolean) => {
             let pdfFilePath = plugin.app.workspace.getActiveFile()?.path
-            
-            if (!pdfFilePath || plugin.app.workspace.getActiveFile()?.extension !== "pdf") {
-                new Notice("Error: This file does not have a corresponding .xopp file.")
-                return
-            }
+            if (!pdfFilePath || plugin.app.workspace.getActiveFile()?.extension !== "pdf") return false;
 
             let xoppFile = findCorrespondingXoppToPdf(pdfFilePath, plugin)
-            
-            if (!xoppFile) {
-                new Notice("Error: This file does not have a corresponding .xopp file.")
-                return;
-            }
+            if (!xoppFile) return false;
 
-            openXournalppFile(xoppFile, plugin.app);
+            if (!checking) openXournalppFile(xoppFile, plugin.app);
+            return true;
         }
     });
     
