@@ -41,9 +41,10 @@ export function createCommands(plugin: XoppPlugin) {
         id: 'xournalpp:export-xournalpp-to-pdf',
         name: 'Export all Xournal++ notes to PDF',
         callback: async () => {
-            let files = plugin.app.vault.getFiles() as TFile[];
+            let files = plugin.app.vault.getFiles();
             files = files.filter(file => file.extension === "xopp");
-            exportXoppToPDF(plugin, files)
+            let filePaths = files.map(file => file.path)
+            exportXoppToPDF(plugin, filePaths)
         }
     });
 
