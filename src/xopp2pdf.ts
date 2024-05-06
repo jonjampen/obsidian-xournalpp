@@ -3,7 +3,7 @@ import { exec } from 'child_process';
 import XoppPlugin from "main";
 import { checkXoppSetup } from "./checks";
 
-export function exportXoppToPDF(plugin: XoppPlugin, filePaths: Array<string>) {
+export function exportXoppToPDF(plugin: XoppPlugin, filePaths: Array<string>, notify: boolean = true) {
     let errors = false;
 
     filePaths.forEach(async (filePath: string) => {
@@ -32,5 +32,5 @@ export function exportXoppToPDF(plugin: XoppPlugin, filePaths: Array<string>) {
         return
     }
 
-    new Notice("Exported all Xournal++ notes successfully.")
+    if (notify) new Notice("Exported all Xournal++ notes successfully.")
 }

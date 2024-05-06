@@ -4,6 +4,7 @@ import { Menu, TFile, TFolder } from "obsidian";
 import { addOpenInXournalppToPdfToolbar } from "./pdfToolbar";
 import { addCreateXournalppNavIcon } from "./fileExplorerNav";
 import { addOpenInXournalpp } from "./fileExplorerFile";
+import { exportXoppToPDF } from "./xopp2pdf";
 
 export function setupListeners(plugin: XoppPlugin) {
     // on startup
@@ -25,4 +26,8 @@ export function setupListeners(plugin: XoppPlugin) {
             addOpenInXournalpp(plugin);
         }
     }));
+    
+    plugin.registerEvent(plugin.app.vault.on("modify", (file: TFile) => {
+        if (file.extension === "xopp") exportXoppToPDF(plugin, [file.path], false)
+      }))
 }
