@@ -7,9 +7,10 @@ import { addOpenInXournalpp } from "./fileExplorerFile";
 import { exportXoppToPDF } from "./xopp2pdf";
 
 export function setupListeners(plugin: XoppPlugin) {
+    initialLoad(plugin);
+
     // on startup
     plugin.registerEvent(plugin.app.workspace.on("layout-change", () => {
-        console.log("layout changed")
         addCreateXournalppNavIcon(plugin);
         addOpenInXournalpp(plugin);
     }));
@@ -33,4 +34,16 @@ export function setupListeners(plugin: XoppPlugin) {
     plugin.registerEvent(plugin.app.vault.on("create", (file: TFile) => {
         if (file.extension === "xopp" && plugin.settings.autoExport) exportXoppToPDF(plugin, [file.path], false)
     }))
+}
+
+function initialLoad(plugin: XoppPlugin) {
+    if (plugin.settings.autoExport) {
+        let files = plugin.app.vault.getFiles();
+        files = files.filter(file => file.extension === "xopp");
+        let filePaths = files.map(file => file.path)
+        exportXoppToPDF(plugin, filePaths, false)
+    }
+    
+    addCreateXournalppNavIcon(plugin);
+    addOpenInXournalpp(plugin);
 }
