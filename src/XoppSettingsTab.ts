@@ -16,15 +16,13 @@ export class XoppSettingsTab extends PluginSettingTab {
     
         new Setting(containerEl)
             .setName("Auto export Xournal++ files")
-            .setDesc("Automatically export Xournal++ files to PDF upon modification")
+            .setDesc("Automatically export Xournal++ files to PDF upon modification.")
             .addToggle((toggle) => {
                 toggle
                     .setValue(this.plugin.settings.autoExport)
                     .onChange(async (value) => {
-                        console.log(value);
                         this.plugin.settings.autoExport = value;
                         await this.plugin.saveSettings();
-                        console.log("saved")
                     })
             });
     }

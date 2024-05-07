@@ -1,7 +1,7 @@
 {
 	"name": "xournalpp",
 	"version": "1.0.0",
-	"description": "Seamless integration with Xournal++ for handwritten notes and annotations.",
+	"description": "Integration with Xournal++ for handwritten notes and annotations.",
 	"main": "main.js",
 	"scripts": {
 		"dev": "node esbuild.config.mjs",

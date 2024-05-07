@@ -3,7 +3,7 @@
 	"name": "Xournal++",
 	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
-	"description": "Seamless integration with Xournal++ for handwritten notes and annotations.",
+	"description": "Integration with Xournal++ for handwritten notes and annotations.",
 	"author": "Jon Jampen",
 	"authorUrl": "https://jonjampen.ch",
 	"fundingUrl": "https://buymeacoffee.com/jonjampen",

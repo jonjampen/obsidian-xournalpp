@@ -18,11 +18,11 @@ If you run into any issues, you might have to add Xournal++ to your system PATH 
 
 > Be mindful that any PDF files sharing the same name and location as Xournal++ (.xopp) files will be overwritten with the exported version. This ensures seamless integration and consistent file management within Obsidian (regular vault backups are therefore recommended).
 
-1. Open Obsidian and got to `Settings > Community Plugins`
+1. Open Obsidian and got to **Settings → Community Plugins**
 1. Turn on Community Plugins
-1. Click on `Browse` and search for **Xournal++**
-1. Click `Install` and then `Enable`
-1. The plugin is now installed. Click on `Options` if you want to change the default plugin settings.
+1. Select **Browse** and search for `Xournal++`
+1. Select **Install** and then **Enable**
+1. The plugin is now installed. Select **Options** if you want to change the default plugin settings.
 
 ## Contributing and Feature Requests
 
