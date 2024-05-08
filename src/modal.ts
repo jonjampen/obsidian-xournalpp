@@ -1,4 +1,4 @@
-import { App, Modal, Setting } from "obsidian";
+import { App, ButtonComponent, Modal, Setting, TextComponent } from "obsidian";
 import { createXoppFile } from "./xoppActions";
 import XoppPlugin from "main";
 
@@ -16,23 +16,29 @@ export class createXoppFileModal extends Modal {
         const { contentEl } = this;
         let fileName: string;
 
-        new Setting(contentEl)
-        .setName("File name")
-        .addText((input) => {
-            input.onChange((i) => fileName = i)
-        })
+        let container = contentEl.createDiv({cls: 'new-file-modal-form'})
 
-        new Setting(contentEl)
-        .addButton(button => {
-            button
-                .setButtonText("Create")
-                .onClick(() => {
-                    fileName += ".xopp";
+        new TextComponent(container)
+            .setPlaceholder("File name")
+            .onChange((i) => fileName = i)
+            .inputEl.addEventListener("keypress", (e) => {
+                if (e.key === "Enter") this.submitInput(fileName)
+            })
 
-                    createXoppFile(this.plugin, this.filePath + fileName)
-                    this.close();
-                })
-        })
+        new ButtonComponent(container)
+            .setButtonText("Create")
+            .onClick(() => {
+                this.submitInput(fileName);
+            })
+
+    }
+        
+    
+    submitInput(path: string) {
+        path += ".xopp";
+
+        createXoppFile(this.plugin, this.filePath + path)
+        this.close();
     }
     
     onClose() {

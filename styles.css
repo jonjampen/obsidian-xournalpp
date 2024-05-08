@@ -1,0 +1,10 @@
+.new-file-modal-form {
+    display: flex;
+    justify-content: between;
+    gap: 16px;
+    width: 100%;
+}
+
+.new-file-modal-form input {
+    width: 100%;
+}
