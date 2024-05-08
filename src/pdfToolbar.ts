@@ -1,5 +1,5 @@
 import XoppPlugin from "main";
-import { TFile } from "obsidian";
+import { MarkdownView, TFile, getLinkpath } from "obsidian";
 import { findCorrespondingXoppToPdf } from "./xoppActions";
 import { ButtonComponent, App } from 'obsidian';
 import { openXournalppFile } from './xoppActions';
@@ -21,6 +21,20 @@ export function addOpenInXournalppToPdfToolbar(file: TFile, plugin: XoppPlugin) 
             }
         }
     }
+    if (file && file.extension === "md") {
+        let container = plugin.app.workspace.getActiveViewOfType(MarkdownView)?.contentEl as HTMLElement;
+        let embed = container.querySelector('.pdf-embed') as HTMLElement
+        let i = setInterval(() => {
+            if (embed?.querySelector(".pdf-toolbar-right")) {
+                clearInterval(i)
+                let filePath = getLinkpath(embed.getAttribute("src") as string).replace(".pdf", ".xopp")
+                let xoppFile = plugin.app.vault.getFileByPath(filePath) as TFile
+                let pdfToolbar = embed?.querySelector(".pdf-toolbar-right") as HTMLElement
+                createPdfToolbarButton(pdfToolbar, xoppFile, plugin.app)
+                return
+            }
+        }, 100)
+    }
 }
 
 
@@ -30,7 +44,7 @@ export function createPdfToolbarButton(pdfToolbar: HTMLElement, xoppFile: TFile,
         .setClass("xournalpp-open-icon")
         .setButtonText('Edit in Xournal++')
         .setIcon('pen-tool')
-        .setTooltip('Open in Xournal++');
+        .setTooltip('Edit in Xournal++');
 
         xoppButton.onClick(() =>  {
             openXournalppFile(xoppFile, app);
