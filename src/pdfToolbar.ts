@@ -21,20 +21,6 @@ export function addOpenInXournalppToPdfToolbar(file: TFile, plugin: XoppPlugin) 
             }
         }
     }
-    if (file && file.extension === "md") {
-        let container = plugin.app.workspace.getActiveViewOfType(MarkdownView)?.contentEl as HTMLElement;
-        let embed = container.querySelector('.pdf-embed') as HTMLElement
-        let i = setInterval(() => {
-            if (embed?.querySelector(".pdf-toolbar-right")) {
-                clearInterval(i)
-                let filePath = getLinkpath(embed.getAttribute("src") as string).replace(".pdf", ".xopp")
-                let xoppFile = plugin.app.vault.getFileByPath(filePath) as TFile
-                let pdfToolbar = embed?.querySelector(".pdf-toolbar-right") as HTMLElement
-                createPdfToolbarButton(pdfToolbar, xoppFile, plugin.app)
-                return
-            }
-        }, 100)
-    }
 }
 
 
