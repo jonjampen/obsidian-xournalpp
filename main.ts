@@ -7,10 +7,12 @@ import { createRibbonIcons } from 'src/ribbonIcons';
 
 interface XoppPluginSettings {
     autoExport: boolean;
+    xournalppPath: string;
 }
 
 const DEFAULT_SETTINGS: Partial<XoppPluginSettings> = {
     autoExport: false,
+    xournalppPath: "",
 };  
 
 export default class XoppPlugin extends Plugin {
@@ -22,7 +24,7 @@ export default class XoppPlugin extends Plugin {
         setupListeners(this);
         createCommands(this);
         createRibbonIcons(this);
-        checkXoppSetup();
+        checkXoppSetup(this);
     }
 
     async loadSettings() {

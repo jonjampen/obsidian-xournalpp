@@ -11,7 +11,7 @@ export function exportXoppToPDF(plugin: XoppPlugin, filePaths: Array<string>, no
         let xoppFilePath = vaultPath + "/" + filePath;
         let pdfFilePath = xoppFilePath.replace(".xopp", ".pdf");
 
-        let path = await checkXoppSetup();
+        let path = await checkXoppSetup(plugin);
         if (!path || path === "error") {
             new Notice("Error: Xournal++ path not setup correctly. Please check docs on how to set it up.", 10000);
             return;

@@ -25,6 +25,18 @@ export class XoppSettingsTab extends PluginSettingTab {
                         await this.plugin.saveSettings();
                     })
             });
+
+        new Setting(containerEl)
+            .setName("Xournal++ installation path")
+            .setDesc("The path where Xournal++ is installed (leave empty for system default).")
+            .addText((toggle) => {
+                toggle
+                    .setValue(this.plugin.settings.xournalppPath)
+                    .onChange(async (value) => {
+                        this.plugin.settings.xournalppPath = value;
+                        await this.plugin.saveSettings();
+                    })
+            });
     }
   
 }
