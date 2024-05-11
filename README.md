@@ -12,7 +12,7 @@ A seamless integration with [Xournal++](https://xournalpp.github.io). Xournal++ 
 
 Ensure you have [Xournal++](https://xournalpp.github.io) installed on your device.
 
-If you run into any issues, you might have to add Xournal++ to your system PATH variable, refer to [Setup Path variable](https://github.com/jonjampen/obsidian-xournalpp) for more information.
+If you run into any issues, you might have to manually add the Xournal++ installation path, refer to [Setting the Xournal++ Installation Path](https://github.com/jonjampen/obsidian-xournalpp/blob/master/docs/path.md) for more information.
 
 ## Usage
 
