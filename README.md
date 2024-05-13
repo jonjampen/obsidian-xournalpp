@@ -46,4 +46,4 @@ npm run dev
 
 ## Developer
 
-This plugin is created by [Jon Jampen](https://jonjampen.ch/) <[hello@jonjampen.ch](hello@jonjampen.ch)>. I hope you find this plugin to be useful!
+This plugin is created by [Jon Jampen](https://jonjampen.ch/) <[hello@jonjampen.ch](mailto:hello@jonjampen.ch)>. I hope you find this plugin to be useful!
