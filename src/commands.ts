@@ -7,7 +7,7 @@ import { exportXoppToPDF } from "./xopp2pdf";
 export function createCommands(plugin: XoppPlugin) {
     plugin.addCommand({
         id: 'xournalpp:open-in-xournalpp',
-        name: 'Open current file in Xournal++',
+        name: 'Open current note',
         checkCallback: (checking: boolean) => {
             let pdfFilePath = plugin.app.workspace.getActiveFile()?.path
             if (!pdfFilePath || plugin.app.workspace.getActiveFile()?.extension !== "pdf") return false;
@@ -22,7 +22,7 @@ export function createCommands(plugin: XoppPlugin) {
     
     plugin.addCommand({
         id: 'xournalpp:crate-new-xournalpp',
-        name: 'Create a new Xournal++ note',
+        name: 'Create a new note',
         callback: async () => {
             new createXoppFileModal(plugin.app, plugin)
                 .setTitle("Create a new Xournal++ note")
@@ -32,7 +32,7 @@ export function createCommands(plugin: XoppPlugin) {
 
     plugin.addCommand({
         id: 'xournalpp:export-xournalpp-to-pdf',
-        name: 'Export all Xournal++ notes to PDF',
+        name: 'Export all notes to PDF',
         callback: async () => {
             let files = plugin.app.vault.getFiles();
             files = files.filter(file => file.extension === "xopp");
@@ -43,7 +43,7 @@ export function createCommands(plugin: XoppPlugin) {
 
     plugin.addCommand({
         id: 'xournalpp:export-current-xournalpp-to-pdf',
-        name: 'Update current PDF from Xournal++',
+        name: 'Update current PDF',
         checkCallback: (checking: boolean) => {
             let filePath = plugin.app.workspace.getActiveFile()?.path as string;
 
