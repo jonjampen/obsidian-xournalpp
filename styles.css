@@ -8,3 +8,7 @@
 .new-file-modal-form input {
     width: 100%;
 }
+
+.clickable-tag {
+    cursor: pointer;
+}

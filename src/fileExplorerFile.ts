@@ -18,7 +18,7 @@ export function addOpenInXournalpp(plugin: XoppPlugin) {
 
         files.forEach(([div, file]: [HTMLElement, TFile]) => {
                 div.innerText = "X++";
-                div.style.setProperty("cursor", "pointer");
+                div.classList.add("clickable-tag");
                 div.onclick = () => {
                     openXournalppFile(file, plugin.app);
                 }                                
