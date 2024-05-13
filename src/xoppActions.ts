@@ -1,5 +1,5 @@
 import XoppPlugin from 'main';
-import { TFile, Notice, App, FileSystemAdapter } from 'obsidian';
+import { TFile, Notice, App } from 'obsidian';
 
 export function openXournalppFile(xoppFile: TFile, app: App): void {
     app.workspace.getLeaf().openFile(xoppFile)
@@ -9,7 +9,7 @@ export function openXournalppFile(xoppFile: TFile, app: App): void {
 export async function createXoppFile(plugin: XoppPlugin, newNoteName: string) {
     let templatePath  = plugin.app.vault.configDir + "/plugins/" + plugin.manifest.id + "/template.xopp"
     let newNotePath =  "/" + newNoteName
-    const fs = plugin.app.vault.adapter as FileSystemAdapter;
+    const fs = plugin.app.vault.adapter;
     
     try {
         await fs.copy(templatePath, newNotePath)
@@ -21,14 +21,14 @@ export async function createXoppFile(plugin: XoppPlugin, newNoteName: string) {
     
 }
 
-export function findCorrespondingXoppToPdf(pdfFilePath: string, plugin: XoppPlugin): TFile {
+export function findCorrespondingXoppToPdf(pdfFilePath: string, plugin: XoppPlugin): TFile|undefined {
     let xoppFilePath = pdfFilePath?.replace(".pdf", ".xopp");
     let xoppFilename = xoppFilePath.substring(xoppFilePath.lastIndexOf("/") + 1)
     const pdfFile = plugin.app.vault.getFileByPath(pdfFilePath);
     
     // set parent folder or root vault folder
     const parentFolder = pdfFile?.parent ?? plugin.app.vault.getFolderByPath("/");
-    const xoppFile = parentFolder?.children.find((child) => child.name === xoppFilename) as TFile
+    const xoppFile = parentFolder?.children.find((child) => child.name === xoppFilename)
 
-    return xoppFile
+    if (xoppFile instanceof TFile) return xoppFile
 }
