@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.1] - 2024-05-15
+
+### Fixed
+
+-   Fixing issues recognized by the review bot
+
 ## [1.0.0] - 2024-05-10
 
 ### Added
