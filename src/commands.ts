@@ -6,7 +6,7 @@ import { exportXoppToPDF } from "./xopp2pdf";
 
 export function createCommands(plugin: XoppPlugin) {
     plugin.addCommand({
-        id: 'xournalpp:open-in-xournalpp',
+        id: 'open-in-xournalpp',
         name: 'Open current note',
         checkCallback: (checking: boolean) => {
             let pdfFilePath = plugin.app.workspace.getActiveFile()?.path
@@ -21,7 +21,7 @@ export function createCommands(plugin: XoppPlugin) {
     });
     
     plugin.addCommand({
-        id: 'xournalpp:crate-new-xournalpp',
+        id: 'crate-new-xournalpp',
         name: 'Create a new note',
         callback: async () => {
             new createXoppFileModal(plugin.app, plugin)
@@ -31,7 +31,7 @@ export function createCommands(plugin: XoppPlugin) {
     });
 
     plugin.addCommand({
-        id: 'xournalpp:export-xournalpp-to-pdf',
+        id: 'export-xournalpp-to-pdf',
         name: 'Export all notes to PDF',
         callback: async () => {
             let files = plugin.app.vault.getFiles();
@@ -42,7 +42,7 @@ export function createCommands(plugin: XoppPlugin) {
     });
 
     plugin.addCommand({
-        id: 'xournalpp:export-current-xournalpp-to-pdf',
+        id: 'export-current-xournalpp-to-pdf',
         name: 'Update current PDF',
         checkCallback: (checking: boolean) => {
             let filePath = plugin.app.workspace.getActiveFile()?.path as string;
