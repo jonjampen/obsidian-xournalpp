@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.2] - 2024-05-22
+
+### Fixed
+
+-   Adding platform OS checks for finding Xournal++ installation path.
+-   Adjusting minAppVersion to latest public build.
+-   Removing plugin prefix for command ids.
+
 ## [1.0.1] - 2024-05-15
 
 ### Fixed
