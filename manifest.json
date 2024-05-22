@@ -2,7 +2,7 @@
 	"id": "xournalpp",
 	"name": "Xournal++",
 	"version": "1.0.1",
-	"minAppVersion": "0.15.0",
+	"minAppVersion": "1.5.12",
 	"description": "Integration with Xournal++ for handwritten notes and annotations.",
 	"author": "Jon Jampen",
 	"authorUrl": "https://jonjampen.ch",
