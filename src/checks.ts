@@ -1,4 +1,4 @@
-import { Notice } from "obsidian";
+import { Notice, Platform } from "obsidian";
 import { exec } from 'child_process';
 import XoppPlugin from "main";
 
@@ -26,18 +26,22 @@ export async function checkXoppSetup(plugin: XoppPlugin): Promise<string> {
         errors.push(error.message)
     }
     
-    try {
-        await executeCommand(windowsPath + versionCmd);
-        return windowsPath;
-    } catch (error) {
-        errors.push(error.message)
+    if (Platform.isWin) {
+        try {
+            await executeCommand(windowsPath + versionCmd);
+            return windowsPath;
+        } catch (error) {
+            errors.push(error.message)
+        }
     }
 
-    try {
-        await executeCommand(macPath + versionCmd);
-        return macPath;
-    } catch (error) {
-        errors.push(error.message)
+    if (Platform.isMacOS) {
+        try {
+            await executeCommand(macPath + versionCmd);
+            return macPath;
+        } catch (error) {
+            errors.push(error.message)
+        }
     }
 
     new Notice("Error: Xournal++ path not setup correctly. Please check docs on how to set it up.", 10000);
