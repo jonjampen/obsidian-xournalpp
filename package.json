@@ -1,6 +1,6 @@
 {
 	"name": "xournalpp",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"description": "Integration with Xournal++ for handwritten notes and annotations.",
 	"main": "main.js",
 	"scripts": {
