@@ -19,7 +19,7 @@ export function exportXoppToPDF(plugin: XoppPlugin, filePaths: Array<string>, no
                 return;
             }
             
-            let command = `${path} --create-pdf=${pdfFilePath} ${xoppFilePath}`
+            let command = `${path} --create-pdf="${pdfFilePath}" "${xoppFilePath}"`
             exec(command, (error) => {
                 if (error) {
                     console.error(`Error converting Xournal++ to PDF: ${error.message}`)
