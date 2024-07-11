@@ -6,13 +6,15 @@ import { setupListeners } from 'src/listeners';
 import { createRibbonIcons } from 'src/ribbonIcons';
 
 interface XoppPluginSettings {
-    autoExport: boolean;
-    xournalppPath: string;
+	autoExport: boolean;
+	xournalppPath: string;
+	templatePath: string;
 }
 
 const DEFAULT_SETTINGS: Partial<XoppPluginSettings> = {
-    autoExport: false,
-    xournalppPath: "",
+	autoExport: false,
+	xournalppPath: "",
+	templatePath: "",
 };  
 
 export default class XoppPlugin extends Plugin {
