@@ -16,8 +16,8 @@ export async function createXoppFile(plugin: XoppPlugin, newNoteName: string) {
 		await fs.copy(templatePath, newNotePath);
         new Notice("Xournal++ note created")
     }
-    catch {
-        new Notice("Error: Could not create a Xournal++ note")
+    catch (e) {
+        new Notice("Error: Could not create a Xournal++ note: " + e.message)
     }
     
 }
@@ -52,7 +52,8 @@ export async function getTemplateFilePath(
 		"/template.xopp";
 
 	if (!(await fs.exists(DEFAULT_TEMPLATE_PATH))) {
-		await downloadTemplateFile(plugin, DEFAULT_TEMPLATE_PATH);
+		await downloadTemplateFile(plugin, DEFAULT_TEMPLATE_PATH)
+			.catch(() => {throw new Error("Unable to find or download the default template.")});
 	}
 	return DEFAULT_TEMPLATE_PATH;
 }
@@ -60,9 +61,6 @@ export async function getTemplateFilePath(
 export async function downloadTemplateFile(plugin: XoppPlugin, path: string) {
 	const TEMPLATE_URL =
 		"https://github.com/jonjampen/obsidian-xournalpp/raw/master/template.xopp";
-	try {
-		await downloadFile(plugin.app, {url: TEMPLATE_URL, path: path, contentType: "application/octet-stream"});
-	} catch {
-		new Notice("Error while downloading default template file.");
-	}
+
+	await downloadFile(plugin.app, {url: TEMPLATE_URL, path: path, contentType: "application/octet-stream"});
 }
