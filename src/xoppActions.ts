@@ -1,5 +1,6 @@
 import XoppPlugin from 'main';
-import { TFile, Notice, App } from 'obsidian';
+import { TFile, Notice, App, requestUrl, DataAdapter } from 'obsidian';
+import { downloadFile } from './downloader';
 
 export function openXournalppFile(xoppFile: TFile, app: App): void {
     app.workspace.getLeaf().openFile(xoppFile)
@@ -7,12 +8,12 @@ export function openXournalppFile(xoppFile: TFile, app: App): void {
 }
 
 export async function createXoppFile(plugin: XoppPlugin, newNoteName: string) {
-    let templatePath  = plugin.app.vault.configDir + "/plugins/" + plugin.manifest.id + "/template.xopp"
     let newNotePath =  "/" + newNoteName
     const fs = plugin.app.vault.adapter;
     
     try {
-        await fs.copy(templatePath, newNotePath)
+        const templatePath = await getTemplateFilePath(plugin, fs);
+		await fs.copy(templatePath, newNotePath);
         new Notice("Xournal++ note created")
     }
     catch {
@@ -31,4 +32,37 @@ export function findCorrespondingXoppToPdf(pdfFilePath: string, plugin: XoppPlug
     const xoppFile = parentFolder?.children.find((child) => child.name === xoppFilename)
 
     if (xoppFile instanceof TFile) return xoppFile
+}
+
+export async function getTemplateFilePath(
+	plugin: XoppPlugin,
+	fs: DataAdapter
+): Promise<string> {
+	const userTemplatePath = plugin.settings.templatePath;
+	if (userTemplatePath) {
+		if (!(await fs.exists(userTemplatePath)))
+			throw new Error("Could not find the given template file.");
+		return userTemplatePath;
+	}
+
+	const DEFAULT_TEMPLATE_PATH =
+		plugin.app.vault.configDir +
+		"/plugins/" +
+		plugin.manifest.id +
+		"/template.xopp";
+
+	if (!(await fs.exists(DEFAULT_TEMPLATE_PATH))) {
+		await downloadTemplateFile(plugin, DEFAULT_TEMPLATE_PATH);
+	}
+	return DEFAULT_TEMPLATE_PATH;
+}
+
+export async function downloadTemplateFile(plugin: XoppPlugin, path: string) {
+	const TEMPLATE_URL =
+		"https://github.com/jonjampen/obsidian-xournalpp/raw/master/template.xopp";
+	try {
+		await downloadFile(plugin.app, {url: TEMPLATE_URL, path: path, contentType: "application/octet-stream"});
+	} catch {
+		new Notice("Error while downloading default template file.");
+	}
 }
