@@ -1,6 +1,6 @@
 import XoppPlugin from 'main';
-import { TFile, Notice, App, requestUrl, DataAdapter } from 'obsidian';
-import { downloadFile } from './downloader';
+import { TFile, Notice, App, DataAdapter, Vault } from 'obsidian';
+import { base64Template } from './template';
 
 export function openXournalppFile(xoppFile: TFile, app: App): void {
     app.workspace.getLeaf().openFile(xoppFile)
@@ -52,15 +52,20 @@ export async function getTemplateFilePath(
         "/template.xopp";
 
     if (!(await fs.exists(DEFAULT_TEMPLATE_PATH))) {
-        await downloadTemplateFile(plugin, DEFAULT_TEMPLATE_PATH)
-            .catch(() => {throw new Error("Unable to find or download the default template.")});
+        await createTemplate(plugin, DEFAULT_TEMPLATE_PATH)
+            .catch(() => {throw new Error("Unable to get or create the default template.")});
     }
+    
     return DEFAULT_TEMPLATE_PATH;
 }
 
-export async function downloadTemplateFile(plugin: XoppPlugin, path: string) {
-    const TEMPLATE_URL =
-        "https://github.com/jonjampen/obsidian-xournalpp/raw/master/template.xopp";
-
-    await downloadFile(plugin.app, {url: TEMPLATE_URL, path: path, contentType: "application/octet-stream"});
+export async function createTemplate(plugin: XoppPlugin, path: string) {
+    // base64 to Uint8Array
+    let binaryString: string = atob(base64Template);
+    let bytes = new Uint8Array(binaryString.length);
+    for (let i = 0; i < binaryString.length; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+    }
+    // create file in fs
+    await plugin.app.vault.createBinary(path, bytes.buffer);
 }

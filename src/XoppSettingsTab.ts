@@ -41,7 +41,7 @@ export class XoppSettingsTab extends PluginSettingTab {
         new Setting(containerEl)
             .setName("Xournal++ template path")
             .setDesc(
-                "The relative path of the template for any new Xournal++ file, e.g. templates\\template.xopp (leave empty to use a downloaded default template)."
+                "The relative path of the template for any new Xournal++ file, e.g. templates/template.xopp (leave empty to use the default template)."
             )
             .addText((toggle) => {
                 toggle
