@@ -8,11 +8,13 @@ import { createRibbonIcons } from 'src/ribbonIcons';
 interface XoppPluginSettings {
     autoExport: boolean;
     xournalppPath: string;
+    templatePath: string;
 }
 
 const DEFAULT_SETTINGS: Partial<XoppPluginSettings> = {
     autoExport: false,
     xournalppPath: "",
+    templatePath: "",
 };  
 
 export default class XoppPlugin extends Plugin {
