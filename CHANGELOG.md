@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.4] - 2024-07-18
+
+### Added
+
+-   Option to define a custom template for new Xournal++ files.
+
+### Fixed
+
+-   `template.xopp` is now embedded in the code. The file was previously not downloaded during the plugin install through Obsidian.
+
 ## [1.0.3] - 2024-06-25
 
 ### Fixed
