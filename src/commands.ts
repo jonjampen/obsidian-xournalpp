@@ -15,7 +15,7 @@ export function createCommands(plugin: XoppPlugin) {
             let xoppFile = findCorrespondingXoppToPdf(pdfFilePath, plugin)
             if (!xoppFile) return false;
 
-            if (!checking) openXournalppFile(xoppFile, plugin.app);
+            if (!checking) openXournalppFile(xoppFile, plugin);
             return true;
         }
     });

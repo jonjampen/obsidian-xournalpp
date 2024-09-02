@@ -1,10 +1,25 @@
 import XoppPlugin from 'main';
 import { TFile, Notice, App, DataAdapter, Vault } from 'obsidian';
 import { base64Template } from './template';
+import { checkXoppSetup } from './checks';
+import { exec } from 'child_process';
 
-export function openXournalppFile(xoppFile: TFile, app: App): void {
-    app.workspace.getLeaf().openFile(xoppFile)
+export async function openXournalppFile(xoppFile: TFile, plugin: XoppPlugin): Promise<void> {
+    let path = await checkXoppSetup(plugin);
+    if (!path || path === "error") {
+        new Notice("Error: Xournal++ path not setup correctly. Please check docs on how to set it up.", 10000);
+        return;
+    }
+    
+    let command = `${path} "${xoppFile.path}"`
     new Notice('Opening file in Xournal++');
+    exec(command, (error) => {
+        if (error) {
+            new Notice('Error opening file in Xournal++. Check console for error message.');
+            console.error(`Error opening file in Xournal++: ${error.message}`)
+            return
+        }
+    });
 }
 
 export async function createXoppFile(plugin: XoppPlugin, newNoteName: string) {

@@ -17,14 +17,14 @@ export function addOpenInXournalppToPdfToolbar(file: TFile, plugin: XoppPlugin) 
             const pdfToolbar = document.querySelector('.pdf-toolbar-right') as HTMLElement;
 
             if (pdfToolbar) {
-                createPdfToolbarButton(pdfToolbar, xoppFile, plugin.app)
+                createPdfToolbarButton(pdfToolbar, xoppFile, plugin)
             }
         }
     }
 }
 
 
-export function createPdfToolbarButton(pdfToolbar: HTMLElement, xoppFile: TFile, app: App): void {
+export function createPdfToolbarButton(pdfToolbar: HTMLElement, xoppFile: TFile, plugin: XoppPlugin): void {
     let xoppButton = new ButtonComponent(pdfToolbar)
         .setClass("clickable-icon")
         .setClass("xournalpp-open-icon")
@@ -33,7 +33,7 @@ export function createPdfToolbarButton(pdfToolbar: HTMLElement, xoppFile: TFile,
         .setTooltip('Edit in Xournal++');
 
         xoppButton.onClick(() =>  {
-            openXournalppFile(xoppFile, app);
+            openXournalppFile(xoppFile, plugin);
         })
 
         pdfToolbar.appendChild(xoppButton.buttonEl);

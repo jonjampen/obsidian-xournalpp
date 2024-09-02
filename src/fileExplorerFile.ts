@@ -20,7 +20,7 @@ export function addOpenInXournalpp(plugin: XoppPlugin) {
                 div.innerText = "X++";
                 div.classList.add("clickable-tag");
                 div.onclick = () => {
-                    openXournalppFile(file, plugin.app);
+                    openXournalppFile(file, plugin);
                 }                                
         })
     })

@@ -28,7 +28,7 @@ function addOpenInXournalppMenu(menu: Menu, xoppFile: TFile, plugin: XoppPlugin)
         item.setTitle('Open in Xournal++')
             .setIcon('pen-tool')
             .onClick(() => {
-                openXournalppFile(xoppFile, plugin.app);
+                openXournalppFile(xoppFile, plugin);
             });
     });
     menu.addItem(item => {
