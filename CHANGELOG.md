@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.5] - 2024-09-03
+
+### Fixed
+
+-   The plugin now uses the exec function instead of Obsidian's openFile method to open .xopp files. This resolves issues regarding wrong MIME-type association from Xournal++.
+
 ## [1.0.4] - 2024-07-18
 
 ### Added
