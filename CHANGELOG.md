@@ -2,7 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.0.5] - 2024-09-03
+## [1.0.6] - 2024-09-03
+
+### Fixed
+
+-   Fixes issue with nested .xopp files not opening since latest release (1.0.5).
+
+## [1.0.5] - 2024-09-02
 
 ### Fixed
 
