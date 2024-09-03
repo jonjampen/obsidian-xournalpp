@@ -1,25 +1,34 @@
 import XoppPlugin from 'main';
-import { TFile, Notice, App, DataAdapter, Vault } from 'obsidian';
+import { TFile, Notice, App, DataAdapter, Vault, FileSystemAdapter } from 'obsidian';
 import { base64Template } from './template';
 import { checkXoppSetup } from './checks';
 import { exec } from 'child_process';
 
 export async function openXournalppFile(xoppFile: TFile, plugin: XoppPlugin): Promise<void> {
     let path = await checkXoppSetup(plugin);
-    if (!path || path === "error") {
-        new Notice("Error: Xournal++ path not setup correctly. Please check docs on how to set it up.", 10000);
-        return;
-    }
-    
-    let command = `${path} "${xoppFile.path}"`
-    new Notice('Opening file in Xournal++');
-    exec(command, (error) => {
-        if (error) {
-            new Notice('Error opening file in Xournal++. Check console for error message.');
-            console.error(`Error opening file in Xournal++: ${error.message}`)
-            return
+
+    let fs = plugin.app.vault.adapter;
+    if (fs instanceof FileSystemAdapter) {
+        let vaultPath = fs.getBasePath();
+
+        if (!path || path === "error") {
+            new Notice("Error: Xournal++ path not setup correctly. Please check docs on how to set it up.", 10000);
+            return;
         }
-    });
+
+        let command = `${path} "${vaultPath + "/" + xoppFile.path}"`;
+        new Notice("Opening file in Xournal++");
+        exec(command, (error) => {
+            if (error) {
+                new Notice("Error opening file in Xournal++. Check console for error message.");
+                console.error(`Error opening file in Xournal++: ${error.message}`);
+                return;
+            }
+        });
+    }
+    else {
+        new Notice("Error opening file in Xournal++. Check console for error message.");
+    }
 }
 
 export async function createXoppFile(plugin: XoppPlugin, newNoteName: string) {
