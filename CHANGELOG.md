@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.7] - 2024-10-
+
+### Improved
+
+-   Added information to documentation for setting the installation path if both Obsidian and Xournal++ are installed through Flatpack.
+
 ## [1.0.6] - 2024-09-03
 
 ### Fixed
