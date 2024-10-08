@@ -1,4 +1,4 @@
-import { Notice, TFile } from "obsidian";
+import { Editor, Notice, TFile } from "obsidian";
 import { findCorrespondingXoppToPdf, openXournalppFile } from "./xoppActions";
 import { createXoppFileModal } from "./modal";
 import XoppPlugin from "main";
@@ -27,6 +27,36 @@ export function createCommands(plugin: XoppPlugin) {
             new createXoppFileModal(plugin.app, plugin)
                 .setTitle("Create a new Xournal++ note")
                 .open()
+        }
+    });
+
+    plugin.addCommand({
+        id: 'crate-new-xournalpp-and-link-xopp',
+        name: 'Create a new note and insert XOPP link',
+        editorCallback: async (editor: Editor) => {
+            new createXoppFileModal(plugin.app, plugin, "", editor, "XOPP")
+                .setTitle("Create a new Xournal++ note and insert link")
+                .open()      
+        }
+    });
+    
+    plugin.addCommand({
+        id: 'crate-new-xournalpp-and-link-pdf',
+        name: 'Create a new note and insert PDF link',
+        editorCallback: async (editor: Editor) => {
+            new createXoppFileModal(plugin.app, plugin, "", editor, "PDF")
+                .setTitle("Create a new Xournal++ note and insert link")
+                .open()      
+        }
+    });
+    
+    plugin.addCommand({
+        id: 'crate-new-xournalpp-and-link-xopp-pdf',
+        name: 'Create a new note and insert PDF and XOPP link',
+        editorCallback: async (editor: Editor) => {
+            new createXoppFileModal(plugin.app, plugin, "", editor)
+                .setTitle("Create a new Xournal++ note and insert link")
+                .open()      
         }
     });
 

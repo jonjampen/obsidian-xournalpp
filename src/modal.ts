@@ -1,15 +1,19 @@
-import { App, ButtonComponent, Modal, Setting, TextComponent } from "obsidian";
+import { App, ButtonComponent, Editor, Modal, Setting, TextComponent } from "obsidian";
 import { createXoppFile } from "./xoppActions";
 import XoppPlugin from "main";
 
 export class createXoppFileModal extends Modal {
     plugin: XoppPlugin;
     filePath: string;
+    editor: Editor|null;
+    linksToInsert: string;
 
-    constructor(app: App, plugin: XoppPlugin, path: string = "") {
+    constructor(app: App, plugin: XoppPlugin, path: string = "", editor: Editor|null = null, linksToInsert: string = "") {
         super(app);
         this.plugin = plugin as XoppPlugin;
         this.filePath = path ? path + "/" : "";
+        this.editor = editor;
+        this.linksToInsert = linksToInsert;
     }
 
     onOpen() {
@@ -30,15 +34,33 @@ export class createXoppFileModal extends Modal {
             .onClick(() => {
                 this.submitInput(fileName);
             })
-
     }
-        
+
     
     submitInput(path: string) {
         path += ".xopp";
 
         createXoppFile(this.plugin, this.filePath + path)
         this.close();
+
+        this.insertLink(path);
+    }
+
+    insertLink(path: string) {
+        if (!this.editor) return;
+
+        let fileName = path.split("/")[path.split("/").length -1]
+
+        let xoppLink = "[[" + path + "|" + fileName + "]]";
+        let pdfLink = "[[" + path.replace(".xopp", ".pdf") + "|" + fileName.replace(".xopp", ".pdf") + "]]";
+        let finalLink = xoppLink + " " + pdfLink;
+
+        console.log(this.linksToInsert)
+        
+        if (this.linksToInsert === "PDF") finalLink = pdfLink;
+        if (this.linksToInsert === "XOPP") finalLink = xoppLink;
+
+        this.editor.replaceRange(finalLink, this.editor.getCursor());
     }
     
     onClose() {
