@@ -2,7 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.0.7] - 2024-10-
+## [1.0.7] - 2024-10-08
+
+### Added
+
+-   Added commands to insert links for PDF, XOPP, or both after file creation.
+-   Added setting to specify a default folder for new Xournal++ files.
 
 ### Improved
 
