@@ -41,13 +41,29 @@ export class XoppSettingsTab extends PluginSettingTab {
         new Setting(containerEl)
             .setName("Xournal++ template path")
             .setDesc(
-                "The relative path of the template for any new Xournal++ file, e.g. templates/template.xopp (leave empty to use the default template)."
+                "The relative path of the template for any new Xournal++ file (leave empty to use the default template)."
             )
             .addText((toggle) => {
                 toggle
                     .setValue(this.plugin.settings.templatePath)
+                    .setPlaceholder("e.g. templates/template.xopp")
                     .onChange(async (value) => {
                         this.plugin.settings.templatePath = value;
+                        await this.plugin.saveSettings();
+                    });
+            });
+
+        new Setting(containerEl)
+            .setName("Default path for new Xournal++ files")
+            .setDesc(
+                "The relative path for new Xournal++ files. This folder will be used unless a full path is specified during file creation (leave empty to use root folder)."
+            )
+            .addText((toggle) => {
+                toggle
+                    .setValue(this.plugin.settings.defaultNewFilePath)
+                    .setPlaceholder("e.g. Notes")
+                    .onChange(async (value) => {
+                        this.plugin.settings.defaultNewFilePath = value;
                         await this.plugin.saveSettings();
                     });
             });

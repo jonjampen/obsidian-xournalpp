@@ -9,13 +9,15 @@ interface XoppPluginSettings {
     autoExport: boolean;
     xournalppPath: string;
     templatePath: string;
+    defaultNewFilePath: string;
 }
 
 const DEFAULT_SETTINGS: Partial<XoppPluginSettings> = {
     autoExport: false,
     xournalppPath: "",
     templatePath: "",
-};  
+    defaultNewFilePath: "",
+};
 
 export default class XoppPlugin extends Plugin {
     settings: XoppPluginSettings;

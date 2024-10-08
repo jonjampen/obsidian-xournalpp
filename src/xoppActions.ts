@@ -32,7 +32,15 @@ export async function openXournalppFile(xoppFile: TFile, plugin: XoppPlugin): Pr
 }
 
 export async function createXoppFile(plugin: XoppPlugin, newNoteName: string) {
-    let newNotePath =  "/" + newNoteName
+    let newNotePath = "";
+
+    if (newNoteName.includes("/")) {
+        newNotePath = !newNoteName.startsWith("/") ? "/" + newNoteName : newNoteName;
+    }
+    else {
+        newNotePath = plugin.settings.defaultNewFilePath + "/" + newNoteName;
+    }
+
     const fs = plugin.app.vault.adapter;
     
     try {
@@ -50,7 +58,7 @@ export function findCorrespondingXoppToPdf(pdfFilePath: string, plugin: XoppPlug
     let xoppFilePath = pdfFilePath?.replace(".pdf", ".xopp");
     let xoppFilename = xoppFilePath.substring(xoppFilePath.lastIndexOf("/") + 1)
     const pdfFile = plugin.app.vault.getFileByPath(pdfFilePath);
-    
+
     // set parent folder or root vault folder
     const parentFolder = pdfFile?.parent ?? plugin.app.vault.getFolderByPath("/");
     const xoppFile = parentFolder?.children.find((child) => child.name === xoppFilename)
