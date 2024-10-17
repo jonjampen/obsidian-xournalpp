@@ -20,6 +20,8 @@ export function createCommands(plugin: XoppPlugin) {
         }
     });
     
+    
+
     plugin.addCommand({
         id: 'crate-new-xournalpp',
         name: 'Create a new note',
@@ -27,6 +29,16 @@ export function createCommands(plugin: XoppPlugin) {
             new createXoppFileModal(plugin.app, plugin)
                 .setTitle("Create a new Xournal++ note")
                 .open()
+        }
+    });
+
+    plugin.addCommand({
+        id: 'crate-new-xournalpp-in-folder',
+        name: 'Create a new note in a chosen folder',
+        callback: async () => {
+            new createXoppFileModal(plugin.app, plugin, "", null, "", true)
+            .setTitle("Create a new Xournal++ note in a chosen folder")
+            .open()
         }
     });
 
@@ -46,6 +58,16 @@ export function createCommands(plugin: XoppPlugin) {
         editorCallback: async (editor: Editor) => {
             new createXoppFileModal(plugin.app, plugin, "", editor, "PDF")
                 .setTitle("Create a new Xournal++ note and insert link")
+                .open()      
+        }
+    });
+
+    plugin.addCommand({
+        id: 'crate-new-xournalpp-and-link-embedded-pdf',
+        name: 'Create a new note and insert embedded PDF link',
+        editorCallback: async (editor: Editor) => {
+            new createXoppFileModal(plugin.app, plugin, "", editor, "embeddedPDF")
+                .setTitle("Create a new Xournal++ note and insert embedded link")
                 .open()      
         }
     });
