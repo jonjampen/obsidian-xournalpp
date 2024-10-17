@@ -67,21 +67,26 @@ export class createXoppFileModal extends Modal {
     submitInput(filePath: string, fileName: string) {
         fileName += ".xopp";
 
-        createXoppFile(this.plugin, `${filePath}/${fileName}`);
+        createXoppFile(this.plugin, filePath === "" ? fileName : `${filePath}/${fileName}`);
         this.close();
 
         this.insertLink(filePath, fileName);
     }
 
     insertLink(filePath: string, fileName: string) {
-        if (!this.editor) return;
+        if (!this.editor) {
+            return;
+        }
 
-        if (filePath === "") filePath = fileName;
+        const defaultNewFilePath = this.plugin.settings.defaultNewFilePath;
+
+        if (filePath !== "") filePath = filePath + "/";
+        else filePath = defaultNewFilePath ? defaultNewFilePath + "/" : "/";
 
         fileName = fileName.replace(".xopp", "");
         
-        let xoppLink = "[[" + filePath + "|" + fileName + "]]";
-        let pdfLink = "[[" + filePath.replace(".xopp", ".pdf") + "|" + fileName + "]]";
+        let xoppLink = "[[" + filePath + fileName + ".xopp" + "|" + fileName + "]]";
+        let pdfLink = "[[" + filePath + fileName + ".pdf" + "|" + fileName + "]]";
         let finalLink = xoppLink + " " + pdfLink;
 
         if (this.linksToInsert === "embeddedPDF") finalLink = "!" + pdfLink;
