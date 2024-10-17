@@ -7,49 +7,38 @@ export class createXoppFileModal extends Modal {
     filePath: string;
     editor: Editor | null;
     linksToInsert: string;
-    folderFlag: boolean;
-
-    constructor(app: App, plugin: XoppPlugin, filePath: string = "", editor: Editor | null = null, linksToInsert: string = "", folderFlag: boolean = false) {
+    
+    constructor(app: App, plugin: XoppPlugin, filePath: string = "", editor: Editor | null = null, linksToInsert: string = "") {
         super(app);
         this.plugin = plugin as XoppPlugin;
         this.filePath = filePath ? filePath + "/" : "";
         this.editor = editor;
         this.linksToInsert = linksToInsert;
-        this.folderFlag = folderFlag;
     }
 
     onOpen() {
         const { contentEl } = this;
-        let folderFlag = this.folderFlag;
         let filePath = this.filePath;
 
         let container = contentEl.createDiv({ cls: 'new-file-modal-form' });
 
-        if (folderFlag) {
-            // Prompt for folder path if create in a specific folder is called
-            new TextComponent(container)
-                .setPlaceholder("Folder path")
-                .onChange((i) => {
-                    filePath = i;
-                    console.log("Folder path set to:", filePath);
-                })
-                .inputEl.addEventListener("keypress", (e) => {
-                    if (e.key === "Enter") {
-                        console.log("Enter key pressed for folder path");
-                        this.insertFileName(container, filePath);
-                    }
-                });
-
-            new ButtonComponent(container)
-                .setButtonText("Next")
-                .onClick(() => {
-                    console.log("Next button clicked for folder path");
+        new TextComponent(container)
+            .setPlaceholder("Folder path")
+            .onChange((i) => {
+                filePath = i;
+            })
+            .inputEl.addEventListener("keypress", (e) => {
+                if (e.key === "Enter") {
                     this.insertFileName(container, filePath);
-                });
-        } else {
-            // Prompt for file name directly if create in default folder is called
-            this.insertFileName(container, filePath);
-        }
+                }
+            });
+
+        new ButtonComponent(container)
+            .setButtonText("Next")
+            .onClick(() => {
+                this.insertFileName(container, filePath);
+            });
+
     }
 
     insertFileName(container: HTMLDivElement, filePath: string) {

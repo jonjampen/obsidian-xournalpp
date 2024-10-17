@@ -19,8 +19,6 @@ export function createCommands(plugin: XoppPlugin) {
             return true;
         }
     });
-    
-    
 
     plugin.addCommand({
         id: 'crate-new-xournalpp',
@@ -29,16 +27,6 @@ export function createCommands(plugin: XoppPlugin) {
             new createXoppFileModal(plugin.app, plugin)
                 .setTitle("Create a new Xournal++ note")
                 .open()
-        }
-    });
-
-    plugin.addCommand({
-        id: 'crate-new-xournalpp-in-folder',
-        name: 'Create a new note in a chosen folder',
-        callback: async () => {
-            new createXoppFileModal(plugin.app, plugin, "", null, "", true)
-            .setTitle("Create a new Xournal++ note in a chosen folder")
-            .open()
         }
     });
 
