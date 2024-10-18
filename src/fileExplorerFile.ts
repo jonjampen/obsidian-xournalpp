@@ -3,40 +3,51 @@ import { findCorrespondingXoppToPdf, openXournalppFile } from "./xoppActions";
 import { TFile } from "obsidian";
 
 export function addOpenInXournalpp(plugin: XoppPlugin) {
+    plugin.app.workspace.onLayoutReady(() => {
+        observeFileExplorer(plugin); // Start observing once the layout is ready
+        applyXournalppTags(plugin); // Apply the tags initially
+    });
+}
+
+function observeFileExplorer(plugin: XoppPlugin) {
     let fileExplorers = plugin.app.workspace.getLeavesOfType("file-explorer");
 
     fileExplorers.forEach(fileExplorer => {
-        let allFiles = (fileExplorer.view as any)?.fileItems;
+        let container = (fileExplorer.view as any)?.containerEl;
 
-        if (!allFiles) {
-            console.error("No file items found in file explorer.");
-            return;
+        if (container) {
+            // Observe changes in the file explorer DOM
+            const observer = new MutationObserver(() => {
+                applyXournalppTags(plugin); // Reapply tags whenever there's a DOM change
+            });
+
+            // Observe changes to child elements (subtree and childList options)
+            observer.observe(container, { childList: true, subtree: true });
         }
+    });
+}
 
-        const files: Array<Array<HTMLElement | TFile>> = [];
+function applyXournalppTags(plugin: XoppPlugin) {
+    let fileExplorers = plugin.app.workspace.getLeavesOfType("file-explorer");
+
+    fileExplorers.forEach(fileExplorer => {
+        let allFiles: { [key: string]: { tagEl: HTMLElement } } = (fileExplorer.view as any)?.fileItems;
+
         Object.entries(allFiles).forEach(([filePath, value]) => {
             if (filePath.endsWith(".pdf")) {
-                let xoppFile = findCorrespondingXoppToPdf(filePath as string, plugin);
-                if (xoppFile) {
-                    const tagEl = (value as any).tagEl as HTMLElement;
-                    if (!tagEl) {
-                        console.error(`No tagEl found for file path: ${filePath}`);
-                    } else {
-                        files.push([tagEl, xoppFile]);
+                let xoppFile = findCorrespondingXoppToPdf(filePath, plugin);
+                if (xoppFile && value?.tagEl) {
+                    const tagEl = value.tagEl as HTMLElement;
+
+                    if (tagEl && !tagEl.classList.contains("clickable-tag")) {
+                        tagEl.innerText = "X++";
+                        tagEl.classList.add("clickable-tag");
+                        tagEl.onclick = () => {
+                            openXournalppFile(xoppFile, plugin);
+                        };
+                        console.log("TagEl successful for file:", filePath);
                     }
                 }
-            }
-        });
-
-        files.forEach(([div, file]: [HTMLElement, TFile]) => {
-            if (div) {
-                div.innerText = "X++";
-                div.classList.add("clickable-tag");
-                div.onclick = () => {
-                    openXournalppFile(file, plugin);
-                };
-            } else {
-                console.error("Element is null for file:", file);
             }
         });
     });
