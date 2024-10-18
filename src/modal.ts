@@ -1,4 +1,4 @@
-import { App, ButtonComponent, Editor, FileSystemAdapter, Modal, Setting, TextComponent } from "obsidian";
+import { App, ButtonComponent, Editor, Modal, TextComponent } from "obsidian";
 import { createXoppFile } from "./xoppActions";
 import XoppPlugin from "main";
 
