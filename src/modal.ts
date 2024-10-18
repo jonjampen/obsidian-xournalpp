@@ -23,7 +23,7 @@ export class createXoppFileModal extends Modal {
         let container = contentEl.createDiv({ cls: 'new-file-modal-form' });
 
         new TextComponent(container)
-            .setPlaceholder("Folder path")
+            .setPlaceholder("Folder path (default if empty)")
             .onChange((i) => {
                 filePath = i;
             })
@@ -43,20 +43,23 @@ export class createXoppFileModal extends Modal {
 
     insertFileName(container: HTMLDivElement, filePath: string) {
         container.empty();
-
+    
         let fileName: string;
-
-        new TextComponent(container)
+    
+        const textComponent = new TextComponent(container)
             .setPlaceholder("File name")
             .onChange((i) => {
                 fileName = i;
-            })
-            .inputEl.addEventListener("keypress", (e) => {
-                if (e.key === "Enter") {
-                    this.submitInput(filePath, fileName);
-                }
             });
-
+    
+        textComponent.inputEl.focus();
+    
+        textComponent.inputEl.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") {
+                this.submitInput(filePath, fileName);
+            }
+        });
+    
         new ButtonComponent(container)
             .setButtonText("Create")
             .onClick(() => {
