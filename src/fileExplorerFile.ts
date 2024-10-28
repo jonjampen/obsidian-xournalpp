@@ -45,7 +45,6 @@ function applyXournalppTags(plugin: XoppPlugin) {
                         tagEl.onclick = () => {
                             openXournalppFile(xoppFile, plugin);
                         };
-                        console.log("TagEl successful for file:", filePath);
                     }
                 }
             }
