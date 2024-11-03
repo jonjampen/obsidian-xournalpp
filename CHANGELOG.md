@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.8] - 2024-10-??
+
+### Added
+
+-   Fuzzy suggest for selecting the folder when creating new files.
+-   Added command to insert embedded PDF after file creation.
+-   Added separate modal for setting a folder and naming the new file.
+
+### Fixed
+
+-   `X++` button didn't show immediately on app startup and threw an error. Now it appears right away when the app starts.
+
 ## [1.0.7] - 2024-10-08
 
 ### Added
