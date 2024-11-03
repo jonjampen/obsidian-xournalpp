@@ -32,14 +32,7 @@ export async function openXournalppFile(xoppFile: TFile, plugin: XoppPlugin): Pr
 }
 
 export async function createXoppFile(plugin: XoppPlugin, newNoteName: string) {
-    let newNotePath = "";
-
-    if (newNoteName.includes("/")) {
-        newNotePath = !newNoteName.startsWith("/") ? "/" + newNoteName : newNoteName;
-    }
-    else {
-        newNotePath = plugin.settings.defaultNewFilePath + "/" + newNoteName;
-    }
+    let newNotePath = !newNoteName.startsWith("/") ? "/" + newNoteName : newNoteName;
 
     const fs = plugin.app.vault.adapter;
     

@@ -1,10 +1,8 @@
 import XoppPlugin from "main";
-import { createXoppFileModal } from "./modal";
+import CreateXoppModalManager from "./CreateXoppModalManager";
 
 export function createRibbonIcons(plugin: XoppPlugin) {
-    plugin.addRibbonIcon('pen-tool', 'Create new Xournal++ note', (evt: MouseEvent) => {
-        new createXoppFileModal(plugin.app, plugin)
-            .setTitle("Create a new Xournal++ note")
-            .open();
+    plugin.addRibbonIcon("pen-tool", "Create new Xournal++ note", (evt: MouseEvent) => {
+        new CreateXoppModalManager(plugin.app, plugin);
     });
 }
