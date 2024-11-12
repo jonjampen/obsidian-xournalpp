@@ -47,14 +47,11 @@ export default class CreateXoppModalManager {
         fileName += ".xopp";
         createXoppFile(this.plugin, folderPath === "" ? fileName : `${folderPath}/${fileName}`);
 
-        if (this.editor instanceof Editor) this.insertLink(this.editor, this.filePath, fileName, this.linksToInsert);
+        if (this.editor instanceof Editor) this.insertLink(this.editor, folderPath, fileName, this.linksToInsert);
     }
 
     insertLink(editor: Editor, filePath: string, fileName: string, linksToInsert: string) {
-        const defaultNewFilePath = this.plugin.settings.defaultNewFilePath;
-
-        if (filePath !== "") filePath = filePath + "/";
-        else filePath = defaultNewFilePath ? defaultNewFilePath + "/" : "/";
+        if (filePath !== "/") filePath = filePath + "/";
 
         fileName = fileName.replace(".xopp", "");
 
