@@ -40,7 +40,12 @@ export default class CreateXoppModalManager {
             { command: "Tab", purpose: "to autocomplete folder" },
             { command: "Enter", purpose: "to select folder" },
         ]);
-        folderSuggestModal.open();
+        
+        if (this.filePath == "") {
+            folderSuggestModal.open();
+        } else {
+            onCloseFolderModal(this.filePath);
+        }
     }
 
     onCreate(folderPath: string, fileName: string) {

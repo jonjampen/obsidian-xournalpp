@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 
 -   Fixing wrong inserted link after file creation.
+-   Using active folder as folder path when creating a new Xournal++ file through the file explorer context menu.
 
 ## [1.0.8] - 2024-11-03
 
