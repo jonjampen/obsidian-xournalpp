@@ -12,7 +12,7 @@ export default class FolderSuggestModal extends FuzzySuggestModal<TFolder> {
     }
 
     getItems(): TFolder[] {
-        const folders: TFolder[] = [];
+        let folders: TFolder[] = [];
         const folderPaths = new Set<string>();
 
         this.app.vault.getAllLoadedFiles().forEach((file) => {
@@ -25,6 +25,8 @@ export default class FolderSuggestModal extends FuzzySuggestModal<TFolder> {
             }
         });
 
+        let defaultFolder = this.app.vault.getFolderByPath(this.plugin.settings.defaultNewFilePath);
+        if (defaultFolder != null && this.inputEl.value == "") folders = [defaultFolder].concat(folders);
         return folders;
     }
 
@@ -34,9 +36,6 @@ export default class FolderSuggestModal extends FuzzySuggestModal<TFolder> {
 
     onOpen(): void {
         super.onOpen();
-
-        this.inputEl.value = this.plugin.settings.defaultNewFilePath || "";
-        this.inputEl.dispatchEvent(new Event("input"));
 
         this.inputEl.addEventListener("keydown", (event) => {
             if (event.key === "Tab") {

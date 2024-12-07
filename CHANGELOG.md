@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.10] - 2024-??-??
+### Improved
+
+-   When selecting a folder for a new file the default folder is no longer set as the default input value but as the top option.
+
 ## [1.0.9] - 2024-11-12
 
 ### Fixed
