@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 
 ## [1.0.10] - 2024-??-??
+
+### Added
+
+-   Added option to delete both XOPP and corresponding PDF file from the file menu and the commands.
+-   Added option to rename both XOPP and corresponding PDF file from the file menu and the commands.
+
 ### Improved
 
 -   When selecting a folder for a new file the default folder is no longer set as the default input value but as the top option.

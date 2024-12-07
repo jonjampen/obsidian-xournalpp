@@ -1,8 +1,9 @@
 import { Menu, TFile, TFolder } from "obsidian";
-import { findCorrespondingXoppToPdf, openXournalppFile } from "./xoppActions";
+import { deleteXoppAndPdf, findCorrespondingXoppToPdf, openXournalppFile, renameXoppFile } from "./xoppActions";
 import CreateXoppModalManager from "./CreateXoppModalManager";
 import XoppPlugin from "main";
 import { exportXoppToPDF } from "./xopp2pdf";
+import RenameModal from "./modals/RenameModal";
 
 export function addXournalppOptionsToFileMenu(menu: Menu, file: TFile | TFolder, plugin: XoppPlugin) {
     if (file instanceof TFile) {
@@ -12,6 +13,8 @@ export function addXournalppOptionsToFileMenu(menu: Menu, file: TFile | TFolder,
             let xoppFile = findCorrespondingXoppToPdf(file.path, plugin);
             if (xoppFile) {
                 addOpenInXournalppMenu(menu, xoppFile, plugin);
+                addXournalppDeleteMenu(menu, file, xoppFile, plugin);
+                addXournalppRenameMenu(menu, file, xoppFile, plugin);
             }
         }
     } else if (file instanceof TFolder) {
@@ -48,4 +51,28 @@ function addCreateXournalppMenu(menu: Menu, folder: TFolder, plugin: XoppPlugin)
                 new CreateXoppModalManager(plugin.app, plugin, folder?.path ?? "");
             });
     });
+}
+
+function addXournalppDeleteMenu(menu: Menu, pdfFile: TFile, xoppFile: TFile, plugin: XoppPlugin) {
+    menu.addItem((item) => {
+        item.setTitle("Delete PDF & Xournal++")
+            .setIcon("trash")
+            .setSection("danger")
+            .onClick(() => {
+                deleteXoppAndPdf(plugin, xoppFile, pdfFile);
+            });
+    });
+}
+
+function addXournalppRenameMenu(menu: Menu, pdfFile: TFile, xoppFile: TFile, plugin: XoppPlugin) {
+    menu.addItem((item) => {
+        item.setTitle("Rename PDF & Xournal++")
+            .setIcon("pencil")
+            .setSection("danger")
+            .onClick(() => {
+                new RenameModal(plugin.app, xoppFile.path, renameFile).open();
+            });
+    });
+
+    const renameFile = (fileName: string) => renameXoppFile(plugin, xoppFile, pdfFile, fileName);
 }

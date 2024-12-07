@@ -1,8 +1,9 @@
 import { Editor } from "obsidian";
-import { findCorrespondingXoppToPdf, openXournalppFile } from "./xoppActions";
+import { deleteXoppAndPdf, findCorrespondingXoppToPdf, openXournalppFile, renameXoppFile } from "./xoppActions";
 import XoppPlugin from "main";
 import { exportXoppToPDF } from "./xopp2pdf";
 import CreateXoppModalManager from "./CreateXoppModalManager";
+import RenameModal from "./modals/RenameModal";
 
 export function createCommands(plugin: XoppPlugin) {
     plugin.addCommand({
@@ -85,6 +86,41 @@ export function createCommands(plugin: XoppPlugin) {
                 return true;
             }
             return false;
+        },
+    });
+
+    plugin.addCommand({
+        id: "rename-xournalpp",
+        name: "Rename current PDF and corresponding Xournal++ note",
+        checkCallback: (checking: boolean) => {
+            let pdfFile = plugin.app.workspace.getActiveFile();
+            if (!pdfFile || !pdfFile.name.endsWith(".pdf")) return false;
+
+            let xoppFile = findCorrespondingXoppToPdf(pdfFile.path, plugin);
+            if (!xoppFile) return false;
+
+            if (!checking) {
+                const renameFile = (fileName: string) => renameXoppFile(plugin, xoppFile, pdfFile, fileName);
+                new RenameModal(plugin.app, xoppFile.path, renameFile).open();
+            }
+            return true;
+        },
+    });
+
+    plugin.addCommand({
+        id: "delete-xournalpp",
+        name: "Delete current PDF and corresponding Xournal++ note",
+        checkCallback: (checking: boolean) => {
+            let pdfFile = plugin.app.workspace.getActiveFile();
+            if (!pdfFile || !pdfFile.name.endsWith(".pdf")) return false;
+
+            let xoppFile = findCorrespondingXoppToPdf(pdfFile.path, plugin);
+            if (!xoppFile) return false;
+
+            if (!checking) {
+                deleteXoppAndPdf(plugin, xoppFile, pdfFile);
+            }
+            return true;
         },
     });
 }
