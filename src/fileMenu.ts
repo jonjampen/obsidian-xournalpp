@@ -13,8 +13,9 @@ export function addXournalppOptionsToFileMenu(menu: Menu, file: TFile | TFolder,
             let xoppFile = findCorrespondingXoppToPdf(file.path, plugin);
             if (xoppFile) {
                 addOpenInXournalppMenu(menu, xoppFile, plugin);
-                addXournalppDeleteMenu(menu, file, xoppFile, plugin);
                 addXournalppRenameMenu(menu, file, xoppFile, plugin);
+                addXournalppDeleteMenu(menu, file, xoppFile, plugin);
+                removeDeleteRenameMenuItem();
             }
         }
     } else if (file instanceof TFolder) {
@@ -66,7 +67,7 @@ function addXournalppDeleteMenu(menu: Menu, pdfFile: TFile, xoppFile: TFile, plu
 
 function addXournalppRenameMenu(menu: Menu, pdfFile: TFile, xoppFile: TFile, plugin: XoppPlugin) {
     menu.addItem((item) => {
-        item.setTitle("Rename PDF & Xournal++")
+        item.setTitle("Rename PDF & Xournal++...")
             .setIcon("pencil")
             .setSection("danger")
             .onClick(() => {
@@ -75,4 +76,37 @@ function addXournalppRenameMenu(menu: Menu, pdfFile: TFile, xoppFile: TFile, plu
     });
 
     const renameFile = (fileName: string) => renameXoppFile(plugin, xoppFile, pdfFile, fileName);
+}
+
+function removeDeleteRenameMenuItem() {
+    const body = document.querySelector("body");
+    if (!body) return;
+
+    const observer = new MutationObserver(() => {
+        const menuItems = body.querySelectorAll(".menu-item");
+        if (menuItems.length > 0) {
+            let isXoppMenu = false;
+
+            menuItems.forEach((item) => {
+                if (item.textContent && item.textContent == "Delete PDF & Xournal++") {
+                    item.classList.add("is-warning");
+                    isXoppMenu = true;
+                }
+            });
+
+            if (isXoppMenu) {
+                menuItems.forEach((item) => {
+                    if (item.textContent && (item.textContent == "Delete" || item.textContent == "Rename..."))
+                        item.remove();
+                });
+            }
+
+            observer.disconnect();
+        }
+    });
+
+    observer.observe(body, {
+        childList: true,
+        subtree: true,
+    });
 }
