@@ -25,7 +25,11 @@ export default class FolderSuggestModal extends FuzzySuggestModal<TFolder> {
             }
         });
 
-        let defaultFolder = this.app.vault.getFolderByPath(this.plugin.settings.defaultNewFilePath);
+        let defaultFolderPath = this.plugin.settings.defaultNewFilePath;
+        if (defaultFolderPath.endsWith("/")) {
+            defaultFolderPath = defaultFolderPath.slice(0, -1);
+        }
+        let defaultFolder = this.app.vault.getFolderByPath(defaultFolderPath);
         if (defaultFolder != null && this.inputEl.value == "") folders = [defaultFolder].concat(folders);
         return folders;
     }
