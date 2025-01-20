@@ -12,9 +12,10 @@ export async function checkXoppSetup(plugin: XoppPlugin): Promise<string> {
 
     if (userPath) {
         try {
-            await executeCommand(userPath + versionCmd);
-            return userPath;
-        } catch (error) {
+			if(!userPath.startsWith('"') || !userPath.endsWith('"')) userPath =`"${userPath}"`;
+			await executeCommand(userPath + versionCmd);
+        	return userPath;
+		} catch (error) {
             errors.push("User defined Xournal++ path not working: " + error.message)
         }
     }
