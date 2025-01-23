@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.11] - 2025-01-23
+
+### Fixed
+
+- Fixing issue with spacing in custom Xournal++ path.
+
 ## [1.0.10] - 2024-12-16
 
 ### Added
