@@ -6,14 +6,12 @@ export function addCreateXournalppNavIcon(plugin: XoppPlugin) {
     let fileExplorers = plugin.app.workspace.getLeavesOfType("file-explorer");
 
     fileExplorers.forEach((fileExplorer) => {
-        let fileExplorerIconsNav = (fileExplorer.view as any)?.headerDom.navButtonsEl;
+        const fileExplorerView = fileExplorer.view as any;
+        const headerDom = fileExplorerView?.headerDom;
+        const navButtonsEl = headerDom?.navButtonsEl;
 
-        if (
-            fileExplorerIconsNav &&
-            fileExplorerIconsNav.children.length > 2 &&
-            !fileExplorerIconsNav.querySelector(".xournalpp-create-icon")
-        ) {
-            let createXoppButton = new ButtonComponent(fileExplorerIconsNav as HTMLElement)
+        if (navButtonsEl && navButtonsEl.children.length > 2 && !navButtonsEl.querySelector(".xournalpp-create-icon")) {
+            let createXoppButton = new ButtonComponent(navButtonsEl as HTMLElement)
                 .setClass("clickable-icon")
                 .setClass("xournalpp-create-icon")
                 .setIcon("pen-tool")
@@ -23,7 +21,7 @@ export function addCreateXournalppNavIcon(plugin: XoppPlugin) {
                 new CreateXoppModalManager(plugin.app, plugin);
             });
 
-            fileExplorerIconsNav.insertAfter(createXoppButton.buttonEl, fileExplorerIconsNav.children[1]);
+            navButtonsEl.insertAfter(createXoppButton.buttonEl, navButtonsEl.children[1]);
         }
     });
 }

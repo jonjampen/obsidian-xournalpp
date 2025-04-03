@@ -11,7 +11,7 @@ export function addOpenInXournalpp(plugin: XoppPlugin) {
 function observeFileExplorer(plugin: XoppPlugin) {
     let fileExplorers = plugin.app.workspace.getLeavesOfType("file-explorer");
 
-    fileExplorers.forEach(fileExplorer => {
+    fileExplorers.forEach((fileExplorer) => {
         let container = (fileExplorer.view as any)?.containerEl;
 
         if (container) {
@@ -29,8 +29,9 @@ function observeFileExplorer(plugin: XoppPlugin) {
 function applyXournalppTags(plugin: XoppPlugin) {
     let fileExplorers = plugin.app.workspace.getLeavesOfType("file-explorer");
 
-    fileExplorers.forEach(fileExplorer => {
+    fileExplorers.forEach((fileExplorer) => {
         let allFiles: { [key: string]: { tagEl: HTMLElement } } = (fileExplorer.view as any)?.fileItems;
+        if (!allFiles) return;
 
         Object.entries(allFiles).forEach(([filePath, value]) => {
             if (filePath.endsWith(".pdf")) {
