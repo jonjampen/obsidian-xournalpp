@@ -50,18 +50,19 @@ function initialLoad(plugin: XoppPlugin) {
                 let xopp_is_newer = false;
                 if (pdf_file) {
                     xopp_is_newer = xopp_file.stat.mtime > pdf_file.stat.mtime;
-                    console.log('the pdf exists, xopp_greater: ${xopp_is_newer}, xopp time: ${xopp_file.stat.mtime}, pdf time: ${pdf_file.stat.mtime}')
                 }
                 // Add the file path to the list if PDF doesn't exist or XOPP is newer
                 if (!pdf_file || xopp_is_newer) {
                     filePaths.push(xopp_file.path);
                 }
         }
-        // Only export if there are files to update
+        
         if (filePaths.length > 0) {
             exportXoppToPDF(plugin, filePaths, false);
         }
     }
+    
     addCreateXournalppNavIcon(plugin);
     addOpenInXournalpp(plugin);
+
 }
