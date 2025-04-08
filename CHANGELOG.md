@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased] - 2025-04-
+## [Unreleased] - 2025-04-12
 
 ### ⚠️ Breaking Changes
 
@@ -11,6 +11,10 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 
 -   Fixed user-set Xournal++ installation path not working when consisting of multiple parameters with spaces (fixes [#13](https://github.com/jonjampen/obsidian-xournalpp/issues/13), PR [#16](https://github.com/jonjampen/obsidian-xournalpp/pull/16)).
+
+### Improved
+
+-   Improved plugin startup efficiency by only exporting Xournal++ files to PDF that have since changed (fixes [#14](https://github.com/jonjampen/obsidian-xournalpp/issues/14), PR [#15](https://github.com/jonjampen/obsidian-xournalpp/pull/15)).
 
 ## [1.0.11] - 2025-01-23
 
