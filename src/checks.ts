@@ -12,7 +12,6 @@ export async function checkXoppSetup(plugin: XoppPlugin): Promise<string> {
 
     if (userPath) {
         try {
-			if(!userPath.startsWith('"') || !userPath.endsWith('"')) userPath =`"${userPath}"`;
 			await executeCommand(userPath + versionCmd);
         	return userPath;
 		} catch (error) {
