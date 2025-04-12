@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased] - 2025-04-12
+## [v1.1.0] - 2025-04-12
 
 ### ⚠️ Breaking Changes
 
@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 
 -   Fixed user-set Xournal++ installation path not working when consisting of multiple parameters with spaces (fixes [#13](https://github.com/jonjampen/obsidian-xournalpp/issues/13), PR [#16](https://github.com/jonjampen/obsidian-xournalpp/pull/16)).
+-   Fixed start-up error when file explorer is closed (fixes [#12](https://github.com/jonjampen/obsidian-xournalpp/issues/12)).
 
 ### Improved
 
