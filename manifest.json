@@ -1,11 +1,11 @@
 {
-	"id": "xournalpp",
-	"name": "Xournal++",
-	"version": "1.0.11",
-	"minAppVersion": "1.5.12",
-	"description": "Integration with Xournal++ for handwritten notes and annotations.",
-	"author": "Jon Jampen",
-	"authorUrl": "https://jonjampen.ch",
-	"fundingUrl": "https://buymeacoffee.com/jonjampen",
-	"isDesktopOnly": true
+    "id": "xournalpp",
+    "name": "Xournal++",
+    "version": "1.1.0",
+    "minAppVersion": "1.5.12",
+    "description": "Integration with Xournal++ for handwritten notes and annotations.",
+    "author": "Jon Jampen",
+    "authorUrl": "https://jonjampen.ch",
+    "fundingUrl": "https://buymeacoffee.com/jonjampen",
+    "isDesktopOnly": true
 }
