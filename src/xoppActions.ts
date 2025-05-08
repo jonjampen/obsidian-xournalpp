@@ -89,8 +89,8 @@ export function renameXoppFile(plugin: XoppPlugin, xoppFile: TFile, pdfFile: TFi
     let filePath = xoppFile.path.split("/");
     filePath.pop();
     let newPath = filePath?.join("/") + "/" + fileName;
-    plugin.app.vault.rename(xoppFile, newPath + ".xopp");
-    plugin.app.vault.rename(pdfFile, newPath + ".pdf");
+    plugin.app.fileManager.renameFile(xoppFile, newPath + ".xopp");
+    plugin.app.fileManager.renameFile(pdfFile, newPath + ".pdf");
 }
 
 export function deleteXoppAndPdf(plugin: XoppPlugin, xoppFile: TFile, pdfFile: TFile) {

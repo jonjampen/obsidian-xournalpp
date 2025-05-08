@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased] - TBD
+
+### Added
+
+-   Updating all link references to `.xopp` files and their corresponding `.pdf` file when using the "Rename PDF & Xournal++" feature (closes [#18](https://github.com/jonjampen/obsidian-xournalpp/issues/18)).
+
 ## [v1.1.0] - 2025-04-12
 
 ### ⚠️ Breaking Changes
