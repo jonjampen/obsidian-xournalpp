@@ -62,7 +62,8 @@ export default class CreateXoppModalManager {
 
     async onCreateAndOpen(folderPath: string, fileName: string) {
         await this.onCreate(folderPath, fileName);
-        const file = await this.waitForFileToBeIndexed(folderPath + "/" + fileName + ".xopp");
+        const filePath = folderPath === "/" ? fileName : `${folderPath}/${fileName}`;
+        const file = await this.waitForFileToBeIndexed(filePath + ".xopp");
         if (file) {
             openXournalppFile(file, this.plugin);
         } else {
