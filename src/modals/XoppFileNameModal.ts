@@ -3,16 +3,18 @@ import { App, ButtonComponent, Editor, Modal, TextComponent } from "obsidian";
 export default class XoppFileNameModal extends Modal {
     editor: Editor | null;
     createFile: (fileName: string) => void;
+    createAndOpenFile: (fileName: string) => void;
 
-    constructor(app: App, createFile: (fileName: string) => void) {
+    constructor(app: App, createFile: (fileName: string) => void, createAndOpenFile: (fileName: string) => void) {
         super(app);
         this.createFile = createFile;
+        this.createAndOpenFile = createAndOpenFile;
     }
 
     onOpen() {
         const { contentEl } = this;
 
-        const container = contentEl.createDiv({ cls: "new-file-modal-form" });
+        const container = contentEl.createDiv({ cls: "new-xopp-file-modal-form" });
 
         let fileName: string;
 
@@ -24,15 +26,33 @@ export default class XoppFileNameModal extends Modal {
 
         textComponent.inputEl.addEventListener("keypress", (e) => {
             if (e.key === "Enter") {
-                this.createFile(fileName);
-                this.close();
+                if (e.shiftKey) {
+                    this.createAndOpenFile(fileName);
+                    this.close();
+                } else {
+                    this.createFile(fileName);
+                    this.close();
+                }
             }
         });
 
-        new ButtonComponent(container).setButtonText("Create").onClick(() => {
-            this.createFile(fileName);
-            this.close();
-        });
+        const buttonRow = container.createDiv({ cls: "button-row" });
+
+        new ButtonComponent(buttonRow)
+            .setButtonText("Create")
+            .setTooltip("Enter")
+            .onClick(() => {
+                this.createFile(fileName);
+                this.close();
+            });
+
+        new ButtonComponent(buttonRow)
+            .setButtonText("Create & Open")
+            .setTooltip("Shift + Enter")
+            .onClick(() => {
+                this.createAndOpenFile(fileName);
+                this.close();
+            });
     }
 
     onClose() {

@@ -1,5 +1,5 @@
-import { App, Editor } from "obsidian";
-import { createXoppFile } from "./xoppActions";
+import { App, Editor, Notice, TFile } from "obsidian";
+import { createXoppFile, openXournalppFile } from "./xoppActions";
 import XoppPlugin from "main";
 import XoppFileNameModal from "./modals/XoppFileNameModal";
 import FolderSuggestModal from "./modals/FolderSuggestModal";
@@ -10,6 +10,7 @@ export default class CreateXoppModalManager {
     filePath: string;
     editor: Editor | null;
     linksToInsert: string;
+    openAfterCreate: boolean = false;
 
     constructor(
         app: App,
@@ -29,7 +30,11 @@ export default class CreateXoppModalManager {
 
     createModals() {
         const onCloseFolderModal = (folderPath: string) =>
-            new XoppFileNameModal(this.plugin.app, (fileName) => this.onCreate(folderPath, fileName))
+            new XoppFileNameModal(
+                this.plugin.app,
+                (fileName) => this.onCreate(folderPath, fileName),
+                (fileName) => this.onCreateAndOpen(folderPath, fileName)
+            )
                 .setTitle("Create a new Xournal++ note")
                 .open();
 
@@ -40,7 +45,7 @@ export default class CreateXoppModalManager {
             { command: "Tab", purpose: "to autocomplete folder" },
             { command: "Enter", purpose: "to select folder" },
         ]);
-        
+
         if (this.filePath == "") {
             folderSuggestModal.open();
         } else {
@@ -48,11 +53,22 @@ export default class CreateXoppModalManager {
         }
     }
 
-    onCreate(folderPath: string, fileName: string) {
+    async onCreate(folderPath: string, fileName: string) {
         fileName += ".xopp";
-        createXoppFile(this.plugin, folderPath === "" ? fileName : `${folderPath}/${fileName}`);
+        await createXoppFile(this.plugin, folderPath === "" ? fileName : `${folderPath}/${fileName}`);
 
         if (this.editor instanceof Editor) this.insertLink(this.editor, folderPath, fileName, this.linksToInsert);
+    }
+
+    async onCreateAndOpen(folderPath: string, fileName: string) {
+        await this.onCreate(folderPath, fileName);
+        const file = await this.waitForFileToBeIndexed(folderPath + "/" + fileName + ".xopp");
+        if (file) {
+            openXournalppFile(file, this.plugin);
+        } else {
+            console.error("Failed to open the file after creation.");
+            new Notice("Failed to open the file after creation.");
+        }
     }
 
     insertLink(editor: Editor, filePath: string, fileName: string, linksToInsert: string) {
@@ -69,5 +85,16 @@ export default class CreateXoppModalManager {
         if (linksToInsert === "XOPP") finalLink = xoppLink;
 
         editor.replaceRange(finalLink, editor.getCursor());
+    }
+
+    async waitForFileToBeIndexed(path: string, timeout = 5000): Promise<TFile | null> {
+        const interval = 100;
+        const maxAttempts = timeout / interval;
+        for (let attempt = 0; attempt < maxAttempts; attempt++) {
+            const file = this.plugin.app.vault.getFileByPath(path);
+            if (file) return file;
+            await new Promise((resolve) => setTimeout(resolve, interval));
+        }
+        return null;
     }
 }

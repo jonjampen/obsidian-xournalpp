@@ -1,12 +1,17 @@
-.new-file-modal-form {
+.new-xopp-file-modal-form {
     display: flex;
-    justify-content: between;
-    gap: 16px;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.new-xopp-file-modal-form input {
     width: 100%;
 }
 
-.new-file-modal-form input {
-    width: 100%;
+.new-xopp-file-modal-form .button-row {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
 }
 
 .clickable-tag {
