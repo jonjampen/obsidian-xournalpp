@@ -17,7 +17,7 @@ export default class FolderSuggestModal extends FuzzySuggestModal<TFolder> {
 
         this.app.vault.getAllLoadedFiles().forEach((file) => {
             if (file instanceof TFolder) {
-                const normalizedPath = file.path.startsWith("/") ? file.path.slice(0, 1) : file.path;
+                const normalizedPath = file.path.startsWith("/") ? file.path.slice(1) : file.path;
                 if (!folderPaths.has(normalizedPath)) {
                     folders.push(file);
                     folderPaths.add(normalizedPath);

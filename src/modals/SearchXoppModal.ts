@@ -1,6 +1,6 @@
 import XoppPlugin from "main";
 import { App, FuzzySuggestModal, Notice, TFile } from "obsidian";
-import { findCorrespondingXoppToPdf, openXournalppFile } from "src/xoppActions";
+import { openXournalppFile } from "src/xoppActions";
 
 export default class SearchXoppModal extends FuzzySuggestModal<TFile> {
     plugin: XoppPlugin;
@@ -17,7 +17,7 @@ export default class SearchXoppModal extends FuzzySuggestModal<TFile> {
 
         this.app.vault.getAllLoadedFiles().forEach((file) => {
             if (file instanceof TFile && file.extension === "xopp") {
-                const normalizedPath = file.path.startsWith("/") ? file.path.slice(0, 1) : file.path;
+                const normalizedPath = file.path.startsWith("/") ? file.path.slice(1) : file.path;
                 if (!filePaths.has(normalizedPath)) {
                     files.push(file);
                     filePaths.add(normalizedPath);

@@ -55,7 +55,7 @@ export default class CreateXoppModalManager {
 
     async onCreate(folderPath: string, fileName: string) {
         fileName += ".xopp";
-        await createXoppFile(this.plugin, folderPath === "" ? fileName : `${folderPath}/${fileName}`);
+        await createXoppFile(this.plugin, folderPath === "/" ? fileName : `${folderPath}/${fileName}`);
 
         if (this.editor instanceof Editor) this.insertLink(this.editor, folderPath, fileName, this.linksToInsert);
     }
