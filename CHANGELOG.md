@@ -6,8 +6,9 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
+-   Added Quick-Switcher like command to search through all Xournal++ files in the vault and opening them in Xournal++ or their corresponding PDF in Obsidian.
 -   Updating all link references to `.xopp` files and their corresponding `.pdf` file when using the "Rename PDF & Xournal++" feature (closes [#18](https://github.com/jonjampen/obsidian-xournalpp/issues/18)).
--   Added second button in Xournal++ file creation modal to directly open the new file in Xournal++ after creation (closes [#17](https://github.com/jonjampen/obsidian-xournalpp/issues/17))
+-   Added second button in Xournal++ file creation modal to directly open the new file in Xournal++ after creation (closes [#17](https://github.com/jonjampen/obsidian-xournalpp/issues/17)).
 
 ## [v1.1.0] - 2025-04-12
 

@@ -4,6 +4,7 @@ import XoppPlugin from "main";
 import { exportXoppToPDF } from "./xopp2pdf";
 import CreateXoppModalManager from "./CreateXoppModalManager";
 import RenameModal from "./modals/RenameModal";
+import SearchXoppModal from "./modals/SearchXoppModal";
 
 export function createCommands(plugin: XoppPlugin) {
     plugin.addCommand({
@@ -121,6 +122,22 @@ export function createCommands(plugin: XoppPlugin) {
                 deleteXoppAndPdf(plugin, xoppFile, pdfFile);
             }
             return true;
+        },
+    });
+
+    plugin.addCommand({
+        id: "xournalpp-search-and-open",
+        name: "Search and open Xournal++ note",
+        callback: () => {
+            const searchModal = new SearchXoppModal(plugin.app, plugin);
+            searchModal.setPlaceholder("Search for a Xournal++ note");
+            searchModal.setInstructions([
+                { command: "Arrows", purpose: "to navigate" },
+                { command: "Tab", purpose: "to autocomplete" },
+                { command: "Enter", purpose: "to open the corresponding PDF" },
+                { command: "Shift + Enter", purpose: "to open in Xournal++" },
+            ]);
+            searchModal.open();
         },
     });
 }
