@@ -1,4 +1,4 @@
-import { Editor } from "obsidian";
+import { Editor, TFile } from "obsidian";
 import { deleteXoppAndPdf, findCorrespondingXoppToPdf, openXournalppFile, renameXoppFile } from "./xoppActions";
 import XoppPlugin from "main";
 import { exportXoppToPDF } from "./xopp2pdf";
@@ -101,7 +101,8 @@ export function createCommands(plugin: XoppPlugin) {
             if (!xoppFile) return false;
 
             if (!checking) {
-                const renameFile = (fileName: string) => renameXoppFile(plugin, xoppFile, pdfFile, fileName);
+                const renameFile = (fileName: string) =>
+                    renameXoppFile(plugin, xoppFile as TFile, pdfFile as TFile, fileName);
                 new RenameModal(plugin.app, xoppFile.path, renameFile).open();
             }
             return true;
