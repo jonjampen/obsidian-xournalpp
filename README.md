@@ -12,6 +12,7 @@ A seamless integration with [Xournal++](https://xournalpp.github.io). Xournal++ 
 
 ## Usage
 
+> [!IMPORTANT]
 > Be mindful that any PDF files sharing the same name and location as Xournal++ (.xopp) files will be overwritten with the exported version. This ensures seamless integration and consistent file management within Obsidian (regular vault backups are therefore recommended).
 
 1. Ensure you have [Xournal++](https://xournalpp.github.io) installed on your device
