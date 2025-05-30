@@ -37,3 +37,10 @@ export function exportXoppToPDF(plugin: XoppPlugin, filePaths: Array<string>, no
     
     if (notify) new Notice("Exported all Xournal++ notes successfully.")
 }
+
+export function exportAllXoppToPDF(plugin: XoppPlugin) {
+  let files = plugin.app.vault.getFiles();
+  files = files.filter((file) => file.extension === "xopp");
+  let filePaths = files.map((file) => file.path);
+  exportXoppToPDF(plugin, filePaths);
+}
