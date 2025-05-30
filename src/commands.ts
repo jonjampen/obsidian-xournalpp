@@ -1,7 +1,7 @@
 import { Editor, TFile } from "obsidian";
 import { deleteXoppAndPdf, findCorrespondingXoppToPdf, openXournalppFile, renameXoppFile } from "./xoppActions";
 import XoppPlugin from "main";
-import { exportXoppToPDF } from "./xopp2pdf";
+import { exportAllXoppToPDF, exportXoppToPDF } from "./xopp2pdf";
 import CreateXoppModalManager from "./CreateXoppModalManager";
 import RenameModal from "./modals/RenameModal";
 import SearchXoppModal from "./modals/SearchXoppModal";
@@ -66,10 +66,7 @@ export function createCommands(plugin: XoppPlugin) {
         id: "export-xournalpp-to-pdf",
         name: "Export all notes to PDF",
         callback: async () => {
-            let files = plugin.app.vault.getFiles();
-            files = files.filter((file) => file.extension === "xopp");
-            let filePaths = files.map((file) => file.path);
-            exportXoppToPDF(plugin, filePaths);
+            exportAllXoppToPDF(plugin);
         },
     });
 
