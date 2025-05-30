@@ -28,7 +28,7 @@ export class XoppSettingsTab extends PluginSettingTab {
                         this.plugin.settings.autoExport = true;
                         await this.plugin.saveSettings();
                         toggle.setValue(true);
-                        
+                    
                         exportAllXoppToPDF(this.plugin);
                     }, async () => {
                         toggle.setValue(false); 

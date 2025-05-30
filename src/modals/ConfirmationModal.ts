@@ -11,7 +11,17 @@ export default class ConfirmationModal extends Modal {
     }
 
     onOpen() {
+        super.onOpen();
         const { contentEl } = this;
+
+        this.modalEl.focus();
+        this.modalEl.addEventListener("keydown", (event: KeyboardEvent) => {
+            if (event.key === "Escape") {
+                this.onReject();
+                this.close();
+            }
+        });
+
         contentEl.createEl("h2", { text: "Enable Auto Export?" });
         contentEl.createEl("p", {
             text: "Enabling auto export might automatically overwrite any same-named files. Do you want to proceed?",
