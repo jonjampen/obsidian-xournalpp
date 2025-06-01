@@ -24,6 +24,7 @@ export class XoppSettingsTab extends PluginSettingTab {
             .setValue(this.plugin.settings.autoExport)
             .onChange(async (value) => {
                 if (value) {
+                    const initialValue = this.plugin.settings.autoExport;
                     const confirmationModal = new ConfirmationModal(this.app, async () => {
                         this.plugin.settings.autoExport = true;
                         await this.plugin.saveSettings();
@@ -31,8 +32,15 @@ export class XoppSettingsTab extends PluginSettingTab {
                     
                         exportAllXoppToPDF(this.plugin);
                     }, async () => {
+                        this.plugin.settings.autoExport = false;
+                        await this.plugin.saveSettings();
                         toggle.setValue(false); 
-                    });
+                    }, initialValue, toggle);
+                    confirmationModal.onClose = () => {
+                        if (!confirmationModal.confirmed) {
+                            toggle.setValue(false);
+                        }
+                    };
                     confirmationModal.open();
                 } else {
                     this.plugin.settings.autoExport = false;

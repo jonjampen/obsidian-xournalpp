@@ -3,24 +3,21 @@ import { App, Modal } from "obsidian";
 export default class ConfirmationModal extends Modal {
     onConfirm: () => Promise<void>;
     onReject: () => Promise<void>;
+    private initialValue: boolean;
+    private toggle: any;
+    public confirmed: boolean = false;
 
-    constructor(app: App, onConfirm: () => Promise<void>, onReject: () => Promise<void>) { 
+    constructor(app: App, onConfirm: () => Promise<void>, onReject: () => Promise<void>, initialValue: boolean, toggle: any) {
         super(app);
         this.onConfirm = onConfirm;
         this.onReject = onReject;
+        this.initialValue = initialValue;
+        this.toggle = toggle
     }
 
     onOpen() {
         super.onOpen();
         const { contentEl } = this;
-
-        this.modalEl.focus();
-        this.modalEl.addEventListener("keydown", (event: KeyboardEvent) => {
-            if (event.key === "Escape") {
-                this.onReject();
-                this.close();
-            }
-        });
 
         contentEl.createEl("h2", { text: "Enable Auto Export?" });
         contentEl.createEl("p", {
@@ -31,6 +28,7 @@ export default class ConfirmationModal extends Modal {
 
         const confirmButton = buttonContainer.createEl("button", { text: "Yes" });
         confirmButton.addEventListener("click", async () => {
+            this.confirmed = true;
             await this.onConfirm();
             this.close();
         });
@@ -43,6 +41,7 @@ export default class ConfirmationModal extends Modal {
     }
 
     onClose() {
+        super.onClose();
         const { contentEl } = this;
         contentEl.empty();
     }
