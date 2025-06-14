@@ -1,5 +1,7 @@
 import XoppPlugin from "main";
 import { App, Setting, PluginSettingTab } from "obsidian";
+import ConfirmationModal from "./modals/ConfirmationModal";
+import { exportAllXoppToPDF } from "src/xopp2pdf";
 
 export class XoppSettingsTab extends PluginSettingTab {
     plugin: XoppPlugin;
@@ -15,16 +17,38 @@ export class XoppSettingsTab extends PluginSettingTab {
         containerEl.empty();
     
         new Setting(containerEl)
-            .setName("Auto export Xournal++ files")
-            .setDesc("Automatically export Xournal++ files to PDF upon modification.")
-            .addToggle((toggle) => {
-                toggle
-                    .setValue(this.plugin.settings.autoExport)
-                    .onChange(async (value) => {
-                        this.plugin.settings.autoExport = value;
+    .setName("Auto export Xournal++ files")
+    .setDesc("Automatically export Xournal++ files to PDF upon modification.")
+    .addToggle((toggle) => {
+        toggle
+            .setValue(this.plugin.settings.autoExport)
+            .onChange(async (value) => {
+                if (value) {
+                    const initialValue = this.plugin.settings.autoExport;
+                    const confirmationModal = new ConfirmationModal(this.app, async () => {
+                        this.plugin.settings.autoExport = true;
                         await this.plugin.saveSettings();
-                    })
+                        toggle.setValue(true);
+                    
+                        exportAllXoppToPDF(this.plugin);
+                    }, async () => {
+                        this.plugin.settings.autoExport = false;
+                        await this.plugin.saveSettings();
+                        toggle.setValue(false); 
+                    }, initialValue, toggle);
+                    confirmationModal.onClose = () => {
+                        if (!confirmationModal.confirmed) {
+                            toggle.setValue(false);
+                        }
+                    };
+                    confirmationModal.open();
+                } else {
+                    this.plugin.settings.autoExport = false;
+                    await this.plugin.saveSettings();
+                    toggle.setValue(false);
+                }
             });
+    });
 
         new Setting(containerEl)
             .setName("Xournal++ installation path")
@@ -70,3 +94,5 @@ export class XoppSettingsTab extends PluginSettingTab {
     }
   
 }
+
+
