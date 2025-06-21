@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [v1.1.2] - 2025-06-21
+
+### Added
+
+-   Added confirmation modal before enabling the auto-export setting due to potential overwriting.
+
+### Fixed
+
+-   Fixed auto-export to immediately happen after the setting is turned on (fixes [#19](https://github.com/jonjampen/obsidian-xournalpp/issues/19)).
+
 ## [v1.1.1] - 2025-05-16
 
 ### Added
