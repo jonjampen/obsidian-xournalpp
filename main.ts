@@ -10,6 +10,7 @@ interface XoppPluginSettings {
     xournalppPath: string;
     templatePath: string;
     defaultNewFilePath: string;
+    defaultNewFileName: string;
 }
 
 const DEFAULT_SETTINGS: Partial<XoppPluginSettings> = {
@@ -17,6 +18,7 @@ const DEFAULT_SETTINGS: Partial<XoppPluginSettings> = {
     xournalppPath: "",
     templatePath: "",
     defaultNewFilePath: "",
+    defaultNewFileName: "$1",
 };
 
 export default class XoppPlugin extends Plugin {

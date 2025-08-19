@@ -91,6 +91,21 @@ export class XoppSettingsTab extends PluginSettingTab {
                         await this.plugin.saveSettings();
                     });
             });
+
+        new Setting(containerEl)
+            .setName("Default name for new Xournal++ files")
+            .setDesc(
+                "The default name for new Xournal++ files. Use `$1` for current file name."
+            )
+            .addText((toggle) => {
+                toggle
+                    .setValue(this.plugin.settings.defaultNewFileName)
+                    .setPlaceholder("$1")
+                    .onChange(async (value) => {
+                        this.plugin.settings.defaultNewFileName = value;
+                        await this.plugin.saveSettings();
+                    });
+            });
     }
   
 }
