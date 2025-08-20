@@ -34,7 +34,7 @@ const SUBSTITUTIONS: templateSubstitution[] = [
 	{
 		match: /(?<!\$)\$month/g,
 		substitution: (plugin: XoppPlugin): string => {
-			return new Date().getMonth().toString();
+			return (new Date().getMonth() + 1).toString();
 		},
 	},
 	{
