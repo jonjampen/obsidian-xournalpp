@@ -1,5 +1,4 @@
 import XoppPlugin from "main";
-import { App, Plugin } from "obsidian";
 
 interface templateSubstitution {
 	match: RegExp;
