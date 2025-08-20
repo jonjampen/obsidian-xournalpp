@@ -1,4 +1,5 @@
 import { App, ButtonComponent, Editor, Modal, TextComponent } from "obsidian";
+import parseFileName from "./../fileNameParser";
 
 export default class XoppFileNameModal extends Modal {
     plugin: XoppPlugin;
@@ -19,13 +20,7 @@ export default class XoppFileNameModal extends Modal {
         const container = contentEl.createDiv({ cls: "new-xopp-file-modal-form" });
 
         let fileName:String = this.plugin.settings.defaultNewFileName;
-		let currentFile = this.plugin.app.workspace.getActiveFile();
-		let currentFileName = "";
-        if (currentFile) {
-			currentFileName = currentFile.basename;
-		};
-
-		fileName = fileName.replace("\$1",currentFileName);
+		fileName = parseFileName(fileName, this.plugin);
 
         const textComponent = new TextComponent(container).setPlaceholder("Enter a file name").onChange((i) => {
             fileName = i;
