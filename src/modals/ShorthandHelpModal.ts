@@ -12,7 +12,8 @@ export class ShorthandHelpModal extends Modal {
     }
 
     onOpen() {
-        const { contentEl } = this;
+        const { contentEl, modalEl } = this;
+        modalEl.style.width = "1000px";
 
         contentEl.createEl("h2", { text: "Supported Shorthands" });
 
