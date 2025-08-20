@@ -1,15 +1,24 @@
-import { App } from "obsidian";
+import XoppPlugin from "main";
+import { App, Plugin } from "obsidian";
 
 interface templateSubstitution {
 	match: RegExp;
-	substitution: (app: App) => string;
+	substitution: (plugin: XoppPlugin) => string;
 }
 
 const SUBSTITUTIONS: templateSubstitution[] = [
 	{
+		// replace double $ with null byte at start to allow for consecutive $
+		// will be replaced by single $ at end
+		match: /\$\$/g,
+		substitution: (plugin: XoppPlugin): string => {
+			return "\u0000";
+		},
+	},
+	{
 		match: /(?<!\$)\$fname/g,
-		substitution: (app: app): string => {
-			const currentfile = app.workspace.getactivefile();
+		substitution: (plugin: XoppPlugin): string => {
+			const currentfile = plugin.app.workspace.getActiveFile();
 			let currentfilename = "";
 			if (currentfile) {
 				currentfilename = currentfile.basename;
@@ -19,33 +28,36 @@ const SUBSTITUTIONS: templateSubstitution[] = [
 	},
 	{
 		match: /(?<!\$)\$day/g,
-		substitution: (app: app): string => {
+		substitution: (plugin: XoppPlugin): string => {
 			return new Date().getDate().toString();
 		},
 	},
 	{
 		match: /(?<!\$)\$month/g,
-		substitution: (app: app): string => {
+		substitution: (plugin: XoppPlugin): string => {
 			return new Date().getMonth().toString();
 		},
 	},
 	{
 		match: /(?<!\$)\$year/g,
-		substitution: (app: app): string => {
+		substitution: (plugin: XoppPlugin): string => {
 			return new Date().getFullYear().toString();
 		},
 	},
 	{
-		match: /(?<!\$)\$/g,
-		substitution: (app: App): string => {
+		match: /\u0000/g,
+		substitution: (plugin: XoppPlugin): string => {
 			return "$";
 		},
 	},
 ];
 
-export function parseFileName(template: string, app: App): string {
+export default function parseFileName(
+	template: string,
+	plugin: XoppPlugin,
+): string {
 	for (const substitution of SUBSTITUTIONS) {
-		const replacement = substitution.substitution(app);
+		const replacement = substitution.substitution(plugin);
 		template = template.replace(substitution.match, replacement);
 	}
 	return template;
