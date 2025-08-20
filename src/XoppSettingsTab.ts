@@ -95,12 +95,12 @@ export class XoppSettingsTab extends PluginSettingTab {
         new Setting(containerEl)
             .setName("Default name for new Xournal++ files")
             .setDesc(
-                "The default name for new Xournal++ files. Use `$1` for current file name."
+                "The default name for new Xournal++ files. Use `$fname` for currently opned file name."
             )
             .addText((toggle) => {
                 toggle
                     .setValue(this.plugin.settings.defaultNewFileName)
-                    .setPlaceholder("$1")
+                    .setPlaceholder("e.g. $1")
                     .onChange(async (value) => {
                         this.plugin.settings.defaultNewFileName = value;
                         await this.plugin.saveSettings();

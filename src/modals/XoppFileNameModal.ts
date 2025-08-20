@@ -27,7 +27,6 @@ export default class XoppFileNameModal extends Modal {
 
 		fileName = fileName.replace("\$1",currentFileName);
 
-		console.log(fileName);
         const textComponent = new TextComponent(container).setPlaceholder("Enter a file name").onChange((i) => {
             fileName = i;
         });
