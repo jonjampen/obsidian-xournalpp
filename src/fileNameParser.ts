@@ -42,7 +42,11 @@ export interface ParsedFileName {
     cursorIndex?: number;
 }
 
-export default function parseFileName(template: string, plugin: XoppPlugin): ParsedFileName {
+export default function parseFileName(
+    template: string,
+    plugin: XoppPlugin,
+    showCursor: boolean = false
+): ParsedFileName {
     for (const substitution of SUBSTITUTIONS) {
         const replacement = substitution.substitution(plugin);
         template = template.replace(substitution.match, replacement);
@@ -53,7 +57,7 @@ export default function parseFileName(template: string, plugin: XoppPlugin): Par
     const cursorMatch = cursorRegex.exec(template);
     if (cursorMatch) {
         cursorIndex = cursorMatch.index;
-        template = template.replace(cursorRegex, ""); // remove ${cursor}
+        template = template.replace(cursorRegex, showCursor ? "\u275A" : ""); // remove ${cursor}
     }
 
     return { text: template, cursorIndex };

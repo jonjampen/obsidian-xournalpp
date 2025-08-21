@@ -1,5 +1,5 @@
 import XoppPlugin from "main";
-import { App, Setting, PluginSettingTab } from "obsidian";
+import { App, Setting, PluginSettingTab, addIcon, getIcon } from "obsidian";
 import ConfirmationModal from "./modals/ConfirmationModal";
 import { exportAllXoppToPDF } from "src/xopp2pdf";
 import parseFileName from "./fileNameParser";
@@ -109,22 +109,23 @@ export class XoppSettingsTab extends PluginSettingTab {
                         await this.plugin.saveSettings();
 
                         descEl.setText(
-                            `The default name for new Xournal++ files. Example: "${parseFileName(value, this.plugin)}"`
+                            `The default name for new Xournal++ files. Example: "${
+                                parseFileName(value, this.plugin, true).text
+                            }"`
                         );
                     });
             });
 
         const descEl = defaultNameSetting.setDesc(
-            `The default name for new Xournal++ files. Example: "${parseFileName(
-                this.plugin.settings.defaultNewFileName,
-                this.plugin
-            )}"`
+            `The default name for new Xournal++ files. Example: "${
+                parseFileName(this.plugin.settings.defaultNewFileName, this.plugin, true).text
+            }"`
         ).descEl;
 
         const titleEl = defaultNameSetting.nameEl;
-        const helpIcon = titleEl.createEl("span", { text: "❓", cls: "help-icon" });
-        helpIcon.style.cursor = "pointer";
-        helpIcon.style.marginLeft = "5px";
+        const helpIcon = titleEl.createEl("span");
+        helpIcon.appendChild(getIcon("help-circle")!);
+        helpIcon.addClass("xopp-help-icon");
         helpIcon.onclick = () => {
             new ShorthandHelpModal(this.app, shorthands).open();
         };
