@@ -2,6 +2,7 @@ export const shorthands = [
     {
         title: "Custom",
         shorthands: [
+            { shorthand: "cursor", example: "", description: "Places the cursor a this position, only allowed once" },
             { shorthand: "fname", example: "my_filename", description: "Filename of the currently opened file" },
         ],
     },

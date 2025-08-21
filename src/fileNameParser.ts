@@ -37,10 +37,24 @@ const SUBSTITUTIONS: templateSubstitution[] = [
         })),
 ];
 
-export default function parseFileName(template: string, plugin: XoppPlugin): string {
+export interface ParsedFileName {
+    text: string;
+    cursorIndex?: number;
+}
+
+export default function parseFileName(template: string, plugin: XoppPlugin): ParsedFileName {
     for (const substitution of SUBSTITUTIONS) {
         const replacement = substitution.substitution(plugin);
         template = template.replace(substitution.match, replacement);
     }
-    return template;
+
+    let cursorIndex: number | undefined = undefined;
+    const cursorRegex = /(?<!\$)\${cursor}/;
+    const cursorMatch = cursorRegex.exec(template);
+    if (cursorMatch) {
+        cursorIndex = cursorMatch.index;
+        template = template.replace(cursorRegex, ""); // remove ${cursor}
+    }
+
+    return { text: template, cursorIndex };
 }

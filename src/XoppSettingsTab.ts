@@ -103,7 +103,7 @@ export class XoppSettingsTab extends PluginSettingTab {
             .addText((toggle) => {
                 toggle
                     .setValue(this.plugin.settings.defaultNewFileName)
-                    .setPlaceholder("e.g. ${MM}-${DD}")
+                    .setPlaceholder("e.g. ${MM}-${cursor}-note")
                     .onChange(async (value) => {
                         this.plugin.settings.defaultNewFileName = value;
                         await this.plugin.saveSettings();
