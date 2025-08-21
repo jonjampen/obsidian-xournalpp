@@ -4,7 +4,7 @@ import advancedFormat from "dayjs/plugin/advancedFormat";
 import weekOfYear from "dayjs/plugin/weekOfYear";
 import isoWeek from "dayjs/plugin/isoWeek";
 
-import { shorthands } from "./shorthands";
+import { newFilePlaceholders } from "./newFilePlaceholders";
 
 interface templateSubstitution {
     match: RegExp;
@@ -23,16 +23,16 @@ const SUBSTITUTIONS: templateSubstitution[] = [
             return currentfilename;
         },
     },
-    ...shorthands
+    ...newFilePlaceholders
         .find((group) => group.title === "Date & Time")!
-        .shorthands.map((s) => ({
-            match: new RegExp(`(?<!\\$)\\$\\{${s.shorthand}\\}`, "g"),
+        .placeholders.map((p) => ({
+            match: new RegExp(`(?<!\\$)\\$\\{${p.pattern}\\}`, "g"),
             substitution: () => {
                 dayjs.extend(advancedFormat);
                 dayjs.extend(weekOfYear);
                 dayjs.extend(isoWeek);
 
-                return dayjs().format(s.shorthand);
+                return dayjs().format(p.pattern);
             },
         })),
 ];

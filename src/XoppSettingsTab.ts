@@ -3,8 +3,8 @@ import { App, Setting, PluginSettingTab, addIcon, getIcon } from "obsidian";
 import ConfirmationModal from "./modals/ConfirmationModal";
 import { exportAllXoppToPDF } from "src/xopp2pdf";
 import parseFileName from "./fileNameParser";
-import { shorthands } from "./shorthands";
-import { ShorthandHelpModal } from "./modals/ShorthandHelpModal";
+import { newFilePlaceholders } from "./newFilePlaceholders";
+import { NewFilePlacholderHelpModal } from "./modals/NewFilePlacholderHelpModal";
 
 export class XoppSettingsTab extends PluginSettingTab {
     plugin: XoppPlugin;
@@ -98,6 +98,8 @@ export class XoppSettingsTab extends PluginSettingTab {
             });
 
         // Default Name
+        let defaultNameDesc =
+            "The default name for new Xournal++ files. Use placeholders `${}` to insert dynamic values. Preview: ";
         let defaultNameSetting = new Setting(containerEl)
             .setName("Default name for new Xournal++ files")
             .addText((toggle) => {
@@ -108,18 +110,12 @@ export class XoppSettingsTab extends PluginSettingTab {
                         this.plugin.settings.defaultNewFileName = value;
                         await this.plugin.saveSettings();
 
-                        descEl.setText(
-                            `The default name for new Xournal++ files. Example: "${
-                                parseFileName(value, this.plugin, true).text
-                            }"`
-                        );
+                        descEl.setText(defaultNameDesc + parseFileName(value, this.plugin, true).text);
                     });
             });
 
         const descEl = defaultNameSetting.setDesc(
-            `The default name for new Xournal++ files. Example: "${
-                parseFileName(this.plugin.settings.defaultNewFileName, this.plugin, true).text
-            }"`
+            defaultNameDesc + parseFileName(this.plugin.settings.defaultNewFileName, this.plugin, true).text
         ).descEl;
 
         const titleEl = defaultNameSetting.nameEl;
@@ -127,7 +123,7 @@ export class XoppSettingsTab extends PluginSettingTab {
         helpIcon.appendChild(getIcon("help-circle")!);
         helpIcon.addClass("xopp-help-icon");
         helpIcon.onclick = () => {
-            new ShorthandHelpModal(this.app, shorthands).open();
+            new NewFilePlacholderHelpModal(this.app, newFilePlaceholders).open();
         };
     }
 }
