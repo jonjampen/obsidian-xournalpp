@@ -2,6 +2,8 @@ import XoppPlugin from "main";
 import { App, Setting, PluginSettingTab, TFile } from "obsidian";
 import ConfirmationModal from "./modals/ConfirmationModal";
 import { exportAllXoppToPDF } from "src/xopp2pdf";
+import TemplateCreationModal from "src/modals/TemplateCreationModal";
+import TemplateEditingModal from "./modals/TemplateEditingModal";
 
 export class XoppSettingsTab extends PluginSettingTab {
 	plugin: XoppPlugin;
@@ -15,18 +17,6 @@ export class XoppSettingsTab extends PluginSettingTab {
 		const { containerEl } = this;
 
 		containerEl.empty();
-
-		const templatesFolder = this.plugin.settings.templatesFolder?.trim();
-		let templateFiles: TFile[] = [];
-		if (templatesFolder) {
-			templateFiles = this.app.vault
-				.getFiles()
-				.filter(
-					(f: TFile) =>
-						f.path.startsWith(templatesFolder + "/") &&
-						f.extension === "xopp"
-				);
-		}
 
 		new Setting(containerEl)
 			.setName("Auto export Xournal++ files")
@@ -116,6 +106,19 @@ export class XoppSettingsTab extends PluginSettingTab {
 				"The default template to use when creating new Xournal++ files from the templates folder."
 			)
 			.addDropdown((dropdown) => {
+				const templatesFolder =
+					this.plugin.settings.templatesFolder?.trim();
+				let templateFiles: TFile[] = [];
+				if (templatesFolder) {
+					templateFiles = this.app.vault
+						.getFiles()
+						.filter(
+							(f: TFile) =>
+								f.path.startsWith(templatesFolder + "/") &&
+								f.extension === "xopp"
+						);
+				}
+
 				if (templateFiles.length === 0) {
 					dropdown.addOption("", "No templates found");
 				} else {
@@ -131,6 +134,33 @@ export class XoppSettingsTab extends PluginSettingTab {
 					});
 			});
 
+		new Setting(containerEl)
+			.setName("Create a new Xournal++ template")
+			.setDesc(
+				"Create a new Xournal++ template file in the templates folder."
+			)
+			.addButton((button) => {
+				button
+					.setButtonText("Create Template")
+					.setCta()
+					.onClick(async () => {
+						new TemplateCreationModal(
+							this.app,
+							this.plugin,
+							async (createdPath) => {
+								if (!this.plugin.settings.defaultTemplatePath) {
+									this.plugin.settings.defaultTemplatePath =
+										createdPath;
+								}
+
+								await this.plugin.saveSettings();
+								this.display();
+							}
+						).open();
+					});
+			});
+
+		
 		new Setting(containerEl)
 			.setName("Default path for new Xournal++ files")
 			.setDesc(

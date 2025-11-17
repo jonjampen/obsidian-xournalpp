@@ -1,5 +1,6 @@
 import XoppPlugin from "main";
 import { App, ButtonComponent, Modal, Notice, Setting } from "obsidian";
+import { writeTemplateFile } from "src/TemplateCreationModalManager";
 
 type TemplateBackgroundStyle =
 	| "plain"
@@ -11,7 +12,7 @@ type TemplateBackgroundStyle =
 	| "isodotted"
 	| "isograph";
 
-interface TemplateSpec {
+export interface TemplateSpec {
 	name: string;
 	pageSizePreset:
 		| "A3"
@@ -27,8 +28,6 @@ interface TemplateSpec {
 	orientation: "portrait" | "landscape";
 	backgroundStyle: TemplateBackgroundStyle;
 	backgroundColor: string;
-	// spacingMm?: number;
-	// marginMm?: number;
 }
 
 export default class TemplateCreationModal extends Modal {
@@ -45,6 +44,34 @@ export default class TemplateCreationModal extends Modal {
 		this.onCreated = onCreated;
 	}
 
+	createTemplate = async (spec: TemplateSpec) => {
+		try {
+			if (!spec.name) {
+				new Notice("Please enter a template name");
+				return;
+			}
+
+			const folder =
+				this.plugin.settings.templatesFolder?.trim() ||
+				"XournalTemplates";
+
+			if (!this.plugin.settings.templatesFolder) {
+				this.plugin.settings.templatesFolder = folder;
+				await this.plugin.saveSettings();
+			}
+
+			const vaultPath = await writeTemplateFile(this.app, folder, spec);
+
+			new Notice(`Xournal++ template created: ${vaultPath}`);
+
+			this.onCreated(vaultPath);
+			this.close();
+		} catch (e) {
+			console.error(e);
+			new Notice("Failed to create template: " + e.message);
+		}
+	};
+
 	onOpen() {
 		const { contentEl } = this;
 		contentEl.empty();
@@ -56,8 +83,6 @@ export default class TemplateCreationModal extends Modal {
 			orientation: "portrait",
 			backgroundStyle: "plain",
 			backgroundColor: "#ffffff",
-			spacingMm: 8,
-			marginMm: 20,
 		};
 
 		new Setting(contentEl)
@@ -106,7 +131,7 @@ export default class TemplateCreationModal extends Modal {
 					.addOption("staves", "Staves")
 					.addOption("graph", "Graph")
 					.addOption("dotted", "Dotted")
-					.addOption("Isodotted", "Isometric dotted")
+					.addOption("isodotted", "Isometric dotted")
 					.addOption("isograph", "Isometric graph")
 					.onChange((value) => {
 						spec.backgroundStyle =
@@ -130,48 +155,26 @@ export default class TemplateCreationModal extends Modal {
 		new ButtonComponent(buttonRow)
 			.setButtonText("Create")
 			.setCta()
-			.onClick(async () => {
-				try {
-					if (!spec.name) {
-						new Notice("Please enter a template name");
-						return;
-					}
-
-					const folder =
-						this.plugin.settings.templatesFolder?.trim() ||
-						"XournalTemplates";
-
-                        if (!this.plugin.settings.templatesFolder) {
-						this.plugin.settings.templatesFolder = folder;
-						await this.plugin.saveSettings();
-					}
-
-					const vaultPath = writeTemplateFile(
-						this.app,
-						folder,
-						spec
-					);
-					new Notice(`Xournal++ template created: ${vaultPath}`);
-
-					this.onCreated(vaultPath);
-					this.close();
-				} catch (e: any) {
-					console.error(e);
-					new Notice("Failed to create template: " + e.message);
-				}
-			});
+			.onClick(async () => this.createTemplate(spec));
 
 		new ButtonComponent(buttonRow)
 			.setButtonText("Cancel")
 			.onClick(() => this.close());
+
+		this.modalEl.addEventListener("keydown", (e) => {
+			if (e.key === "Escape") {
+				e.preventDefault();
+				e.stopPropagation();
+
+				if (!e.shiftKey) {
+					this.createTemplate(spec);
+				}
+			}
+		});
 	}
 
 	onClose() {
 		const { contentEl } = this;
 		contentEl.empty();
 	}
-}
-
-function writeTemplateFile(app: App, folder: any, spec: TemplateSpec) {
-	throw new Error("Function not implemented.");
 }
