@@ -119,6 +119,15 @@ export class ParsedTemplateEditing extends Modal {
 				});
 		});
 
+		new Setting(contentEl)
+			.setName("Compress as gzipped .xopp")
+			.setDesc("Whether to gzip compress the template file")
+			.addToggle((toggle) =>
+				toggle.setValue(!!spec.gzip).onChange((value) => {
+					spec.gzip = value;
+				})
+			);
+
 		const buttonRow = contentEl.createDiv({
 			cls: "xopp-creation-editing-template-button-row",
 		});

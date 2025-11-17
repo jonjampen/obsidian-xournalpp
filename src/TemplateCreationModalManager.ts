@@ -1,6 +1,7 @@
 import XoppPlugin from "main";
 import { App, normalizePath, Notice } from "obsidian";
 import type { TemplateSpec } from "src/modals/TemplateCreationModal";
+import * as pako from "pako";
 
 const MM_TO_PT = 72 / 25.4;
 
@@ -103,7 +104,18 @@ export async function writeTemplateFile(
 	}
 
 	const xml = buildTemplateXML(spec);
-	await app.vault.adapter.write(vaultPath, xml);
+
+	if(spec.gzip) {
+		const gzipped = pako.gzip(xml);
+		const arrayBuffer = gzipped.buffer.slice(
+			gzipped.byteOffset,
+			gzipped.byteOffset + gzipped.byteLength
+		);
+		await app.vault.adapter.writeBinary(vaultPath, arrayBuffer);
+	} else {
+		await app.vault.adapter.write(vaultPath, xml);
+	}
+
 	return vaultPath;
 }
 
@@ -116,11 +128,9 @@ export async function createTemplate(
 		throw new Error("Missing template name");
 	}
 
-	// use the same key as in settings: templatesFolderPath
 	const folder =
 		plugin.settings.templatesFolder?.trim() || "XournalTemplates";
 
-	// if folder not set yet, initialize it
 	if (!plugin.settings.templatesFolder) {
 		plugin.settings.templatesFolder = folder;
 		await plugin.saveSettings();

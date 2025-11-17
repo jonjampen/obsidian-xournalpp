@@ -28,6 +28,7 @@ export interface TemplateSpec {
 	orientation: "portrait" | "landscape";
 	backgroundStyle: TemplateBackgroundStyle;
 	backgroundColor: string;
+	gzip? : boolean;
 }
 
 export default class TemplateCreationModal extends Modal {
@@ -55,6 +56,7 @@ export default class TemplateCreationModal extends Modal {
 			orientation: "portrait",
 			backgroundStyle: "plain",
 			backgroundColor: "#ffffff",
+			gzip: false,
 		};
 
 		const doCreate = async () => {
@@ -127,6 +129,15 @@ export default class TemplateCreationModal extends Modal {
 			.addText((text) =>
 				text.setValue("#ffffff").onChange((value) => {
 					spec.backgroundColor = value.trim();
+				})
+			);
+
+		new Setting(contentEl)
+			.setName("Compress as gzipped .xopp")
+			.setDesc("Whether to gzip compress the template file")
+			.addToggle((toggle) =>
+				toggle.setValue(!!spec.gzip).onChange((value) => {
+					spec.gzip = value;
 				})
 			);
 

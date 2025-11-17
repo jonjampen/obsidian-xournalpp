@@ -3,10 +3,27 @@ import { ParsedTemplateEditing } from "./modals/TemplateEditingModal";
 import { PAGE_PRESETS } from "./TemplateCreationModalManager";
 import { TemplateBackgroundStyle, TemplateSpec } from "./modals/TemplateCreationModal";
 import XoppPlugin from "main";
+import * as pako from "pako";
 
 type PagePresetName = keyof typeof PAGE_PRESETS;
 
 const PT_TO_MM = 25.4 / 72;
+
+async function readXoppXml (plugin: XoppPlugin, file: TFile): Promise<{ xml: string; isGzipped: boolean }> {
+    const buffer = await plugin.app.vault.adapter.readBinary(file.path);
+    const bytes = buffer instanceof Uint8Array ? buffer : new Uint8Array(buffer);
+
+    const isGzipped = bytes.length >= 2 && bytes[0] === 0x1f && bytes[1] === 0x8b;
+
+    if (isGzipped) {
+        const xmlBytes = pako.ungzip(bytes);
+        const xml = new TextDecoder("utf-8").decode(xmlBytes);
+        return { xml, isGzipped: true };
+    } else {
+        const xml = new TextDecoder("utf-8").decode(bytes);
+        return { xml, isGzipped: false };
+    }
+}
 
 function detectPageSizePreset(widthPt: number, heightPt: number) : {
     preset: PagePresetName | "Custom";
@@ -110,9 +127,10 @@ export async function parseTemplateFile(
         return;
     }
 
-    const content = await plugin.app.vault.read(file);
+    const { xml, isGzipped } = await readXoppXml(plugin, file);
 
-    const spec: TemplateSpec = parseXoppTemplateSpec(content, file.name);
+    const spec: TemplateSpec = parseXoppTemplateSpec(xml, file.name);
+    spec.gzip = isGzipped;
 
     new ParsedTemplateEditing(plugin.app, plugin, spec, onFinished).open();
 }
