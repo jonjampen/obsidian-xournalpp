@@ -1,80 +1,67 @@
 import XoppPlugin from "main";
 import { App, ButtonComponent, Modal, Setting } from "obsidian";
+import {
+	parseTemplateFile,
+	fetchTemplates,
+} from "src/TemplateEditingModalManager";
+import { TemplateSpec } from "./TemplateCreationModal";
 import { createTemplate } from "src/TemplateCreationModalManager";
 
-export type TemplateBackgroundStyle =
-	| "plain"
-	| "lined"
-	| "ruled"
-	| "staves"
-	| "graph"
-	| "dotted"
-	| "isodotted"
-	| "isograph";
-
-export interface TemplateSpec {
-	name: string;
-	pageSizePreset:
-		| "A3"
-		| "A4"
-		| "A5"
-		| "US Letter"
-		| "US Legal"
-		| "16x9"
-		| "4x3"
-		| "Custom";
-	customWidthMm?: number;
-	customHeightMm?: number;
-	orientation: "portrait" | "landscape";
-	backgroundStyle: TemplateBackgroundStyle;
-	backgroundColor: string;
-}
-
-export default class TemplateCreationModal extends Modal {
+export default class TemplateEditingModal extends Modal {
 	plugin: XoppPlugin;
-	onCreated: (vaultPath: string) => void;
 
-	constructor(
-		app: App,
-		plugin: XoppPlugin,
-		onCreated: (vaultPath: string) => void
-	) {
+	constructor(app: App, plugin: XoppPlugin) {
 		super(app);
 		this.plugin = plugin;
-		this.onCreated = onCreated;
 	}
 
 	onOpen() {
 		const { contentEl } = this;
 		contentEl.empty();
-		contentEl.createEl("h3", { text: "Create Xournal++ template" });
-
-		const spec: TemplateSpec = {
-			name: "",
-			pageSizePreset: "A4",
-			orientation: "portrait",
-			backgroundStyle: "plain",
-			backgroundColor: "#ffffff",
-		};
-
-		const doCreate = async () => {
-			try {
-				const vaultPath = await createTemplate(this.plugin, spec);
-				this.onCreated(vaultPath);
-				this.close();
-			} catch (e) {
-				console.error(e);
-			}
-		};
+		contentEl.createEl("h3", { text: "Edit Xournal++ templates" });
 
 		new Setting(contentEl)
-			.setName("Template Name")
-			.setDesc("Name of the new template file")
-			.addText((text) =>
-				text.onChange((value) => {
-					spec.name = value.trim();
-				})
-			);
+			.setName("Choose a template")
+			.addDropdown(async (dropdown) => {
+				const templates = await fetchTemplates(this.plugin);
+
+				if (templates.length === 0) {
+					dropdown.addOption("", "No templates found");
+				} else {
+					templates.forEach((template) => {
+						dropdown.addOption(template.path, template.name);
+					});
+				}
+
+                dropdown.setValue("");
+
+				dropdown.onChange(async (value) => {
+					await parseTemplateFile(this.plugin, value, () => { this.close()});
+				});
+			});
+	}
+}
+
+export class ParsedTemplateEditing extends Modal {
+	plugin: XoppPlugin;
+	initialSpec: TemplateSpec;
+    onFinished: () => void;
+
+	constructor(app: App, plugin: XoppPlugin, templateSpec: TemplateSpec, onFinished: () => void) {
+		super(app);
+		this.plugin = plugin;
+		this.initialSpec = templateSpec;
+        this.onFinished = onFinished;
+	}
+
+	onOpen() {
+		const { contentEl } = this;
+		contentEl.empty();
+		contentEl.createEl("h3", {
+			text: `Editing template: ${this.initialSpec.name}`,
+		});
+
+		const spec: TemplateSpec = { ...this.initialSpec };
 
 		new Setting(contentEl).setName("Page Size").addDropdown((dropdown) => {
 			dropdown
@@ -86,6 +73,7 @@ export default class TemplateCreationModal extends Modal {
 				.addOption("16x9", "16x9")
 				.addOption("4x3", "4x3")
 				.addOption("Custom", "Custom")
+				.setValue(this.initialSpec.pageSizePreset)
 				.onChange((value) => {
 					spec.pageSizePreset =
 						value as TemplateSpec["pageSizePreset"];
@@ -98,6 +86,7 @@ export default class TemplateCreationModal extends Modal {
 				dropdown
 					.addOption("portrait", "Portrait")
 					.addOption("landscape", "Landscape")
+					.setValue(this.initialSpec.orientation)
 					.onChange((value) => {
 						spec.orientation = value as TemplateSpec["orientation"];
 					});
@@ -115,31 +104,32 @@ export default class TemplateCreationModal extends Modal {
 					.addOption("dotted", "Dotted")
 					.addOption("isodotted", "Isometric dotted")
 					.addOption("isograph", "Isometric graph")
+					.setValue(this.initialSpec.backgroundStyle)
 					.onChange((value) => {
 						spec.backgroundStyle =
 							value as TemplateSpec["backgroundStyle"];
 					});
 			});
 
-		new Setting(contentEl)
-			.setName("Background Color")
-			.setDesc("Hex color, e.g. #ffffff")
-			.addText((text) =>
-				text.setValue("#ffffff").onChange((value) => {
+		new Setting(contentEl).setName("Background color").addText((text) => {
+			text.setPlaceholder("#ffffffff")
+				.setValue(spec.backgroundColor || "")
+				.onChange((value) => {
 					spec.backgroundColor = value.trim();
-				})
-			);
+				});
+		});
 
 		const buttonRow = contentEl.createDiv({
 			cls: "xopp-creation-editing-template-button-row",
 		});
 
 		new ButtonComponent(buttonRow)
-			.setButtonText("Create")
+			.setButtonText("Confirm Edits")
 			.setCta()
 			.onClick(async () => {
-				doCreate();
+				await createTemplate(this.plugin, spec);
 				this.close();
+                this.onFinished();
 			});
 
 		new ButtonComponent(buttonRow)
@@ -152,15 +142,11 @@ export default class TemplateCreationModal extends Modal {
 				e.stopPropagation();
 
 				if (!e.shiftKey) {
-					doCreate();
-					this.close();
+					createTemplate(this.plugin, spec);
+                    this.close();
+                    this.onFinished();
 				}
 			}
 		});
-	}
-
-	onClose() {
-		const { contentEl } = this;
-		contentEl.empty();
 	}
 }

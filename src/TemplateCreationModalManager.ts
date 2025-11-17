@@ -1,4 +1,5 @@
-import { App, normalizePath } from "obsidian";
+import XoppPlugin from "main";
+import { App, normalizePath, Notice } from "obsidian";
 import type { TemplateSpec } from "src/modals/TemplateCreationModal";
 
 const MM_TO_PT = 72 / 25.4;
@@ -25,7 +26,7 @@ function getPageSizeToPt(spec: TemplateSpec): {
 			widthMm = spec.customWidthMm;
 			heightMm = spec.customHeightMm;
 		} else {
-            const fallback = PAGE_PRESETS.A4;
+			const fallback = PAGE_PRESETS.A4;
 			widthMm = fallback.widthMm;
 			heightMm = fallback.heightMm;
 		}
@@ -46,21 +47,23 @@ function getPageSizeToPt(spec: TemplateSpec): {
 }
 
 function normalizeColor(raw: string | undefined | null): string {
-  if (!raw) return "#000000ff";
+	if (!raw) return "#000000ff";
 
-  let c = raw.trim();
-  if (!c.startsWith("#")) c = "#" + c;
+	let c = raw.trim();
+	if (!c.startsWith("#")) c = "#" + c;
 
-  if (c.length === 4) {
-    const r = c[1], g = c[2], b = c[3];
-    c = `#${r}${r}${g}${g}${b}${b}`;
-  }
+	if (c.length === 4) {
+		const r = c[1],
+			g = c[2],
+			b = c[3];
+		c = `#${r}${r}${g}${g}${b}${b}`;
+	}
 
-  if (c.length === 7) {
-    c = c + "ff";
-  }
+	if (c.length === 7) {
+		c = c + "ff";
+	}
 
-  return c;
+	return c;
 }
 
 function buildBackgroundTag(spec: TemplateSpec): string {
@@ -101,5 +104,31 @@ export async function writeTemplateFile(
 
 	const xml = buildTemplateXML(spec);
 	await app.vault.adapter.write(vaultPath, xml);
+	return vaultPath;
+}
+
+export async function createTemplate(
+	plugin: XoppPlugin,
+	spec: TemplateSpec
+): Promise<string> {
+	if (!spec.name) {
+		new Notice("Please enter a template name");
+		throw new Error("Missing template name");
+	}
+
+	// use the same key as in settings: templatesFolderPath
+	const folder =
+		plugin.settings.templatesFolder?.trim() || "XournalTemplates";
+
+	// if folder not set yet, initialize it
+	if (!plugin.settings.templatesFolder) {
+		plugin.settings.templatesFolder = folder;
+		await plugin.saveSettings();
+	}
+
+	const vaultPath = await writeTemplateFile(plugin.app, folder, spec);
+
+	new Notice(`Xournal++ template created: ${vaultPath}`);
+
 	return vaultPath;
 }

@@ -160,6 +160,17 @@ export class XoppSettingsTab extends PluginSettingTab {
 					});
 			});
 
+		new Setting(containerEl)
+			.setName("Edit existing Xournal++ templates")
+			.setDesc("A GUI to edit or delete existing Xournal++ templates.")
+			.addButton((button) => {
+				button
+					.setButtonText("Manage Templates")
+					.setCta()
+					.onClick(async () => {
+						new TemplateEditingModal(this.app, this.plugin).open();
+					});
+			});
 		
 		new Setting(containerEl)
 			.setName("Default path for new Xournal++ files")
