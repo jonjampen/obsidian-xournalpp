@@ -1,22 +1,22 @@
 import XoppPlugin from "main";
-import { TFile, Notice, App, DataAdapter, Vault, FileSystemAdapter } from "obsidian";
+import { TFile, Notice, DataAdapter, FileSystemAdapter } from "obsidian";
 import { base64Template } from "./template";
 import { checkXoppSetup } from "./checks";
 import { exec } from "child_process";
 
 export async function openXournalppFile(xoppFile: TFile, plugin: XoppPlugin): Promise<void> {
-    let path = await checkXoppSetup(plugin);
+    const path = await checkXoppSetup(plugin);
 
-    let fs = plugin.app.vault.adapter;
+    const fs = plugin.app.vault.adapter;
     if (fs instanceof FileSystemAdapter) {
-        let vaultPath = fs.getBasePath();
+        const vaultPath = fs.getBasePath();
 
         if (!path || path === "error") {
             new Notice("Error: Xournal++ path not setup correctly. Please check docs on how to set it up.", 10000);
             return;
         }
 
-        let command = `${path} "${vaultPath + "/" + xoppFile.path}"`;
+        const command = `${path} "${vaultPath + "/" + xoppFile.path}"`;
         new Notice("Opening file in Xournal++");
         exec(command, (error) => {
             if (error) {
@@ -30,13 +30,13 @@ export async function openXournalppFile(xoppFile: TFile, plugin: XoppPlugin): Pr
     }
 }
 
-export async function createXoppFile(plugin: XoppPlugin, newNoteName: string) {
-    let newNotePath = newNoteName.startsWith("/") ? newNoteName.slice(1) : newNoteName;
+export async function createXoppFile(plugin: XoppPlugin, newNoteName: string, selectedTemplatePath?: string) {
+    const newNotePath = newNoteName.startsWith("/") ? newNoteName.slice(1) : newNoteName;
 
     const fs = plugin.app.vault.adapter;
 
     try {
-        const templatePath = await getTemplateFilePath(plugin, fs);
+        const templatePath = selectedTemplatePath || (await getTemplateFilePath(plugin, fs));
         await fs.copy(templatePath, newNotePath);
         new Notice("Xournal++ note created");
     } catch (e) {
@@ -45,8 +45,8 @@ export async function createXoppFile(plugin: XoppPlugin, newNoteName: string) {
 }
 
 export function findCorrespondingXoppToPdf(pdfFilePath: string, plugin: XoppPlugin): TFile | undefined {
-    let xoppFilePath = pdfFilePath?.replace(".pdf", ".xopp");
-    let xoppFilename = xoppFilePath.substring(xoppFilePath.lastIndexOf("/") + 1);
+    const xoppFilePath = pdfFilePath?.replace(".pdf", ".xopp");
+    const xoppFilename = xoppFilePath.substring(xoppFilePath.lastIndexOf("/") + 1);
     const pdfFile = plugin.app.vault.getFileByPath(pdfFilePath);
 
     // set parent folder or root vault folder
@@ -57,7 +57,7 @@ export function findCorrespondingXoppToPdf(pdfFilePath: string, plugin: XoppPlug
 }
 
 export async function getTemplateFilePath(plugin: XoppPlugin, fs: DataAdapter): Promise<string> {
-    const userTemplatePath = plugin.settings.templatePath;
+    const userTemplatePath = plugin.settings.defaultTemplatePath;
     if (userTemplatePath) {
         if (!(await fs.exists(userTemplatePath))) throw new Error("Could not find the given template file.");
         return userTemplatePath;
@@ -76,8 +76,8 @@ export async function getTemplateFilePath(plugin: XoppPlugin, fs: DataAdapter): 
 
 export async function createTemplate(plugin: XoppPlugin, path: string) {
     // base64 to Uint8Array
-    let binaryString: string = atob(base64Template);
-    let bytes = new Uint8Array(binaryString.length);
+    const binaryString: string = atob(base64Template);
+    const bytes = new Uint8Array(binaryString.length);
     for (let i = 0; i < binaryString.length; i++) {
         bytes[i] = binaryString.charCodeAt(i);
     }
@@ -86,9 +86,9 @@ export async function createTemplate(plugin: XoppPlugin, path: string) {
 }
 
 export function renameXoppFile(plugin: XoppPlugin, xoppFile: TFile, pdfFile: TFile, fileName: string) {
-    let filePath = xoppFile.path.split("/");
+    const filePath = xoppFile.path.split("/");
     filePath.pop();
-    let newPath = filePath?.join("/") + "/" + fileName;
+    const newPath = filePath?.join("/") + "/" + fileName;
     plugin.app.fileManager.renameFile(xoppFile, newPath + ".xopp");
     plugin.app.fileManager.renameFile(pdfFile, newPath + ".pdf");
 }
