@@ -56,7 +56,6 @@ export default class XoppFileNameModal extends Modal {
 				selectedTemplatePath = value;
 			});
 
-        console.log(this.templates);
 		this.templates.forEach((t) => dropdown.addOption(t.path, t.name));
 
 		dropdown.setValue("");

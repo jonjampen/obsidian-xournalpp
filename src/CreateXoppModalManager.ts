@@ -12,13 +12,7 @@ export default class CreateXoppModalManager {
     linksToInsert: string;
     openAfterCreate = false;
 
-    constructor(
-        app: App,
-        plugin: XoppPlugin,
-        filePath = "",
-        editor: Editor | null = null,
-        linksToInsert = ""
-    ) {
+    constructor(app: App, plugin: XoppPlugin, filePath = "", editor: Editor | null = null, linksToInsert = "") {
         this.app = app;
         this.plugin = plugin;
         this.filePath = filePath;
@@ -30,7 +24,6 @@ export default class CreateXoppModalManager {
 
     createModals() {
         const templatesFolder = this.plugin.settings.templatesFolder?.trim();
-        console.log("Templates folder:", templatesFolder);
         let templates: { path: string; name: string }[] = [];
 
         if (templatesFolder) {
@@ -41,7 +34,6 @@ export default class CreateXoppModalManager {
             templates = templateFiles.map((file) => ({ path: file.path, name: file.name.replace(/\.xopp$/, "") }));
         }
 
-        console.log("Available templates:", templates);
         const onCloseFolderModal = (folderPath: string) =>
             new XoppFileNameModal(
                 this.plugin.app,
@@ -72,10 +64,10 @@ export default class CreateXoppModalManager {
         fileName += ".xopp";
 
         const newNotePath = folderPath === "/" ? fileName : `${folderPath}/${fileName}`;
-        const selectedTemplatePath = 
-            templatePath && templatePath.length > 0 
-            ? templatePath 
-            : this.plugin.settings.defaultTemplatePath || undefined;
+        const selectedTemplatePath =
+            templatePath && templatePath.length > 0
+                ? templatePath
+                : this.plugin.settings.defaultTemplatePath || undefined;
 
         await createXoppFile(this.plugin, newNotePath, selectedTemplatePath);
 
