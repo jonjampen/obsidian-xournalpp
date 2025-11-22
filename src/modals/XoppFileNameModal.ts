@@ -56,7 +56,6 @@ export default class XoppFileNameModal extends Modal {
 				selectedTemplatePath = value;
 			});
 
-        console.log(this.templates);
 		this.templates.forEach((t) => dropdown.addOption(t.path, t.name));
 
 		dropdown.setValue("");
@@ -73,6 +72,8 @@ export default class XoppFileNameModal extends Modal {
 			});
 
 		textComponent.inputEl.focus();
+		// Using a timeout to ensure the focus is set after the modal is fully rendered.
+		setTimeout(() => textComponent.inputEl.focus(), 0);
 
 		textComponent.inputEl.addEventListener("keypress", (e) => {
 			if (e.key === "Enter") {
