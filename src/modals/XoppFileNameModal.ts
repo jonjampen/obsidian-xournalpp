@@ -71,6 +71,7 @@ export default class XoppFileNameModal extends Modal {
 				fileName = i;
 			});
 
+		textComponent.inputEl.focus();
 		// Using a timeout to ensure the focus is set after the modal is fully rendered.
 		setTimeout(() => textComponent.inputEl.focus(), 0);
 
