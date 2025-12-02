@@ -4,7 +4,7 @@ import {
 	parseTemplateFile,
 	fetchTemplates,
 } from "src/TemplateEditingModalManager";
-import { TemplateSpec } from "./TemplateCreationModal";
+import { TemplateSpec } from "src/types";
 import { createTemplate } from "src/TemplateCreationModalManager";
 
 export default class TemplateEditingModal extends Modal {

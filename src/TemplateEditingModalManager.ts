@@ -1,13 +1,11 @@
 import { Notice, TFile, TFolder } from "obsidian";
 import { ParsedTemplateEditing } from "./modals/TemplateEditingModal";
 import { PAGE_PRESETS } from "src/types";
-import { TemplateBackgroundStyle, TemplateSpec } from "src/types";
+import { TemplateBackgroundStyle, TemplateSpec, PT_TO_MM } from "src/types";
 import XoppPlugin from "main";
 import * as pako from "pako";
 
 type PagePresetName = keyof typeof PAGE_PRESETS;
-
-const PT_TO_MM = 25.4 / 72;
 
 async function readXoppXml (plugin: XoppPlugin, file: TFile): Promise<{ xml: string; isGzipped: boolean }> {
     const buffer = await plugin.app.vault.adapter.readBinary(file.path);

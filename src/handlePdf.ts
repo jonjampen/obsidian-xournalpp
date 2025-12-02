@@ -1,6 +1,6 @@
 import {App, TFile} from "obsidian";
 import {PDFDocument} from "pdf-lib";
-import {PDFSpec} from "src/types";
+import {PDFSpec, PT_TO_MM} from "src/types";
 
 export async function getPageCount(file: TFile, app: App): Promise<number> {
     const arrayBuffer = await app.vault.readBinary(file);
@@ -15,8 +15,13 @@ export async function getFirstPagePdfDimensions(
 	const arrayBuffer = await app.vault.readBinary(file);
 	const pdfDoc = await PDFDocument.load(arrayBuffer);
 	const page = pdfDoc.getPage(0);
+	
 	const { width, height } = page.getSize();
-	return { width, height };
+
+	const widthMm = width * PT_TO_MM;
+	const heightMm = height * PT_TO_MM;
+
+	return { width: widthMm, height: heightMm };
 }
 
 export async function getPDFSpec(file: TFile, app: App): Promise<PDFSpec> {

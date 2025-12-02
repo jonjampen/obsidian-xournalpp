@@ -37,6 +37,8 @@ export interface TemplateSpec {
     pdfPage?: number;
 }
 
+export const PT_TO_MM = 25.4 / 72;
+
 export const MM_TO_PT = 72 / 25.4;
 
 export const PAGE_PRESETS = {
