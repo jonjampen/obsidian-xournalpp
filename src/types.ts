@@ -50,3 +50,5 @@ export const PAGE_PRESETS = {
 	"16x9": { widthMm: 180, heightMm: 320 },
 	"4x3": { widthMm: 240, heightMm: 320 },
 };
+
+export type PagePresetName = keyof typeof PAGE_PRESETS;

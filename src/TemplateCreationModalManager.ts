@@ -4,6 +4,7 @@ import {MM_TO_PT, PAGE_PRESETS, TemplateSpec} from "src/types";
 import * as pako from "pako";
 import {getPageCount} from "src/handlePdf";
 
+// Escape special XML characters in a string so it can be safely embedded in xopp XML.
 function escapeXml(s: string): string {
     return s
         .replace(/&/g, "&amp;")
@@ -13,6 +14,7 @@ function escapeXml(s: string): string {
         .replace(/'/g, "&apos;");
 }
 
+// Compute page width/height in points from TemplateSpec (using preset or custom size plus orientation).
 function getPageSizeToPt(spec: TemplateSpec): {
 	widthPt: number;
 	heightPt: number;
@@ -45,6 +47,7 @@ function getPageSizeToPt(spec: TemplateSpec): {
 	};
 }
 
+// Normalize a color string to #RRGGBBAA format (defaulting to opaque black).
 function normalizeColor(raw: string | undefined | null): string {
 	if (!raw) return "#000000ff";
 
@@ -65,6 +68,7 @@ function normalizeColor(raw: string | undefined | null): string {
 	return c;
 }
 
+// Build the <background> XML tag for non-PDF backgrounds based on TemplateSpec.
 function buildBackgroundTag(spec: TemplateSpec): string {
     const color = normalizeColor(spec.backgroundColor || "#FFFFFF");
 
@@ -89,6 +93,7 @@ function buildBackgroundTag(spec: TemplateSpec): string {
     return `<background type="solid" color="${color}" style="${style}"/>`;
 }
 
+// Build the full xopp XML document string from the given TemplateSpec (PDF or non-PDF background).
 function buildTemplateXML(spec: TemplateSpec): string {
     const { widthPt, heightPt } = getPageSizeToPt(spec);
 
@@ -126,6 +131,7 @@ ${pageElements}
 </xournal>`;
 }
 
+// Write the generated xopp XML (optionally gzipped) to the vault and return its vault path.
 export async function writeTemplateFile(
 	app: App,
 	folder: string,
@@ -157,6 +163,7 @@ export async function writeTemplateFile(
 	return vaultPath;
 }
 
+// High-level helper: validate spec, pick templates folder, write the xopp file and show a notification.
 export async function createTemplate(
 	plugin: XoppPlugin,
 	spec: TemplateSpec
@@ -181,6 +188,7 @@ export async function createTemplate(
 	return vaultPath;
 }
 
+// Create an annotation .xopp file alongside a given PDF, using a PDF background for all pages.
 export async function createAnnotationFromPdf(
     plugin: XoppPlugin,
     pdfFile: TFile
@@ -191,6 +199,7 @@ export async function createAnnotationFromPdf(
     const xoppFileName = baseName + "-annotated";
     const xoppVaultPath = pdfPath.replace(/\.pdf$/i, "-annotated.xopp");
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const adapter: any = plugin.app.vault.adapter;
     const absPdfPath: string =
         typeof adapter.getFullPath === "function"

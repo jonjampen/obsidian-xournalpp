@@ -138,6 +138,8 @@ export default class TemplateCreationModal extends Modal {
 		let pdfVaultFileText: TextComponent;
 		let useAbsolutePath = true;
 
+		// Show or hide settings depending on current background style and page size 
+		// (e.g. hide color when PDF is selected, show Custom size fields only for "Custom").
 		const refreshBackgroundSectionVisibility = () => {
 			const isPdf = spec.backgroundStyle === "pdf";
 			const customDimensions = spec.pageSizePreset === "Custom";
@@ -331,6 +333,7 @@ export default class TemplateCreationModal extends Modal {
 	}
 }
 
+// Open a FuzzySuggestModal listing all PDF files in the vault and resolve with the chosen TFile
 function openFuzzySuggestionModal(app: App): Promise<TFile | null> {
 	return new Promise((resolve) => {
 		class PdfFileSuggestModal extends FuzzySuggestModal<TFile> {

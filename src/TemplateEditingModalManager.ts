@@ -1,12 +1,11 @@
 import { Notice, TFile, TFolder } from "obsidian";
 import { ParsedTemplateEditing } from "./modals/TemplateEditingModal";
 import { PAGE_PRESETS } from "src/types";
-import { TemplateBackgroundStyle, TemplateSpec, PT_TO_MM } from "src/types";
+import { TemplateBackgroundStyle, TemplateSpec, PT_TO_MM, PagePresetName } from "src/types";
 import XoppPlugin from "main";
 import * as pako from "pako";
 
-type PagePresetName = keyof typeof PAGE_PRESETS;
-
+// Read a .xopp template file from the vault, detect if it is gzipped and return the XML string plus gzip flag.
 async function readXoppXml (plugin: XoppPlugin, file: TFile): Promise<{ xml: string; isGzipped: boolean }> {
     const buffer = await plugin.app.vault.adapter.readBinary(file.path);
     const bytes = buffer instanceof Uint8Array ? buffer : new Uint8Array(buffer);
@@ -23,6 +22,8 @@ async function readXoppXml (plugin: XoppPlugin, file: TFile): Promise<{ xml: str
     }
 }
 
+// Convert a page size in points to millimeters, detect the closest PAGE_PRESETS entry or "Custom"
+// return preset name, dimensions in mm and orientation.
 function detectPageSizePreset(widthPt: number, heightPt: number) : {
     preset: PagePresetName | "Custom";
     widthMm: number;
@@ -55,6 +56,7 @@ function detectPageSizePreset(widthPt: number, heightPt: number) : {
     return { preset: "Custom", widthMm, heightMm, orientation };
 }
 
+// Parse a <background> element from xopp XML and map it to TemplateBackgroundStyle and color.
 function parseBackground(el: Element): {
     backgroundStyle: TemplateBackgroundStyle;
     backgroundColor: string;
@@ -73,6 +75,7 @@ function parseBackground(el: Element): {
     };
 }
 
+// Parse the xopp XML into a TemplateSpec: page size, orientation and background settings (and custom dimensions when needed).
 function parseXoppTemplateSpec(xml: string, fileName: string): TemplateSpec {
     const parser = new DOMParser();
     const doc = parser.parseFromString(xml, "application/xml");
@@ -113,6 +116,8 @@ function parseXoppTemplateSpec(xml: string, fileName: string): TemplateSpec {
     return spec; 
 }
 
+// High-level helper: read a .xopp file, parse it into a TemplateSpec using parseXoppTemplateSpec()
+// and open the TemplateEditingModal with that spec.
 export async function parseTemplateFile(
     plugin: XoppPlugin,
     templatePath: string,
@@ -133,6 +138,7 @@ export async function parseTemplateFile(
     new ParsedTemplateEditing(plugin.app, plugin, spec, onFinished).open();
 }
 
+// Find all .xopp template files in the configured templates folder and return them as TFile[].
 export async function fetchTemplates(plugin: XoppPlugin): Promise<TFile[]> {
     const folderPath = plugin.settings.templatesFolder?.trim();
     if (!folderPath) {
