@@ -1,7 +1,7 @@
 import { Notice, TFile, TFolder } from "obsidian";
 import { ParsedTemplateEditing } from "./modals/TemplateEditingModal";
-import { PAGE_PRESETS } from "./TemplateCreationModalManager";
-import { TemplateBackgroundStyle, TemplateSpec } from "./modals/TemplateCreationModal";
+import { PAGE_PRESETS } from "src/types";
+import { TemplateBackgroundStyle, TemplateSpec } from "src/types";
 import XoppPlugin from "main";
 import * as pako from "pako";
 

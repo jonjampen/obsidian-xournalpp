@@ -4,13 +4,15 @@ import CreateXoppModalManager from "./CreateXoppModalManager";
 import XoppPlugin from "main";
 import { exportXoppToPDF } from "./xopp2pdf";
 import RenameModal from "./modals/RenameModal";
+import { createAnnotationFromPdf } from "./TemplateCreationModalManager";
 
 export function addXournalppOptionsToFileMenu(menu: Menu, file: TFile | TFolder, plugin: XoppPlugin) {
     if (file instanceof TFile) {
         if (file.extension === "xopp") {
             addOpenInXournalppMenu(menu, file, plugin);
         } else if (file.extension === "pdf") {
-            let xoppFile = findCorrespondingXoppToPdf(file.path, plugin);
+			addAnnotatePdfInXournalppMenu(menu, plugin, file);
+            const xoppFile = findCorrespondingXoppToPdf(file.path, plugin);
             if (xoppFile) {
                 addOpenInXournalppMenu(menu, xoppFile, plugin);
                 addXournalppRenameMenu(menu, file, xoppFile, plugin);
@@ -18,11 +20,23 @@ export function addXournalppOptionsToFileMenu(menu: Menu, file: TFile | TFolder,
                 removeDeleteRenameMenuItem();
             }
         }
-    } else if (file instanceof TFolder) {
-        if (file?.children) {
-            addCreateXournalppMenu(menu, file, plugin);
-        }
-    }
+    } else {
+		if (file?.children) {
+			addCreateXournalppMenu(menu, file, plugin);
+		}
+	}
+}
+
+
+function addAnnotatePdfInXournalppMenu(menu: Menu, plugin: XoppPlugin, file: TFile) {
+	menu.addItem((item) => {
+    item
+        .setTitle("Annotate in Xournal++")
+        .setIcon("pen-tool")
+        .onClick(async () => {
+            const xoppPath = await createAnnotationFromPdf(plugin, file);
+        });
+});
 }
 
 function addOpenInXournalppMenu(menu: Menu, xoppFile: TFile, plugin: XoppPlugin) {

@@ -23,6 +23,7 @@
         "typescript": "4.7.4"
     },
     "dependencies": {
-        "pako": "^2.1.0"
+        "pako": "^2.1.0",
+        "pdf-lib": "^1.17.1"
     }
 }
