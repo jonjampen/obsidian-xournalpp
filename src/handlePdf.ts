@@ -8,7 +8,7 @@ export async function getPageCount(file: TFile, app: App): Promise<number> {
 	return pdfDoc.getPageCount();
 }
 
-async function getFirstPagePdfDimensions(
+export async function getFirstPagePdfDimensions(
 	file: TFile,
 	app: App
 ): Promise<{ width: number; height: number }> {

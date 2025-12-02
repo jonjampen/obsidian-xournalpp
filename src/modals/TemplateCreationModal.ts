@@ -1,6 +1,7 @@
 import XoppPlugin from "main";
-import { App, ButtonComponent, FuzzySuggestModal, Modal, Setting, TFile, TextComponent } from "obsidian";
+import { App, ButtonComponent, FuzzySuggestModal, Modal, Setting, TFile, TextComponent, FileSystemAdapter, DropdownComponent } from "obsidian";
 import { createTemplate } from "src/TemplateCreationModalManager";
+import { getFirstPagePdfDimensions } from "src/handlePdf";
 import { TemplateSpec } from "../types";
 
 export default class TemplateCreationModal extends Modal {
@@ -35,6 +36,7 @@ export default class TemplateCreationModal extends Modal {
 
 		const doCreate = async () => {
 			try {
+				console.log("Creating template with spec:", spec);
 				const vaultPath = await createTemplate(this.plugin, spec);
 				this.onCreated(vaultPath);
 				this.close();
@@ -52,7 +54,11 @@ export default class TemplateCreationModal extends Modal {
 				})
 			);
 
+		let pageSizeDropdown: DropdownComponent;
+
 		new Setting(contentEl).setName("Page Size").addDropdown((dropdown) => {
+			pageSizeDropdown = dropdown;
+
 			dropdown
 				.addOption("A3", "A3")
 				.addOption("A4", "A4")
@@ -62,18 +68,21 @@ export default class TemplateCreationModal extends Modal {
 				.addOption("16x9", "16x9")
 				.addOption("4x3", "4x3")
 				.addOption("Custom", "Custom")
+				.setValue(spec.pageSizePreset)
 				.onChange((value) => {
-					spec.pageSizePreset =
-						value as TemplateSpec["pageSizePreset"];
+					spec.pageSizePreset = value as TemplateSpec["pageSizePreset"];
 					refreshBackgroundSectionVisibility();
 				});
 		});
 
 		let customPageDimensions: Setting;
+		let customWidthText: TextComponent;
+		let customHeightText: TextComponent;
 
 		customPageDimensions = new Setting(contentEl)
 			.setName("Custom Page Dimensions (in mm)")
-			.addText((text) =>
+			.addText((text) => {
+				customWidthText = text;
 				text
 					.setPlaceholder("Width")
 					.setValue(
@@ -81,9 +90,10 @@ export default class TemplateCreationModal extends Modal {
 					)
 					.onChange((value) => {
 						spec.customWidthMm = Number(value.trim());
-					})
-			)
-			.addText((text) =>
+					});
+			})
+			.addText((text) => {
+				customHeightText = text;
 				text
 					.setPlaceholder("Height")
 					.setValue(
@@ -91,8 +101,8 @@ export default class TemplateCreationModal extends Modal {
 					)
 					.onChange((value) => {
 						spec.customHeightMm = Number(value.trim());
-					})
-			);
+					});
+			});
 
 		new Setting(contentEl)
 			.setName("Orientation")
@@ -109,6 +119,7 @@ export default class TemplateCreationModal extends Modal {
 		let pdfSourceSetting: Setting;
 		let pdfAbsolutePathSetting: Setting;
 		let pdfVaultFileSetting: Setting;
+		let pdfAbsolutePathText: TextComponent;
 		let pdfVaultFileText: TextComponent;
 		let useAbsolutePath = true;
 
@@ -148,8 +159,17 @@ export default class TemplateCreationModal extends Modal {
 					.addOption("pdf", "PDF")
 					.setValue(spec.backgroundStyle)
 					.onChange((value) => {
-						spec.backgroundStyle =
-							value as TemplateSpec["backgroundStyle"];
+						const style = value as TemplateSpec["backgroundStyle"];
+						spec.backgroundStyle = style;
+
+						if (style === "pdf") {
+							// Force page size to Custom when PDF background is chosen
+							spec.pageSizePreset = "Custom";
+							if (pageSizeDropdown) {
+								pageSizeDropdown.setValue("Custom");
+							}
+						}
+
 						refreshBackgroundSectionVisibility();
 					});
 			});
@@ -180,15 +200,16 @@ export default class TemplateCreationModal extends Modal {
 		pdfAbsolutePathSetting = new Setting(contentEl)
 			.setName("Absolute Path")
 			.setDesc("Enter the absolute path to the PDF file")
-			.addText((text) =>
+			.addText((text) => {
+				pdfAbsolutePathText = text;
 				text
 					.setPlaceholder("/path/to/file.pdf")
 					.setValue(spec.pdfPathAbs ?? "")
 					.onChange((value) => {
 						const v = value.trim();
 						spec.pdfPathAbs = v || undefined;
-					})
-			);
+					});
+			});
 
 		pdfVaultFileSetting = new Setting(contentEl)
 			.setName("Vault File")
@@ -208,11 +229,48 @@ export default class TemplateCreationModal extends Modal {
 					.setButtonText("Choose File")
 					.onClick(async () => {
 						const file = await openFuzzySuggestionModal(this.app);
+						console.log("Selected file:", file);
 						if (file) {
-							spec.pdfPathAbs = file.path;
-							if (pdfVaultFileText) {
-								pdfVaultFileText.setValue(file.path);
+							console.log("file initiated")
+							const vaultPath = file.path;
+							let absPath = vaultPath;
+							const adapter = this.app.vault.adapter;
+							if (adapter instanceof FileSystemAdapter) {
+								absPath = adapter.getFullPath(vaultPath);
 							}
+							console.log("Absolute path:", absPath);
+							// Use absolute path for the handler:
+							spec.pdfPathAbs = absPath;
+							// Show vault-relative path in the "Vault File" textbox:
+							if (pdfVaultFileText) {
+								pdfVaultFileText.setValue(vaultPath);
+							}
+							// Show absolute path in the "Absolute Path" textbox:
+							if (pdfAbsolutePathText) {
+								pdfAbsolutePathText.setValue(absPath);
+							}
+
+
+								const { width, height } = await getFirstPagePdfDimensions(file, this.app);
+
+								console.log("PDF first page dimensions (mm):", width, height);
+
+								spec.customWidthMm = width;
+								spec.customHeightMm = height;
+
+								if (customWidthText) {
+									customWidthText.setValue(String(width));
+								}
+								if (customHeightText) {
+									customHeightText.setValue(String(height));
+								}
+
+								// // Force Page Size to "Custom" and refresh visibility
+								// spec.pageSizePreset = "Custom";
+								// if (pageSizeDropdown) {
+								// 	pageSizeDropdown.setValue("Custom");
+								// }
+								refreshBackgroundSectionVisibility();
 						}
 					})
 			);
@@ -265,8 +323,6 @@ export default class TemplateCreationModal extends Modal {
 
 function openFuzzySuggestionModal(app: App): Promise<TFile | null> {
 	return new Promise((resolve) => {
-		let resolved = false;
-
 		class PdfFileSuggestModal extends FuzzySuggestModal<TFile> {
 			private pdfFiles: TFile[];
 
@@ -287,17 +343,12 @@ function openFuzzySuggestionModal(app: App): Promise<TFile | null> {
 			}
 
 			onChooseItem(file: TFile): void {
-				if (!resolved) {
-					resolved = true;
-					resolve(file);
-				}
+				console.log("Chosen file:", file);
+				resolve(file);
+				this.close();
 			}
 
 			onClose(): void {
-				if (!resolved) {
-					resolved = true;
-					resolve(null);
-				}
 				super.onClose();
 			}
 		}
