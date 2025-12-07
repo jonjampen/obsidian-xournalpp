@@ -1,0 +1,103 @@
+.heroBanner {
+  padding: 4rem 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.container {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.loading {
+  text-align: center;
+  font-size: 1.2rem;
+  padding: 2rem;
+  color: var(--ifm-color-emphasis-600);
+}
+
+.installCard {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.installCard:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--ifm-global-shadow-md);
+  border-color: var(--ifm-color-primary);
+}
+
+
+
+/* Card content layout */
+.cardBody {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.releaseTitle {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  color: var(--ifm-color-emphasis-600);
+  margin-bottom: 0.5rem;
+}
+
+.versionNumber {
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--ifm-color-primary);
+  margin-bottom: 0.25rem;
+}
+
+.releaseDate {
+  font-size: 0.9rem;
+  color: var(--ifm-color-emphasis-500);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.releaseDescription {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--ifm-color-content);
+  margin-bottom: 1.5rem;
+}
+
+.buttonGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.buttonRow {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.buttonRow > * {
+  flex: 1;
+}
+
+/* Override Docusaurus margin utility if needed, or just rely on gap */
+.buttonGroup :global(.button),
+.buttonRow :global(.button) {
+  margin-top: 0 !important;
+}
+
+/* Stack buttons on small screens */
+@media (max-width: 576px) {
+  .buttonRow {
+    flex-direction: column;
+  }
+}
