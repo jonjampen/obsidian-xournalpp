@@ -1,0 +1,189 @@
+/* Custom Styles for Homepage using Obsidian purple colors */
+
+.heroBanner {
+    position: relative;
+    padding: 7rem 0 6rem;
+    text-align: center;
+    background:
+        radial-gradient(circle at 80% 20%, rgba(120, 82, 238, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 20% 80%, rgba(120, 82, 238, 0.03) 0%, transparent 50%);
+    overflow: hidden;
+    border-bottom: 1px solid rgba(120, 82, 238, 0.1);
+}
+
+[data-theme="dark"] .heroBanner {
+    background:
+        radial-gradient(circle at 80% 20%, rgba(168, 130, 255, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 20% 80%, rgba(168, 130, 255, 0.08) 0%, transparent 50%), #0f172a;
+}
+
+.heroTitle {
+    font-size: 3.5rem;
+    font-weight: 800;
+    line-height: 1.15;
+    background: linear-gradient(135deg, #7852ee, #643ae7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.02em;
+}
+
+[data-theme="dark"] .heroTitle {
+    background: linear-gradient(135deg, #a882ff, #cbb4ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.heroTagline {
+    font-size: 1.35rem;
+    max-width: 750px;
+    margin: 0 auto 2.5rem;
+    color: var(--ifm-color-emphasis-700);
+    line-height: 1.6;
+}
+
+.buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+}
+
+.primaryButton {
+    background: linear-gradient(135deg, #7852ee, #643ae7);
+    color: white !important;
+    border: none;
+    padding: 0.8rem 2rem;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 12px rgba(120, 82, 238, 0.2);
+}
+
+[data-theme="dark"] .primaryButton {
+    background: linear-gradient(135deg, #a882ff, #7e4afe);
+    box-shadow: 0 4px 12px rgba(168, 130, 255, 0.25);
+}
+
+.primaryButton:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(120, 82, 238, 0.35);
+    opacity: 0.95;
+}
+
+[data-theme="dark"] .primaryButton:hover {
+    box-shadow: 0 6px 20px rgba(168, 130, 255, 0.4);
+}
+
+.secondaryButton {
+    background: rgba(120, 82, 238, 0.08);
+    color: #7852ee !important;
+    border: 1px solid rgba(120, 82, 238, 0.2);
+    padding: 0.8rem 2rem;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: all 0.25s ease;
+}
+
+[data-theme="dark"] .secondaryButton {
+    background: rgba(168, 130, 255, 0.15);
+    color: #decfff !important;
+    border: 1px solid rgba(168, 130, 255, 0.3);
+}
+
+.secondaryButton:hover {
+    background: rgba(120, 82, 238, 0.15);
+    transform: translateY(-2px);
+}
+
+/* Features Section */
+.featuresSection {
+    padding: 5rem 0;
+    background: transparent;
+}
+
+.featuresGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+@media screen and (max-width: 768px) {
+    .featuresGrid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+}
+
+.featureCard {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 16px;
+    padding: 2.25rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+[data-theme="dark"] .featureCard {
+    background: #1e293b;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+.featureCard:hover {
+    transform: translateY(-5px);
+    border-color: rgba(120, 82, 238, 0.3);
+    box-shadow: 0 10px 25px rgba(120, 82, 238, 0.1);
+}
+
+[data-theme="dark"] .featureCard:hover {
+    border-color: rgba(168, 130, 255, 0.4);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.featureIconWrapper {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: rgba(120, 82, 238, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    color: #7852ee;
+    transition: all 0.3s ease;
+}
+
+[data-theme="dark"] .featureIconWrapper {
+    background: rgba(168, 130, 255, 0.2);
+    color: #bc9eff;
+}
+
+.featureCard:hover .featureIconWrapper {
+    background: #7852ee;
+    color: white;
+}
+
+[data-theme="dark"] .featureCard:hover .featureIconWrapper {
+    background: #a882ff;
+    color: white;
+}
+
+.featureTitle {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    color: var(--ifm-color-emphasis-900);
+}
+
+.featureDesc {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--ifm-color-emphasis-600);
+}

@@ -1,0 +1,198 @@
+/**
+ * Custom CSS for Obsidian Xournal++ Docusaurus Theme
+ * Designed for rich aesthetics, glassmorphism, and Obsidian-like dark mode.
+ */
+
+/* Import Outfit or Inter for premium modern typography */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800;900&display=swap");
+
+:root {
+    /* Colors - Obsidian Official Purple (#7852ee) */
+    --ifm-color-primary: #7852ee;
+    --ifm-color-primary-dark: #643ae7;
+    --ifm-color-primary-darker: #5224e2;
+    --ifm-color-primary-darkest: #411ad4;
+    --ifm-color-primary-light: #906efa;
+    --ifm-color-primary-lighter: #a890fc;
+    --ifm-color-primary-lightest: #c3b4fd;
+
+    /* Fonts & Spacing */
+    --ifm-font-family-base:
+        "Outfit", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    --ifm-font-family-monospace: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    --ifm-code-font-size: 90%;
+    --ifm-heading-font-weight: 700;
+
+    /* Border Radii */
+    --ifm-global-radius: 12px;
+
+    /* Light Mode Backgrounds */
+    --ifm-background-color: #fafafa;
+    --ifm-background-surface-color: #ffffff;
+    --ifm-navbar-background-color: rgba(255, 255, 255, 0.8);
+    --ifm-toc-border-color: rgba(0, 0, 0, 0.06);
+    --ifm-hover-overlay: rgba(120, 82, 238, 0.05);
+
+    --docusaurus-highlighted-code-line-bg: rgba(120, 82, 238, 0.1);
+}
+
+[data-theme="dark"] {
+    /* Colors - Obsidian Official Dark Accent (#a882ff) */
+    --ifm-color-primary: #a882ff;
+    --ifm-color-primary-dark: #9365fe;
+    --ifm-color-primary-darker: #7e4afe;
+    --ifm-color-primary-darkest: #6b2cfd;
+    --ifm-color-primary-light: #bc9eff;
+    --ifm-color-primary-lighter: #cbb4ff;
+    --ifm-color-primary-lightest: #decfff;
+
+    /* Dark Mode Backgrounds - Obsidian Slate Theme */
+    --ifm-background-color: #0f172a; /* Slate 900 */
+    --ifm-background-surface-color: #1e293b; /* Slate 800 */
+    --ifm-navbar-background-color: rgba(15, 23, 42, 0.8);
+    --ifm-toc-border-color: rgba(255, 255, 255, 0.06);
+    --ifm-hover-overlay: rgba(167, 139, 250, 0.08);
+
+    --docusaurus-highlighted-code-line-bg: rgba(167, 139, 250, 0.15);
+}
+
+/* Glassmorphic Navigation Bar */
+.navbar {
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--ifm-toc-border-color);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
+    transition: all 0.3s ease;
+}
+
+[data-theme="dark"] .navbar {
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+}
+
+.navbar__title {
+    font-family: "Outfit", sans-serif;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--ifm-color-primary), var(--ifm-color-primary-light));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.01em;
+}
+
+/* Scrollbar Customization */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(120, 82, 238, 0.15);
+    border-radius: 99px;
+    transition: all 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(120, 82, 238, 0.35);
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+    background: rgba(168, 130, 255, 0.15);
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+    background: rgba(168, 130, 255, 0.35);
+}
+
+/* Sidebar Custom Styling */
+.menu__link {
+    font-weight: 500;
+    border-radius: 8px;
+    margin: 2px 0;
+    padding: 0.5rem 0.85rem;
+    transition: all 0.2s ease;
+}
+
+.menu__link:hover {
+    background-color: var(--ifm-hover-overlay);
+    color: var(--ifm-color-primary);
+    transform: translateX(2px);
+}
+
+.menu__link--active {
+    background-color: rgba(120, 82, 238, 0.1) !important;
+    color: var(--ifm-color-primary) !important;
+    font-weight: 600;
+}
+
+[data-theme="dark"] .menu__link--active {
+    background-color: rgba(168, 130, 255, 0.15) !important;
+    color: var(--ifm-color-primary) !important;
+}
+
+/* Markdown Documentation Pages Styling */
+.markdown {
+    font-size: 1.05rem;
+    line-height: 1.75;
+}
+
+.markdown h1,
+.markdown h2,
+.markdown h3 {
+    font-family: "Outfit", sans-serif;
+    letter-spacing: -0.01em;
+}
+
+.markdown h1 {
+    font-weight: 800;
+    font-size: 2.25rem;
+}
+
+.markdown h2 {
+    font-weight: 700;
+    border-bottom: 1px solid var(--ifm-toc-border-color);
+    padding-bottom: 0.5rem;
+    margin-top: 2.5rem;
+}
+
+/* Custom Admonitions styling */
+.alert {
+    border-radius: 12px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.01);
+    padding: 1.25rem;
+}
+
+[data-theme="dark"] .alert {
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* Pill / Inline Code Blocks */
+code {
+    font-family: var(--ifm-font-family-monospace);
+    background-color: rgba(120, 82, 238, 0.06);
+    border: 1px solid rgba(120, 82, 238, 0.12);
+    color: var(--ifm-color-primary);
+    border-radius: 6px;
+    padding: 0.2rem 0.4rem;
+    transition: all 0.2s ease;
+}
+
+[data-theme="dark"] code {
+    background-color: rgba(168, 130, 255, 0.08);
+    border: 1px solid rgba(168, 130, 255, 0.15);
+    color: var(--ifm-color-primary);
+}
+
+/* Footer Glassmorphism and Styling */
+.footer {
+    border-top: 1px solid var(--ifm-toc-border-color);
+    background-color: #0f172a;
+}
+
+[data-theme="dark"] .footer {
+    background-color: #020617; /* Deepest blue/black */
+}

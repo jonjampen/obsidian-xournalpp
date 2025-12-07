@@ -3,7 +3,7 @@ import typescriptParser from "@typescript-eslint/parser";
 
 export default [
     {
-        ignores: ["node_modules/", "main.js", "esbuild.config.mjs", "version-bump.mjs", "tests/mocks/"],
+        ignores: ["node_modules/", "main.js", "esbuild.config.mjs", "version-bump.mjs", "tests/mocks/", "docs/**"],
     },
     {
         files: ["src/**/*.ts", "tests/**/*.ts"],

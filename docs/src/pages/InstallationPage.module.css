@@ -1,0 +1,277 @@
+/* Redesigned Installation Page Styles */
+
+.heroBanner {
+    position: relative;
+    padding: 5rem 0 4rem;
+    text-align: center;
+    background:
+        radial-gradient(circle at 80% 20%, rgba(120, 82, 238, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 20% 80%, rgba(120, 82, 238, 0.03) 0%, transparent 50%);
+    overflow: hidden;
+    border-bottom: 1px solid rgba(120, 82, 238, 0.1);
+}
+
+[data-theme="dark"] .heroBanner {
+    background:
+        radial-gradient(circle at 80% 20%, rgba(168, 130, 255, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 20% 80%, rgba(168, 130, 255, 0.08) 0%, transparent 50%), #0f172a;
+}
+
+.heroTitle {
+    font-size: 3rem;
+    font-weight: 800;
+    line-height: 1.15;
+    background: linear-gradient(135deg, #7852ee, #643ae7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+}
+
+[data-theme="dark"] .heroTitle {
+    background: linear-gradient(135deg, #a882ff, #cbb4ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.heroSubtitle {
+    font-size: 1.2rem;
+    max-width: 600px;
+    margin: 0 auto;
+    color: var(--ifm-color-emphasis-700);
+}
+
+.container {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.loading {
+    text-align: center;
+    font-size: 1.2rem;
+    padding: 4rem;
+    color: var(--ifm-color-emphasis-600);
+}
+
+/* Card Styling */
+.installGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+}
+
+@media screen and (max-width: 768px) {
+    .installGrid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+}
+
+.installCard {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 20px;
+    padding: 2.5rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+[data-theme="dark"] .installCard {
+    background: #1e293b;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.25);
+}
+
+.installCard::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, #7852ee, #643ae7);
+}
+
+[data-theme="dark"] .installCard::before {
+    background: linear-gradient(90deg, #a882ff, #7e4afe);
+}
+
+.betaCard::before {
+    background: linear-gradient(90deg, #f59e0b, #d97706);
+}
+
+.installCard:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 30px rgba(120, 82, 238, 0.08);
+}
+
+[data-theme="dark"] .installCard:hover {
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.35);
+}
+
+.releaseTitle {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 800;
+    color: var(--ifm-color-emphasis-500);
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.versionNumber {
+    font-size: 2.25rem;
+    font-weight: 900;
+    color: var(--ifm-color-emphasis-900);
+    margin-bottom: 0.25rem;
+    letter-spacing: -0.01em;
+}
+
+.releaseDate {
+    font-size: 0.85rem;
+    color: var(--ifm-color-emphasis-500);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.releaseDate svg {
+    color: var(--ifm-color-primary);
+}
+
+.releaseDescription {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--ifm-color-emphasis-700);
+    margin-bottom: 2rem;
+    flex-grow: 1;
+}
+
+.buttonGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.buttonRow {
+    display: flex;
+    gap: 12px;
+}
+
+.buttonRow > * {
+    flex: 1;
+}
+
+@media (max-width: 576px) {
+    .buttonRow {
+        flex-direction: column;
+    }
+}
+
+.btnPrimary {
+    background: linear-gradient(135deg, #7852ee, #643ae7);
+    color: white !important;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 12px;
+    font-weight: 600;
+    text-align: center;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 10px rgba(120, 82, 238, 0.15);
+}
+
+[data-theme="dark"] .btnPrimary {
+    background: linear-gradient(135deg, #a882ff, #7e4afe);
+    box-shadow: 0 4px 10px rgba(168, 130, 255, 0.2);
+}
+
+.btnPrimary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(120, 82, 238, 0.25);
+    opacity: 0.95;
+    text-decoration: none;
+}
+
+[data-theme="dark"] .btnPrimary:hover {
+    box-shadow: 0 6px 15px rgba(168, 130, 255, 0.3);
+}
+
+.btnSecondary {
+    background: rgba(120, 82, 238, 0.06);
+    color: #7852ee !important;
+    border: 1px solid rgba(120, 82, 238, 0.15);
+    padding: 0.75rem 1.5rem;
+    border-radius: 12px;
+    font-weight: 600;
+    text-align: center;
+    transition: all 0.2s ease;
+}
+
+[data-theme="dark"] .btnSecondary {
+    background: rgba(168, 130, 255, 0.12);
+    color: #decfff !important;
+    border: 1px solid rgba(168, 130, 255, 0.25);
+}
+
+.btnSecondary:hover {
+    background: rgba(120, 82, 238, 0.12);
+    transform: translateY(-2px);
+    text-decoration: none;
+}
+
+.btnLink {
+    color: var(--ifm-color-emphasis-600) !important;
+    font-weight: 500;
+    text-align: center;
+    font-size: 0.9rem;
+    padding: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.btnLink:hover {
+    color: var(--ifm-color-primary) !important;
+    text-decoration: none;
+}
+
+.badgeBeta {
+    background: rgba(245, 158, 11, 0.1);
+    color: #d97706;
+    border: 1px solid rgba(245, 158, 11, 0.2);
+    padding: 0.2rem 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 800;
+    border-radius: 6px;
+    text-transform: uppercase;
+}
+
+[data-theme="dark"] .badgeBeta {
+    background: rgba(245, 158, 11, 0.15);
+    color: #fbbf24;
+    border-color: rgba(245, 158, 11, 0.3);
+}
+
+.badgeStable {
+    background: rgba(16, 185, 129, 0.1);
+    color: #059669;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    padding: 0.2rem 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 800;
+    border-radius: 6px;
+    text-transform: uppercase;
+}
+
+[data-theme="dark"] .badgeStable {
+    background: rgba(16, 185, 129, 0.15);
+    color: #34d399;
+    border-color: rgba(16, 185, 129, 0.3);
+}
