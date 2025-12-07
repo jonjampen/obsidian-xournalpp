@@ -44,3 +44,8 @@
     align-items: center;
     vertical-align: middle;
 }
+.xopp-creation-editing-template-button-row {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
