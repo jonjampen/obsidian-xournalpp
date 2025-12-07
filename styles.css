@@ -18,6 +18,32 @@
     cursor: pointer;
 }
 
+.xopp-placeholder-table {
+    border-collapse: collapse;
+    width: 100%;
+    text-align: left;
+}
+
+.xopp-placeholder-table th,
+.xopp-placeholder-table td {
+    border: 1px solid var(--color-base-20);
+    padding: 0.5rem 1rem;
+    text-align: left;
+}
+
+.xopp-placeholder-table th {
+    background-color: var(--color-base-10);
+    font-weight: bold;
+}
+
+.xopp-help-icon {
+    cursor: pointer;
+    margin-left: 8px;
+    color: var(--color-base-60);
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
+}
 .xopp-creation-editing-template-button-row {
     display: flex;
     justify-content: flex-end;

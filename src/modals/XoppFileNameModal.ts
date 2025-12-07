@@ -6,8 +6,11 @@ import {
 	TextComponent,
 	DropdownComponent,
 } from "obsidian";
+import parseFileName from "./../fileNameParser";
+import XoppPlugin from "main";
 
 export default class XoppFileNameModal extends Modal {
+  plugin: XoppPlugin;
 	editor: Editor | null;
 	createFile: (fileName: string, templatePath: string) => void;
 	createAndOpenFile: (fileName: string, templatePath: string) => void;
@@ -16,12 +19,14 @@ export default class XoppFileNameModal extends Modal {
 
 	constructor(
 		app: App,
+    plugin: XoppPlugin,
 		createFile: (fileName: string, templatePath: string) => void,
 		createAndOpenFile: (fileName: string, templatePath: string) => void,
 		templates: { path: string; name: string }[],
 		defaultTemplatePath?: string
 	) {
 		super(app);
+    this.plugin = plugin;
 		this.createFile = createFile;
 		this.createAndOpenFile = createAndOpenFile;
 		this.templates = templates;
@@ -35,8 +40,10 @@ export default class XoppFileNameModal extends Modal {
 			cls: "new-xopp-file-modal-form",
 		});
 
-		let fileName: string;
-		let selectedTemplatePath = "";
+    let fileName: string = this.plugin.settings.defaultNewFileName;
+    let parsed = parseFileName(fileName, this.plugin);
+    fileName = parsed.text;
+    let selectedTemplatePath = "";
 
 		const defaultTemplateName = this.defaultTemplatePath
 			? this.defaultTemplatePath.split("/").pop()?.replace(".xopp", "")
@@ -70,11 +77,17 @@ export default class XoppFileNameModal extends Modal {
 			.onChange((i) => {
 				fileName = i;
 			});
+    
+    textComponent.setValue(fileName);
 
-		textComponent.inputEl.focus();
-		// Using a timeout to ensure the focus is set after the modal is fully rendered.
+    // Using a timeout to ensure the focus is set after the modal is fully rendered.
 		setTimeout(() => textComponent.inputEl.focus(), 0);
 
+    // set cursor position
+    if (parsed.cursorIndex !== undefined) {
+        textComponent.inputEl.setSelectionRange(parsed.cursorIndex, parsed.cursorIndex);
+    }
+    
 		textComponent.inputEl.addEventListener("keypress", (e) => {
 			if (e.key === "Enter") {
 				if (e.shiftKey) {

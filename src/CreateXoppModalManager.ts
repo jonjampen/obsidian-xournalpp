@@ -43,6 +43,7 @@ export default class CreateXoppModalManager {
         const onCloseFolderModal = (folderPath: string) =>
             new XoppFileNameModal(
                 this.plugin.app,
+                this.plugin,
                 (fileName, templatePath) => this.onCreate(folderPath, fileName, templatePath),
                 (fileName, templatePath) => this.onCreateAndOpen(folderPath, fileName, templatePath),
                 templates,

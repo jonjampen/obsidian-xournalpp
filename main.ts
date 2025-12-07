@@ -11,6 +11,7 @@ interface XoppPluginSettings {
     templatesFolder: string;
     defaultTemplatePath: string;
     defaultNewFilePath: string;
+    defaultNewFileName: string;
 }
 
 const DEFAULT_SETTINGS: Partial<XoppPluginSettings> = {
@@ -19,6 +20,7 @@ const DEFAULT_SETTINGS: Partial<XoppPluginSettings> = {
     templatesFolder: "",
     defaultTemplatePath: "",
     defaultNewFilePath: "",
+    defaultNewFileName: "",
 };
 
 export default class XoppPlugin extends Plugin {
