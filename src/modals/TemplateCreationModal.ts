@@ -11,7 +11,7 @@ import {
 	DropdownComponent,
 } from "obsidian";
 import { createTemplate } from "src/TemplateCreationModalManager";
-import { getFirstPagePdfDimensions } from "src/handlePdf";
+import {getFirstPagePdfDimensions, getPageCount} from "src/handlePdf";
 import { TemplateSpec } from "../types";
 
 export default class TemplateCreationModal extends Modal {
@@ -134,8 +134,10 @@ export default class TemplateCreationModal extends Modal {
 		let pdfSourceSetting: Setting;
 		let pdfAbsolutePathSetting: Setting;
 		let pdfVaultFileSetting: Setting;
+		let pdfPageCount: Setting;
 		let pdfAbsolutePathText: TextComponent;
 		let pdfVaultFileText: TextComponent;
+		let pdfPageCountText: TextComponent;
 		let useAbsolutePath = true;
 
 		// Show or hide settings depending on current background style and page size 
@@ -191,6 +193,17 @@ export default class TemplateCreationModal extends Modal {
 						refreshBackgroundSectionVisibility();
 					});
 			});
+
+		pdfPageCount = new Setting(contentEl)
+			.setName("Number of Pages")
+			.setDesc("The number of pages to be transfered from the original PDF to the template")
+			.addText((text) => {
+				pdfPageCountText = text;
+				text.setValue(spec.pdfPage ? String(spec.pdfPage) : "").onChange((value) => {
+					spec.pdfPage = Number(value.trim());
+				})
+
+			})
 
 		backgroundColorSetting = new Setting(contentEl)
 			.setName("Background Color")
@@ -266,6 +279,8 @@ export default class TemplateCreationModal extends Modal {
 						const { width, height } =
 							await getFirstPagePdfDimensions(file, this.app);
 
+						const pdfPage = await getPageCount(file, this.app);
+
 						console.log(
 							"PDF first page dimensions (mm):",
 							width,
@@ -274,12 +289,16 @@ export default class TemplateCreationModal extends Modal {
 
 						spec.customWidthMm = width;
 						spec.customHeightMm = height;
+						spec.pdfPage = pdfPage;
 
 						if (customWidthText) {
 							customWidthText.setValue(String(width));
 						}
 						if (customHeightText) {
 							customHeightText.setValue(String(height));
+						}
+						if (pdfPageCount) {
+							pdfPageCountText.setValue(String(pdfPage));
 						}
 
 						refreshBackgroundSectionVisibility();
