@@ -1,9 +1,9 @@
 import { Menu, TFile, TFolder } from "obsidian";
-import { deleteXoppAndPdf, findCorrespondingXoppToPdf, openXournalppFile, renameXoppFile } from "./xoppActions";
+import { deleteXoppAndPdf, findCorrespondingXoppToPdf, openXournalppFile, renameXoppFile } from "./xopp-actions";
 import CreateXoppModalManager from "src/ui/managers/create-xopp-modal-manager";
 import XoppPlugin from "src/main";
-import { exportXoppToPDF } from "./xopp2pdf";
-import RenameModal from "./ui/modals/rename-modal";
+import { exportXoppToPDF } from "./xopp-to-pdf";
+import RenameModal from "../ui/modals/rename-modal";
 
 export function addXournalppOptionsToFileMenu(menu: Menu, file: TFile | TFolder, plugin: XoppPlugin) {
     if (file instanceof TFile) {

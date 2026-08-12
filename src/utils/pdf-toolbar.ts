@@ -1,6 +1,6 @@
 import XoppPlugin from "src/main";
 import { ButtonComponent, TFile } from "obsidian";
-import { findCorrespondingXoppToPdf, openXournalppFile } from "./xoppActions";
+import { findCorrespondingXoppToPdf, openXournalppFile } from "./xopp-actions";
 
 export function addOpenInXournalppToPdfToolbar(file: TFile, plugin: XoppPlugin) {
     if (file && file.extension === "pdf") {

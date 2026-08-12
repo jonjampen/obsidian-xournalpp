@@ -4,7 +4,7 @@ import advancedFormat from "dayjs/plugin/advancedFormat";
 import weekOfYear from "dayjs/plugin/weekOfYear";
 import isoWeek from "dayjs/plugin/isoWeek";
 
-import { newFilePlaceholders } from "./newFilePlaceholders";
+import { newFilePlaceholders } from "./new-file-placeholders";
 
 interface templateSubstitution {
     match: RegExp;

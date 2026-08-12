@@ -1,5 +1,5 @@
 import XoppPlugin from "src/main";
-import { findCorrespondingXoppToPdf, openXournalppFile } from "./xoppActions";
+import { findCorrespondingXoppToPdf, openXournalppFile } from "./xopp-actions";
 import { TFile } from "obsidian";
 
 interface FileExplorerView {

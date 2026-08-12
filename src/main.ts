@@ -3,7 +3,7 @@ import { XoppSettingsTab } from "src/ui/modals/xopp-settings-tab";
 import { checkXoppSetup } from "src/core/environment-checks";
 import { createCommands } from "src/core/commands";
 import { setupListeners } from "src/core/listeners";
-import { createRibbonIcons } from "src/ribbonIcons";
+import { createRibbonIcons } from "src/utils/ribbon-icons";
 
 interface XoppPluginSettings {
     autoExport: boolean;
