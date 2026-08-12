@@ -11,7 +11,7 @@ export default class SearchXoppModal extends FuzzySuggestModal<TFile> {
     }
 
     getItems(): TFile[] {
-        let files: TFile[] = [];
+        const files: TFile[] = [];
 
         const filePaths = new Set<string>();
 
@@ -38,8 +38,8 @@ export default class SearchXoppModal extends FuzzySuggestModal<TFile> {
         this.inputEl.addEventListener("keydown", (event) => {
             if (event.key === "Tab") {
                 event.preventDefault();
-                let selectedElement = this.modalEl.getElementsByClassName("is-selected").item(0);
-                let selected = selectedElement ? selectedElement.textContent : "";
+                const selectedElement = this.modalEl.getElementsByClassName("is-selected").item(0);
+                const selected = selectedElement ? selectedElement.textContent : "";
 
                 this.inputEl.value = selected || "";
 

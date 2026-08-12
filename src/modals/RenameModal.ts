@@ -16,8 +16,8 @@ export default class RenameModal extends Modal {
         const container = contentEl.createDiv({ cls: "new-file-modal-form" });
 
         let fileName: string;
-        let prev = this.filePath.split("/");
-        let fullFileName = prev[prev.length - 1];
+        const prev = this.filePath.split("/");
+        const fullFileName = prev[prev.length - 1];
         fileName = fullFileName.split(".")[0];
 
         const textComponent = new TextComponent(container)

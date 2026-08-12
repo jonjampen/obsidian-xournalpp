@@ -34,7 +34,7 @@ export default class XoppFileNameModal extends Modal {
         });
 
         let fileName: string = this.plugin.settings.defaultNewFileName;
-        let parsed = parseFileName(fileName, this.plugin);
+        const parsed = parseFileName(fileName, this.plugin);
         fileName = parsed.text;
         let selectedTemplatePath = "";
 
@@ -45,7 +45,7 @@ export default class XoppFileNameModal extends Modal {
         const defaultTemplateLabel = defaultTemplateName ? ` (Default: ${defaultTemplateName})` : " (Default template)";
 
         container.createEl("label", {
-            text: `Select a template:`,
+            text: "Select a template:",
         });
 
         const dropdown = new DropdownComponent(container).addOption("", defaultTemplateLabel).onChange((value) => {
@@ -58,7 +58,7 @@ export default class XoppFileNameModal extends Modal {
         selectedTemplatePath = "";
 
         container.createEl("label", {
-            text: `Enter a file name:`,
+            text: "Enter a file name:",
         });
 
         const textComponent = new TextComponent(container).setPlaceholder("my_note").onChange((i) => {

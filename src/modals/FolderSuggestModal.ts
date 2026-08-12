@@ -29,8 +29,8 @@ export default class FolderSuggestModal extends FuzzySuggestModal<TFolder> {
         if (defaultFolderPath.endsWith("/")) {
             defaultFolderPath = defaultFolderPath.slice(0, -1);
         }
-        let defaultFolder = this.app.vault.getFolderByPath(defaultFolderPath);
-        if (defaultFolder != null && this.inputEl.value == "") folders = [defaultFolder].concat(folders);
+        const defaultFolder = this.app.vault.getFolderByPath(defaultFolderPath);
+        if (defaultFolder != null && this.inputEl.value === "") folders = [defaultFolder].concat(folders);
         return folders;
     }
 
@@ -44,8 +44,8 @@ export default class FolderSuggestModal extends FuzzySuggestModal<TFolder> {
         this.inputEl.addEventListener("keydown", (event) => {
             if (event.key === "Tab") {
                 event.preventDefault();
-                let selectedElement = this.modalEl.getElementsByClassName("is-selected").item(0);
-                let selected = selectedElement ? selectedElement.textContent : "";
+                const selectedElement = this.modalEl.getElementsByClassName("is-selected").item(0);
+                const selected = selectedElement ? selectedElement.textContent : "";
 
                 this.inputEl.value = selected || "";
 

@@ -1,5 +1,5 @@
 import XoppPlugin from "main";
-import { App, Setting, PluginSettingTab, addIcon, getIcon, TFile } from "obsidian";
+import { App, Setting, PluginSettingTab, getIcon, TFile } from "obsidian";
 import ConfirmationModal from "./modals/ConfirmationModal";
 import { exportAllXoppToPDF } from "src/xopp2pdf";
 import parseFileName from "./fileNameParser";
@@ -42,8 +42,7 @@ export class XoppSettingsTab extends PluginSettingTab {
                                 await this.plugin.saveSettings();
                                 toggle.setValue(false);
                             },
-                            initialValue,
-                            toggle
+                            initialValue
                         );
                         confirmationModal.onClose = () => {
                             if (!confirmationModal.confirmed) {
@@ -162,9 +161,9 @@ export class XoppSettingsTab extends PluginSettingTab {
             });
 
         // Default Name
-        let defaultNameDesc =
+        const defaultNameDesc =
             "The default name for new Xournal++ files. Use placeholders `${}` to insert dynamic values. Preview: ";
-        let defaultNameSetting = new Setting(containerEl)
+        const defaultNameSetting = new Setting(containerEl)
             .setName("Default name for new Xournal++ files")
             .addText((toggle) => {
                 toggle
@@ -184,7 +183,10 @@ export class XoppSettingsTab extends PluginSettingTab {
 
         const titleEl = defaultNameSetting.nameEl;
         const helpIcon = titleEl.createEl("span");
-        helpIcon.appendChild(getIcon("help-circle")!);
+        const helpIconEl = getIcon("help-circle");
+        if (helpIconEl) {
+            helpIcon.appendChild(helpIconEl);
+        }
         helpIcon.addClass("xopp-help-icon");
         helpIcon.onclick = () => {
             new NewFilePlacholderHelpModal(this.app, newFilePlaceholders).open();

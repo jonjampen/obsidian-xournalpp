@@ -2,6 +2,11 @@ import XoppPlugin from "main";
 import { findCorrespondingXoppToPdf, openXournalppFile } from "./xoppActions";
 import { TFile } from "obsidian";
 
+interface FileExplorerView {
+    containerEl?: HTMLElement;
+    fileItems?: Record<string, { tagEl?: HTMLElement }>;
+}
+
 export function addOpenInXournalpp(plugin: XoppPlugin) {
     plugin.app.workspace.onLayoutReady(() => {
         observeFileExplorer(plugin); // Start observing once the layout is ready
@@ -10,10 +15,11 @@ export function addOpenInXournalpp(plugin: XoppPlugin) {
 }
 
 function observeFileExplorer(plugin: XoppPlugin) {
-    let fileExplorers = plugin.app.workspace.getLeavesOfType("file-explorer");
+    const fileExplorers = plugin.app.workspace.getLeavesOfType("file-explorer");
 
     fileExplorers.forEach((fileExplorer) => {
-        let container = (fileExplorer.view as any)?.containerEl;
+        const view = fileExplorer.view as unknown as FileExplorerView;
+        const container = view?.containerEl;
 
         if (container) {
             // Observe changes in the file explorer DOM
@@ -28,19 +34,20 @@ function observeFileExplorer(plugin: XoppPlugin) {
 }
 
 function applyXournalppTags(plugin: XoppPlugin) {
-    let fileExplorers = plugin.app.workspace.getLeavesOfType("file-explorer");
+    const fileExplorers = plugin.app.workspace.getLeavesOfType("file-explorer");
 
     fileExplorers.forEach((fileExplorer) => {
-        let allFiles: { [key: string]: { tagEl: HTMLElement } } = (fileExplorer.view as any)?.fileItems;
+        const view = fileExplorer.view as unknown as FileExplorerView;
+        const allFiles = view?.fileItems;
         if (!allFiles) return;
 
         Object.entries(allFiles).forEach(([filePath, value]) => {
             if (filePath.endsWith(".pdf")) {
-                let xoppFile = findCorrespondingXoppToPdf(filePath, plugin);
+                const xoppFile = findCorrespondingXoppToPdf(filePath, plugin);
                 if (xoppFile && value?.tagEl) {
-                    const tagEl = value.tagEl as HTMLElement;
+                    const tagEl = value.tagEl;
 
-                    if (tagEl && (tagEl.innerText != "X++" || !tagEl.classList.contains("clickable-tag"))) {
+                    if (tagEl.innerText !== "X++" || !tagEl.classList.contains("clickable-tag")) {
                         tagEl.innerText = "X++";
                         tagEl.classList.add("clickable-tag");
                         tagEl.onclick = () => {

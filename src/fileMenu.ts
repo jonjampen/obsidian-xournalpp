@@ -10,7 +10,7 @@ export function addXournalppOptionsToFileMenu(menu: Menu, file: TFile | TFolder,
         if (file.extension === "xopp") {
             addOpenInXournalppMenu(menu, file, plugin);
         } else if (file.extension === "pdf") {
-            let xoppFile = findCorrespondingXoppToPdf(file.path, plugin);
+            const xoppFile = findCorrespondingXoppToPdf(file.path, plugin);
             if (xoppFile) {
                 addOpenInXournalppMenu(menu, xoppFile, plugin);
                 addXournalppRenameMenu(menu, file, xoppFile, plugin);
@@ -88,7 +88,7 @@ function removeDeleteRenameMenuItem() {
             let isXoppMenu = false;
 
             menuItems.forEach((item) => {
-                if (item.textContent && item.textContent == "Delete PDF & Xournal++") {
+                if (item.textContent && item.textContent === "Delete PDF & Xournal++") {
                     item.classList.add("is-warning");
                     isXoppMenu = true;
                 }
@@ -96,8 +96,9 @@ function removeDeleteRenameMenuItem() {
 
             if (isXoppMenu) {
                 menuItems.forEach((item) => {
-                    if (item.textContent && (item.textContent == "Delete" || item.textContent == "Rename..."))
+                    if (item.textContent && (item.textContent === "Delete" || item.textContent === "Rename...")) {
                         item.remove();
+                    }
                 });
             }
 

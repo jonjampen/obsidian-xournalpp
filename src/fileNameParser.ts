@@ -11,6 +11,9 @@ interface templateSubstitution {
     substitution: (plugin: XoppPlugin) => string;
 }
 
+const dateTimeGroup = newFilePlaceholders.find((group) => group.title === "Date & Time");
+const dateTimePlaceholders = dateTimeGroup ? dateTimeGroup.placeholders : [];
+
 const SUBSTITUTIONS: templateSubstitution[] = [
     {
         match: /(?<!\$)\${fname}/g,
@@ -23,18 +26,16 @@ const SUBSTITUTIONS: templateSubstitution[] = [
             return currentfilename;
         },
     },
-    ...newFilePlaceholders
-        .find((group) => group.title === "Date & Time")!
-        .placeholders.map((p) => ({
-            match: new RegExp(`(?<!\\$)\\$\\{${p.pattern}\\}`, "g"),
-            substitution: () => {
-                dayjs.extend(advancedFormat);
-                dayjs.extend(weekOfYear);
-                dayjs.extend(isoWeek);
+    ...dateTimePlaceholders.map((p) => ({
+        match: new RegExp(`(?<!\\$)\\$\\{${p.pattern}\\}`, "g"),
+        substitution: () => {
+            dayjs.extend(advancedFormat);
+            dayjs.extend(weekOfYear);
+            dayjs.extend(isoWeek);
 
-                return dayjs().format(p.pattern);
-            },
-        })),
+            return dayjs().format(p.pattern);
+        },
+    })),
 ];
 
 export interface ParsedFileName {
@@ -45,7 +46,7 @@ export interface ParsedFileName {
 export default function parseFileName(
     template: string,
     plugin: XoppPlugin,
-    showCursor: boolean = false
+    showCursor = false
 ): ParsedFileName {
     for (const substitution of SUBSTITUTIONS) {
         const replacement = substitution.substitution(plugin);

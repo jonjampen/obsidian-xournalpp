@@ -44,7 +44,7 @@ export function setupListeners(plugin: XoppPlugin) {
         plugin.registerEvent(
             plugin.app.vault.on("create", (file: TFile) => {
                 if (file.extension === "xopp" && plugin.settings.autoExport)
-                    exportXoppToPDF(plugin, [file.path], false);
+                    {exportXoppToPDF(plugin, [file.path], false);}
             })
         );
     });
@@ -52,13 +52,13 @@ export function setupListeners(plugin: XoppPlugin) {
 
 function initialLoad(plugin: XoppPlugin) {
     if (plugin.settings.autoExport) {
-        let files = plugin.app.vault.getFiles();
-        let xopp_files = files.filter((file) => file.extension === "xopp");
-        let pdf_files = files.filter((file) => file.extension === "pdf");
+        const files = plugin.app.vault.getFiles();
+        const xopp_files = files.filter((file) => file.extension === "xopp");
+        const pdf_files = files.filter((file) => file.extension === "pdf");
 
-        let filePaths = [];
+        const filePaths = [];
         for (const xopp_file of xopp_files) {
-            let pdf_file = pdf_files.find((pdf) => pdf.path === xopp_file.path.replace(".xopp", ".pdf")) || false;
+            const pdf_file = pdf_files.find((pdf) => pdf.path === xopp_file.path.replace(".xopp", ".pdf")) || false;
             let xopp_is_newer = false;
             if (pdf_file) {
                 xopp_is_newer = xopp_file.stat.mtime > pdf_file.stat.mtime;
