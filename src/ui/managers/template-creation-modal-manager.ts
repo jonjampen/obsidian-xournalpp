@@ -1,6 +1,6 @@
 import XoppPlugin from "src/main";
 import { App, normalizePath, Notice } from "obsidian";
-import type { TemplateSpec } from "src/modals/TemplateCreationModal";
+import type { TemplateSpec } from "src/ui/modals/template-creation-modal";
 import * as pako from "pako";
 
 const MM_TO_PT = 72 / 25.4;
