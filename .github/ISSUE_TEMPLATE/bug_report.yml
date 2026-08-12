@@ -1,0 +1,90 @@
+name: 🐛 Bug Report
+description: Create a report to help us improve the plugin
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report! Please provide as much detail as possible to help us reproduce and fix the issue.
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the bug
+      description: A clear and concise description of what the bug is.
+      placeholder: E.g., The PDF auto-export fails with an error when...
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: Steps to reproduce the behavior.
+      placeholder: |
+        1. Open Obsidian vault...
+        2. Create a new `.xopp` file...
+        3. Save the file...
+        4. See the error notice...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: A clear and concise description of what you expected to happen.
+      placeholder: E.g., The plugin should automatically compile the `.xopp` file to a PDF in the same directory without errors.
+    validations:
+      required: true
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating System
+      description: What operating system are you running Obsidian on?
+      options:
+        - Linux (Native Package / DNF / APT)
+        - Linux (Flatpak)
+        - Linux (AppImage / Snap)
+        - Windows
+        - macOS
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: obsidian-version
+    attributes:
+      label: Obsidian Version
+      description: E.g., v1.6.5 (found in the top bar of the Settings window)
+      placeholder: v1.6.5
+    validations:
+      required: true
+  - type: input
+    id: plugin-version
+    attributes:
+      label: Plugin Version
+      description: E.g., v1.1.2 (found in Settings -> Community Plugins)
+      placeholder: v1.1.2
+    validations:
+      required: true
+  - type: input
+    id: xournalpp-version
+    attributes:
+      label: Xournal++ Version
+      description: E.g., 1.2.3 (run `xournalpp --version` in terminal)
+      placeholder: 1.2.3
+    validations:
+      required: false
+  - type: textarea
+    id: logs
+    attributes:
+      label: Developer Console Logs
+      description: Please copy/paste any errors from the Obsidian Developer Console (Ctrl+Shift+I or Cmd+Option+I -> Console tab).
+      render: shell
+      placeholder: |
+        Uncaught (in promise) Error: ...
+    validations:
+      required: false
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional context / Screenshots
+      description: Add any other context or drag-and-drop screenshots here.
