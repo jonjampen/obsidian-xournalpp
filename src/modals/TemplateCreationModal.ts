@@ -1,6 +1,6 @@
 import XoppPlugin from "src/main";
 import { App, ButtonComponent, Modal, Setting } from "obsidian";
-import { createTemplate } from "src/TemplateCreationModalManager";
+import { createTemplate } from "src/ui/managers/template-creation-modal-manager";
 
 export type TemplateBackgroundStyle =
     "plain" | "lined" | "ruled" | "staves" | "graph" | "dotted" | "isodotted" | "isograph";

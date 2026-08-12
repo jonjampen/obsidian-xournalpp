@@ -1,12 +1,12 @@
 import XoppPlugin from "src/main";
 import { App, Setting, PluginSettingTab, getIcon, TFile } from "obsidian";
-import ConfirmationModal from "./modals/ConfirmationModal";
+import ConfirmationModal from "src/modals/ConfirmationModal";
 import { exportAllXoppToPDF } from "src/xopp2pdf";
-import parseFileName from "./fileNameParser";
-import { newFilePlaceholders } from "./newFilePlaceholders";
-import { NewFilePlacholderHelpModal } from "./modals/NewFilePlacholderHelpModal";
+import parseFileName from "src/fileNameParser";
+import { newFilePlaceholders } from "src/newFilePlaceholders";
+import { NewFilePlacholderHelpModal } from "src/modals/NewFilePlacholderHelpModal";
 import TemplateCreationModal from "src/modals/TemplateCreationModal";
-import TemplateEditingModal from "./modals/TemplateEditingModal";
+import TemplateEditingModal from "src/modals/TemplateEditingModal";
 
 export class XoppSettingsTab extends PluginSettingTab {
     plugin: XoppPlugin;
