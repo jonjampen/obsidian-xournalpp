@@ -1,10 +1,10 @@
-import XoppPlugin from "src/main";
-import { addXournalppOptionsToFileMenu } from "./fileMenu";
+import XoppPlugin from "../main";
+import { addXournalppOptionsToFileMenu } from "../fileMenu";
 import { Menu, TFile, TFolder } from "obsidian";
-import { addOpenInXournalppToPdfToolbar } from "./pdfToolbar";
-import { addCreateXournalppNavIcon } from "./fileExplorerNav";
-import { addOpenInXournalpp } from "./fileExplorerFile";
-import { exportXoppToPDF } from "./xopp2pdf";
+import { addOpenInXournalppToPdfToolbar } from "../pdfToolbar";
+import { addCreateXournalppNavIcon } from "../fileExplorerNav";
+import { addOpenInXournalpp } from "../fileExplorerFile";
+import { exportXoppToPDF } from "../xopp2pdf";
 
 export function setupListeners(plugin: XoppPlugin) {
     // on startup

@@ -1,7 +1,7 @@
 import XoppPlugin from "src/main";
 import { TFile, Notice, DataAdapter, FileSystemAdapter } from "obsidian";
-import { base64Template } from "./template";
-import { checkXoppSetup } from "./checks";
+import { base64Template } from "./core/default-template";
+import { checkXoppSetup } from "./core/environment-checks";
 import { exec } from "child_process";
 
 export async function openXournalppFile(xoppFile: TFile, plugin: XoppPlugin): Promise<void> {
