@@ -24,6 +24,7 @@
         "esbuild": "0.17.3",
         "eslint": "^8.57.1",
         "husky": "^9.1.7",
+        "lint-staged": "^17.3.0",
         "obsidian": "latest",
         "prettier": "^3.9.6",
         "tslib": "2.4.0",
@@ -32,5 +33,15 @@
     "dependencies": {
         "dayjs": "^1.11.13",
         "pako": "^2.1.0"
+    },
+    "lint-staged": {
+        "src/**/*.ts": [
+            "prettier --write",
+            "eslint --fix"
+        ],
+        "tests/**/*.ts": [
+            "prettier --write",
+            "eslint --fix"
+        ]
     }
 }
