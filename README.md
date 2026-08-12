@@ -24,10 +24,6 @@ A seamless integration with [Xournal++](https://xournalpp.github.io). Xournal++ 
 
 You can head over to the [documentation](https://jonjampen.github.io/obsidian-xournalpp/) for more information on how to use the plugin and customize the settings.
 
-## ⚠️ Breaking Changes
-
-Release [`v1.1.0`](https://github.com/jonjampen/obsidian-xournalpp/releases/tag/1.1.0) introduced a breaking change: if you have a space in your custom Xournal++ Installation path, be sure to add double quotes around it (`"`). Also see: [Release Notes](https://github.com/jonjampen/obsidian-xournalpp/releases/tag/1.1.0)
-
 ## Developer
 
 This plugin is created and maintained by [Jon Jampen](mailto:hello@jonjampen.ch). Thanks to the contributors for their valuable input and improvements. I hope you find this plugin useful!
