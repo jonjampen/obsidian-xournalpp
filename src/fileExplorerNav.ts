@@ -1,6 +1,6 @@
 import XoppPlugin from "src/main";
 import { ButtonComponent } from "obsidian";
-import CreateXoppModalManager from "./CreateXoppModalManager";
+import CreateXoppModalManager from "src/ui/managers/create-xopp-modal-manager";
 
 interface FileExplorerViewHeader {
     headerDom?: {

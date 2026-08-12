@@ -2,7 +2,7 @@ import { Editor, TFile } from "obsidian";
 import { deleteXoppAndPdf, findCorrespondingXoppToPdf, openXournalppFile, renameXoppFile } from "../xoppActions";
 import XoppPlugin from "../main";
 import { exportAllXoppToPDF, exportXoppToPDF } from "../xopp2pdf";
-import CreateXoppModalManager from "../CreateXoppModalManager";
+import CreateXoppModalManager from "src/ui/managers/create-xopp-modal-manager";
 import RenameModal from "../modals/RenameModal";
 import SearchXoppModal from "../modals/SearchXoppModal";
 
