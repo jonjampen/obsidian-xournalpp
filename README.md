@@ -2,7 +2,7 @@
 
 A seamless integration with [Xournal++](https://xournalpp.github.io). Xournal++ is an open-source and cross-platform note taking application for digital, **handwritten notes** and PDF **annotations**.
 
-[Install Plugin](https://obsidian.md/plugins?id=xournalpp) | [Documentation](https://github.com/jonjampen/obsidian-xournalpp/wiki) | [GitHub](https://github.com/jonjampen/obsidian-xournalpp/) | [Discord](https://discord.gg/VngwVHJQg5)
+[Install Plugin](https://obsidian.md/plugins?id=xournalpp) | [Documentation](https://jonjampen.github.io/obsidian-xournalpp/) | [GitHub](https://github.com/jonjampen/obsidian-xournalpp/) | [Discord](https://discord.gg/VngwVHJQg5)
 
 ## Features
 
@@ -22,7 +22,7 @@ A seamless integration with [Xournal++](https://xournalpp.github.io). Xournal++ 
 1. Select **Install** and then **Enable**
 1. The plugin is now installed. Select **Options** if you want to change the default plugin settings.
 
-You can head over to the [documentation](https://github.com/jonjampen/obsidian-xournalpp/wiki) for more information on how to use the plugin and customize the settings.
+You can head over to the [documentation](https://jonjampen.github.io/obsidian-xournalpp/) for more information on how to use the plugin and customize the settings.
 
 ## ⚠️ Breaking Changes
 
