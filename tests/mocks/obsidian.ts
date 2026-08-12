@@ -65,3 +65,10 @@ export class FileSystemAdapter {
         return "/mocked/vault/path";
     }
 }
+
+export class DataAdapter {
+    exists = vi.fn();
+    copy = vi.fn();
+    write = vi.fn();
+    read = vi.fn();
+}

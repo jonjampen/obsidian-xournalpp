@@ -5,6 +5,7 @@ export default defineConfig({
     test: {
         environment: "jsdom",
         globals: true,
+        setupFiles: ["tests/setup.ts"],
         alias: {
             src: path.resolve(import.meta.dirname, "./src"),
             obsidian: path.resolve(import.meta.dirname, "./tests/mocks/obsidian.ts"),
