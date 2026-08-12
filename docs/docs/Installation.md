@@ -12,7 +12,7 @@ Ensure you have [Xournal++](https://xournalpp.github.io/installation) installed 
 
 ### Quick Install
 
-Click [here](https://obsidian.md/plugins?id=xounralpp) to go directly to the installation page inside of Obsidian, then follow steps 4 and 5 below.
+Click [here](obsidian://show-plugin?id=xournalpp) to go directly to the installation page inside of Obsidian, then follow steps 4 and 5 below.
 
 ### Full Installation Guide
 
