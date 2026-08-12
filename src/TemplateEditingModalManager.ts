@@ -9,7 +9,7 @@ type PagePresetName = keyof typeof PAGE_PRESETS;
 
 const PT_TO_MM = 25.4 / 72;
 
-async function readXoppXml (plugin: XoppPlugin, file: TFile): Promise<{ xml: string; isGzipped: boolean }> {
+async function readXoppXml(plugin: XoppPlugin, file: TFile): Promise<{ xml: string; isGzipped: boolean }> {
     const buffer = await plugin.app.vault.adapter.readBinary(file.path);
     const bytes = buffer instanceof Uint8Array ? buffer : new Uint8Array(buffer);
 
@@ -25,27 +25,28 @@ async function readXoppXml (plugin: XoppPlugin, file: TFile): Promise<{ xml: str
     }
 }
 
-function detectPageSizePreset(widthPt: number, heightPt: number) : {
+function detectPageSizePreset(
+    widthPt: number,
+    heightPt: number
+): {
     preset: PagePresetName | "Custom";
     widthMm: number;
     heightMm: number;
     orientation: "portrait" | "landscape";
 } {
-
-    const widthMm  = widthPt * PT_TO_MM;
+    const widthMm = widthPt * PT_TO_MM;
     const heightMm = heightPt * PT_TO_MM;
 
     const presets = PAGE_PRESETS;
 
-    const orientation: "portrait" | "landscape" =
-        widthMm >= heightMm ? "landscape" : "portrait";
+    const orientation: "portrait" | "landscape" = widthMm >= heightMm ? "landscape" : "portrait";
 
     const w = Math.min(widthMm, heightMm);
     const h = Math.max(widthMm, heightMm);
-    
+
     const toleranceMm = 1;
 
-    for (const [name, preset] of Object.entries(presets) as [PagePresetName, {widthMm:number;heightMm:number}][]) {
+    for (const [name, preset] of Object.entries(presets) as [PagePresetName, { widthMm: number; heightMm: number }][]) {
         const pw = preset.widthMm;
         const ph = preset.heightMm;
 
@@ -71,7 +72,7 @@ function parseBackground(el: Element): {
 
     return {
         backgroundStyle,
-        backgroundColor: rawColor
+        backgroundColor: rawColor,
     };
 }
 
@@ -96,7 +97,7 @@ function parseXoppTemplateSpec(xml: string, fileName: string): TemplateSpec {
               spacingMm: undefined,
               marginMm: undefined,
           };
-    
+
     const baseName = fileName.replace(/^.*\//, "").replace(/\.xopp$/i, "");
 
     const spec: TemplateSpec = {
@@ -108,11 +109,11 @@ function parseXoppTemplateSpec(xml: string, fileName: string): TemplateSpec {
     };
 
     if (pageSizePreset === "Custom") {
-        spec.customWidthMm  = widthMm;
+        spec.customWidthMm = widthMm;
         spec.customHeightMm = heightMm;
     }
 
-    return spec; 
+    return spec;
 }
 
 export async function parseTemplateFile(

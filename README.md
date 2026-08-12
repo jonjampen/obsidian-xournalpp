@@ -6,9 +6,9 @@ A seamless integration with [Xournal++](https://xournalpp.github.io). Xournal++ 
 
 ## Features
 
--   Automatically **export** Xournal++ notes **to PDF** whenever they are modified, so that they can be linked, embedded, and viewed in Obsidian
--   Easily **create** new Xournal++ files (.xopp) directly from within Obsidian, accessible from the ribbon icon, file explorer, and command palette
--   Access the **"Edit in Xournal++"** option via an icon in the PDF preview as well as in file explorer (by clicking on `X++`), enabling quick navigation to the corresponding Xournal++ file.
+- Automatically **export** Xournal++ notes **to PDF** whenever they are modified, so that they can be linked, embedded, and viewed in Obsidian
+- Easily **create** new Xournal++ files (.xopp) directly from within Obsidian, accessible from the ribbon icon, file explorer, and command palette
+- Access the **"Edit in Xournal++"** option via an icon in the PDF preview as well as in file explorer (by clicking on `X++`), enabling quick navigation to the corresponding Xournal++ file.
 
 ## Usage
 

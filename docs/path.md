@@ -10,9 +10,9 @@ Error: Xournal++ path not setup correctly. Please check docs on how to set it up
 
 The defaults are the following:
 
--   Linux: `xournalpp`
--   Windows: `c:\Program Files\Xournal++\bin\xournalpp.exe`
--   MacOS: `/Applications/Xournal++.app/Contents/MacOS/xournalpp`
+- Linux: `xournalpp`
+- Windows: `c:\Program Files\Xournal++\bin\xournalpp.exe`
+- MacOS: `/Applications/Xournal++.app/Contents/MacOS/xournalpp`
 
 By default, this plugin will try through all the above options.
 

@@ -12,13 +12,7 @@ export default class CreateXoppModalManager {
     linksToInsert: string;
     openAfterCreate = false;
 
-    constructor(
-        app: App,
-        plugin: XoppPlugin,
-        filePath = "",
-        editor: Editor | null = null,
-        linksToInsert = ""
-    ) {
+    constructor(app: App, plugin: XoppPlugin, filePath = "", editor: Editor | null = null, linksToInsert = "") {
         this.app = app;
         this.plugin = plugin;
         this.filePath = filePath;
@@ -71,7 +65,7 @@ export default class CreateXoppModalManager {
         fileName += ".xopp";
 
         const newNotePath = folderPath === "/" ? fileName : `${folderPath}/${fileName}`;
-        
+
         const selectedTemplatePath =
             templatePath && templatePath.length > 0
                 ? templatePath

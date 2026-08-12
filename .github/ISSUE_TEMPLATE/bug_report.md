@@ -29,10 +29,10 @@ If applicable, add screenshots to help explain your problem.
 
 **Operating System and Versions**
 
--   OS: [e.g. MacOS]
--   Obsidian version: [e.g. v1.6.5]
--   Xournal++ Plugin version: [e.g. 1.0.12]
--   Xournal++ Installation method (only on Linux): [e.g. Flatpak]
+- OS: [e.g. MacOS]
+- Obsidian version: [e.g. v1.6.5]
+- Xournal++ Plugin version: [e.g. 1.0.12]
+- Xournal++ Installation method (only on Linux): [e.g. Flatpak]
 
 **Additional context**
 

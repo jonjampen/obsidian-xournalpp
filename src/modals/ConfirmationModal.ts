@@ -7,12 +7,18 @@ export default class ConfirmationModal extends Modal {
     private toggle: any;
     public confirmed: boolean = false;
 
-    constructor(app: App, onConfirm: () => Promise<void>, onReject: () => Promise<void>, initialValue: boolean, toggle: any) {
+    constructor(
+        app: App,
+        onConfirm: () => Promise<void>,
+        onReject: () => Promise<void>,
+        initialValue: boolean,
+        toggle: any
+    ) {
         super(app);
         this.onConfirm = onConfirm;
         this.onReject = onReject;
         this.initialValue = initialValue;
-        this.toggle = toggle
+        this.toggle = toggle;
     }
 
     onOpen() {

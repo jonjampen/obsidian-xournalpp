@@ -1,9 +1,9 @@
-import { Plugin } from 'obsidian';
-import { XoppSettingsTab } from 'src/XoppSettingsTab';
-import { checkXoppSetup } from 'src/checks';
-import { createCommands } from 'src/commands';
-import { setupListeners } from 'src/listeners';
-import { createRibbonIcons } from 'src/ribbonIcons';
+import { Plugin } from "obsidian";
+import { XoppSettingsTab } from "src/XoppSettingsTab";
+import { checkXoppSetup } from "src/checks";
+import { createCommands } from "src/commands";
+import { setupListeners } from "src/listeners";
+import { createRibbonIcons } from "src/ribbonIcons";
 
 interface XoppPluginSettings {
     autoExport: boolean;
@@ -38,10 +38,10 @@ export default class XoppPlugin extends Plugin {
     async loadSettings() {
         this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
     }
-    
+
     async saveSettings() {
         await this.saveData(this.settings);
-    }    
+    }
 
     onunload() {}
 }
