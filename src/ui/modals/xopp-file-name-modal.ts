@@ -1,5 +1,5 @@
 import { App, ButtonComponent, Editor, Modal, TextComponent, DropdownComponent } from "obsidian";
-import parseFileName from "./../fileNameParser";
+import parseFileName from "../../fileNameParser";
 import XoppPlugin from "src/main";
 
 export default class XoppFileNameModal extends Modal {

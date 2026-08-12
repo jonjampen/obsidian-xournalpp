@@ -3,8 +3,8 @@ import { deleteXoppAndPdf, findCorrespondingXoppToPdf, openXournalppFile, rename
 import XoppPlugin from "../main";
 import { exportAllXoppToPDF, exportXoppToPDF } from "../xopp2pdf";
 import CreateXoppModalManager from "src/ui/managers/create-xopp-modal-manager";
-import RenameModal from "../modals/RenameModal";
-import SearchXoppModal from "../modals/SearchXoppModal";
+import RenameModal from "../ui/modals/rename-modal";
+import SearchXoppModal from "../ui/modals/search-xopp-modal";
 
 export function createCommands(plugin: XoppPlugin) {
     plugin.addCommand({
