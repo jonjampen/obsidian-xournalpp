@@ -1,6 +1,6 @@
 import XoppPlugin from "src/main";
 import { App, FuzzySuggestModal, Notice, TFile } from "obsidian";
-import { openXournalppFile } from "src/xoppActions";
+import { openXournalppFile } from "src/utils/xopp-actions";
 
 export default class SearchXoppModal extends FuzzySuggestModal<TFile> {
     plugin: XoppPlugin;

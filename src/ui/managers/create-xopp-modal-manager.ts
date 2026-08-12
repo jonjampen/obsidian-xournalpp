@@ -1,5 +1,5 @@
 import { App, Editor, Notice, TFile } from "obsidian";
-import { createXoppFile, openXournalppFile } from "src/xoppActions";
+import { createXoppFile, openXournalppFile } from "src/utils/xopp-actions";
 import XoppPlugin from "src/main";
 import XoppFileNameModal from "src/ui/modals/xopp-file-name-modal";
 import FolderSuggestModal from "src/ui/modals/folder-suggest-modal";
