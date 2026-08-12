@@ -1,40 +1,39 @@
 import XoppPlugin from "main";
 import { MarkdownView, TFile, getLinkpath } from "obsidian";
 import { findCorrespondingXoppToPdf } from "./xoppActions";
-import { ButtonComponent, App } from 'obsidian';
-import { openXournalppFile } from './xoppActions';
+import { ButtonComponent, App } from "obsidian";
+import { openXournalppFile } from "./xoppActions";
 
 export function addOpenInXournalppToPdfToolbar(file: TFile, plugin: XoppPlugin) {
     if (file && file.extension === "pdf") {
         // reset icon
-        const oldIcons = document.querySelectorAll('.xournalpp-open-icon');
-        oldIcons.forEach((old) => old.remove())
+        const oldIcons = document.querySelectorAll(".xournalpp-open-icon");
+        oldIcons.forEach((old) => old.remove());
 
-        let xoppFile = findCorrespondingXoppToPdf(file.path, plugin)
+        let xoppFile = findCorrespondingXoppToPdf(file.path, plugin);
 
         if (xoppFile) {
             // show toolbar icon
-            const pdfToolbar = document.querySelector('.pdf-toolbar-right') as HTMLElement;
+            const pdfToolbar = document.querySelector(".pdf-toolbar-right") as HTMLElement;
 
             if (pdfToolbar) {
-                createPdfToolbarButton(pdfToolbar, xoppFile, plugin)
+                createPdfToolbarButton(pdfToolbar, xoppFile, plugin);
             }
         }
     }
 }
 
-
 export function createPdfToolbarButton(pdfToolbar: HTMLElement, xoppFile: TFile, plugin: XoppPlugin): void {
     let xoppButton = new ButtonComponent(pdfToolbar)
         .setClass("clickable-icon")
         .setClass("xournalpp-open-icon")
-        .setButtonText('Edit in Xournal++')
-        .setIcon('pen-tool')
-        .setTooltip('Edit in Xournal++');
+        .setButtonText("Edit in Xournal++")
+        .setIcon("pen-tool")
+        .setTooltip("Edit in Xournal++");
 
-        xoppButton.onClick(() =>  {
-            openXournalppFile(xoppFile, plugin);
-        })
+    xoppButton.onClick(() => {
+        openXournalppFile(xoppFile, plugin);
+    });
 
-        pdfToolbar.appendChild(xoppButton.buttonEl);
+    pdfToolbar.appendChild(xoppButton.buttonEl);
 }
