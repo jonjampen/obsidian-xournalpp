@@ -126,10 +126,11 @@ export class ParsedTemplateEditing extends Modal {
         new ButtonComponent(buttonRow)
             .setButtonText("Confirm Edits")
             .setCta()
-            .onClick(async () => {
-                await createTemplate(this.plugin, spec);
-                this.close();
-                this.onFinished();
+            .onClick(() => {
+                void createTemplate(this.plugin, spec).then(() => {
+                    this.close();
+                    this.onFinished();
+                });
             });
 
         new ButtonComponent(buttonRow).setButtonText("Cancel").onClick(() => this.close());
@@ -140,9 +141,10 @@ export class ParsedTemplateEditing extends Modal {
                 e.stopPropagation();
 
                 if (!e.shiftKey) {
-                    createTemplate(this.plugin, spec);
-                    this.close();
-                    this.onFinished();
+                    void createTemplate(this.plugin, spec).then(() => {
+                        this.close();
+                        this.onFinished();
+                    });
                 }
             }
         });

@@ -123,9 +123,8 @@ export default class TemplateCreationModal extends Modal {
         new ButtonComponent(buttonRow)
             .setButtonText("Create")
             .setCta()
-            .onClick(async () => {
-                doCreate();
-                this.close();
+            .onClick(() => {
+                void doCreate();
             });
 
         new ButtonComponent(buttonRow).setButtonText("Cancel").onClick(() => this.close());
@@ -136,8 +135,7 @@ export default class TemplateCreationModal extends Modal {
                 e.stopPropagation();
 
                 if (!e.shiftKey) {
-                    doCreate();
-                    this.close();
+                    void doCreate();
                 }
             }
         });

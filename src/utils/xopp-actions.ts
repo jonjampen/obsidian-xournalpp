@@ -85,15 +85,15 @@ export async function createTemplate(plugin: XoppPlugin, path: string) {
     await plugin.app.vault.createBinary(path, bytes.buffer);
 }
 
-export function renameXoppFile(plugin: XoppPlugin, xoppFile: TFile, pdfFile: TFile, fileName: string) {
+export async function renameXoppFile(plugin: XoppPlugin, xoppFile: TFile, pdfFile: TFile, fileName: string) {
     const filePath = xoppFile.path.split("/");
     filePath.pop();
     const newPath = filePath?.join("/") + "/" + fileName;
-    plugin.app.fileManager.renameFile(xoppFile, newPath + ".xopp");
-    plugin.app.fileManager.renameFile(pdfFile, newPath + ".pdf");
+    await plugin.app.fileManager.renameFile(xoppFile, newPath + ".xopp");
+    await plugin.app.fileManager.renameFile(pdfFile, newPath + ".pdf");
 }
 
-export function deleteXoppAndPdf(plugin: XoppPlugin, xoppFile: TFile, pdfFile: TFile) {
-    plugin.app.vault.delete(xoppFile);
-    plugin.app.vault.delete(pdfFile);
+export async function deleteXoppAndPdf(plugin: XoppPlugin, xoppFile: TFile, pdfFile: TFile) {
+    await plugin.app.fileManager.trashFile(xoppFile);
+    await plugin.app.fileManager.trashFile(pdfFile);
 }

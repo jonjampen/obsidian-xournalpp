@@ -19,11 +19,11 @@ describe("xopp-actions", () => {
             getFileByPath: vi.fn(),
             getFolderByPath: vi.fn(),
             createBinary: vi.fn(),
-            delete: vi.fn(),
         };
 
         mockFileManager = {
             renameFile: vi.fn(),
+            trashFile: vi.fn(),
         };
 
         mockPlugin = {
@@ -123,11 +123,11 @@ describe("xopp-actions", () => {
     });
 
     describe("renameXoppFile", () => {
-        it("should invoke fileManager rename for both xopp and pdf files", () => {
+        it("should invoke fileManager rename for both xopp and pdf files", async () => {
             const xoppFile = new TFile("old.xopp", "folder/old.xopp");
             const pdfFile = new TFile("old.pdf", "folder/old.pdf");
 
-            renameXoppFile(mockPlugin, xoppFile, pdfFile, "new");
+            await renameXoppFile(mockPlugin, xoppFile, pdfFile, "new");
 
             expect(mockFileManager.renameFile).toHaveBeenCalledTimes(2);
             expect(mockFileManager.renameFile).toHaveBeenNthCalledWith(1, xoppFile, "folder/new.xopp");
@@ -136,15 +136,15 @@ describe("xopp-actions", () => {
     });
 
     describe("deleteXoppAndPdf", () => {
-        it("should delete both xopp and pdf files from vault", () => {
+        it("should delete both xopp and pdf files from vault", async () => {
             const xoppFile = new TFile("note.xopp", "note.xopp");
             const pdfFile = new TFile("note.pdf", "note.pdf");
 
-            deleteXoppAndPdf(mockPlugin, xoppFile, pdfFile);
+            await deleteXoppAndPdf(mockPlugin, xoppFile, pdfFile);
 
-            expect(mockVault.delete).toHaveBeenCalledTimes(2);
-            expect(mockVault.delete).toHaveBeenNthCalledWith(1, xoppFile);
-            expect(mockVault.delete).toHaveBeenNthCalledWith(2, pdfFile);
+            expect(mockFileManager.trashFile).toHaveBeenCalledTimes(2);
+            expect(mockFileManager.trashFile).toHaveBeenNthCalledWith(1, xoppFile);
+            expect(mockFileManager.trashFile).toHaveBeenNthCalledWith(2, pdfFile);
         });
     });
 });
