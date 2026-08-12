@@ -32,7 +32,7 @@ export default class XoppPlugin extends Plugin {
         setupListeners(this);
         createCommands(this);
         createRibbonIcons(this);
-        checkXoppSetup(this);
+        await checkXoppSetup(this);
     }
 
     async loadSettings() {

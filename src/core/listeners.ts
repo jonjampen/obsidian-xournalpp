@@ -36,7 +36,9 @@ export function setupListeners(plugin: XoppPlugin) {
 
     plugin.registerEvent(
         plugin.app.vault.on("modify", (file: TFile) => {
-            if (file.extension === "xopp" && plugin.settings.autoExport) exportXoppToPDF(plugin, [file.path], false);
+            if (file.extension === "xopp" && plugin.settings.autoExport) {
+                void exportXoppToPDF(plugin, [file.path], false);
+            }
         })
     );
     plugin.app.workspace.onLayoutReady(() => {
@@ -44,7 +46,7 @@ export function setupListeners(plugin: XoppPlugin) {
         plugin.registerEvent(
             plugin.app.vault.on("create", (file: TFile) => {
                 if (file.extension === "xopp" && plugin.settings.autoExport) {
-                    exportXoppToPDF(plugin, [file.path], false);
+                    void exportXoppToPDF(plugin, [file.path], false);
                 }
             })
         );
@@ -71,7 +73,7 @@ function initialLoad(plugin: XoppPlugin) {
         }
 
         if (filePaths.length > 0) {
-            exportXoppToPDF(plugin, filePaths, false);
+            void exportXoppToPDF(plugin, filePaths, false);
         }
     }
 

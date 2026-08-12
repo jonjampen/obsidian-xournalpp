@@ -38,8 +38,12 @@ export default class CreateXoppModalManager {
             new XoppFileNameModal(
                 this.plugin.app,
                 this.plugin,
-                (fileName: string, templatePath: string) => this.onCreate(folderPath, fileName, templatePath),
-                (fileName: string, templatePath: string) => this.onCreateAndOpen(folderPath, fileName, templatePath),
+                (fileName: string, templatePath: string) => {
+                    void this.onCreate(folderPath, fileName, templatePath);
+                },
+                (fileName: string, templatePath: string) => {
+                    void this.onCreateAndOpen(folderPath, fileName, templatePath);
+                },
                 templates,
                 this.plugin.settings.defaultTemplatePath
             )
@@ -83,7 +87,7 @@ export default class CreateXoppModalManager {
         const filePath = folderPath === "/" ? fileName : `${folderPath}/${fileName}`;
         const file = await this.waitForFileToBeIndexed(filePath + ".xopp");
         if (file) {
-            openXournalppFile(file, this.plugin);
+            await openXournalppFile(file, this.plugin);
         } else {
             console.error("Failed to open the file after creation.");
             new Notice("Failed to open the file after creation.");
@@ -112,7 +116,7 @@ export default class CreateXoppModalManager {
         for (let attempt = 0; attempt < maxAttempts; attempt++) {
             const file = this.plugin.app.vault.getFileByPath(path);
             if (file) return file;
-            await new Promise((resolve) => setTimeout(resolve, interval));
+            await new Promise((resolve) => window.setTimeout(resolve, interval));
         }
         return null;
     }

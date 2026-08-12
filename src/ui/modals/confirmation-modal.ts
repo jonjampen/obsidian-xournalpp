@@ -14,7 +14,7 @@ export default class ConfirmationModal extends Modal {
     }
 
     onOpen() {
-        super.onOpen();
+        void super.onOpen();
         const { contentEl } = this;
 
         contentEl.createEl("h2", { text: "Enable Auto Export?" });
@@ -25,16 +25,14 @@ export default class ConfirmationModal extends Modal {
         const buttonContainer = contentEl.createDiv({ cls: "modal-button-container" });
 
         const confirmButton = buttonContainer.createEl("button", { text: "Yes" });
-        confirmButton.addEventListener("click", async () => {
+        confirmButton.addEventListener("click", () => {
             this.confirmed = true;
-            await this.onConfirm();
-            this.close();
+            void this.onConfirm().then(() => this.close());
         });
 
         const cancelButton = buttonContainer.createEl("button", { text: "No" });
         cancelButton.addEventListener("click", () => {
-            this.onReject();
-            this.close();
+            void this.onReject().then(() => this.close());
         });
     }
 

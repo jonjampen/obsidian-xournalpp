@@ -17,7 +17,7 @@ export function createCommands(plugin: XoppPlugin) {
             const xoppFile = findCorrespondingXoppToPdf(pdfFilePath, plugin);
             if (!xoppFile) return false;
 
-            if (!checking) openXournalppFile(xoppFile, plugin);
+            if (!checking) void openXournalppFile(xoppFile, plugin);
             return true;
         },
     });
@@ -66,7 +66,7 @@ export function createCommands(plugin: XoppPlugin) {
         id: "export-xournalpp-to-pdf",
         name: "Export all notes to PDF",
         callback: async () => {
-            exportAllXoppToPDF(plugin);
+            await exportAllXoppToPDF(plugin);
         },
     });
 
@@ -79,7 +79,7 @@ export function createCommands(plugin: XoppPlugin) {
             if (filePath && filePath.includes(".pdf")) {
                 if (!checking) {
                     filePath = filePath?.replace(".pdf", ".xopp");
-                    exportXoppToPDF(plugin, [filePath]);
+                    void exportXoppToPDF(plugin, [filePath]);
                 }
                 return true;
             }
@@ -92,14 +92,13 @@ export function createCommands(plugin: XoppPlugin) {
         name: "Rename current PDF and corresponding Xournal++ note",
         checkCallback: (checking: boolean) => {
             const pdfFile = plugin.app.workspace.getActiveFile();
-            if (!pdfFile || !pdfFile.name.endsWith(".pdf")) return false;
+            if (!(pdfFile instanceof TFile) || !pdfFile.name.endsWith(".pdf")) return false;
 
             const xoppFile = findCorrespondingXoppToPdf(pdfFile.path, plugin);
-            if (!xoppFile) return false;
+            if (!(xoppFile instanceof TFile)) return false;
 
             if (!checking) {
-                const renameFile = (fileName: string) =>
-                    renameXoppFile(plugin, xoppFile as TFile, pdfFile as TFile, fileName);
+                const renameFile = (fileName: string) => void renameXoppFile(plugin, xoppFile, pdfFile, fileName);
                 new RenameModal(plugin.app, xoppFile.path, renameFile).open();
             }
             return true;
@@ -111,13 +110,13 @@ export function createCommands(plugin: XoppPlugin) {
         name: "Delete current PDF and corresponding Xournal++ note",
         checkCallback: (checking: boolean) => {
             const pdfFile = plugin.app.workspace.getActiveFile();
-            if (!pdfFile || !pdfFile.name.endsWith(".pdf")) return false;
+            if (!(pdfFile instanceof TFile) || !pdfFile.name.endsWith(".pdf")) return false;
 
             const xoppFile = findCorrespondingXoppToPdf(pdfFile.path, plugin);
-            if (!xoppFile) return false;
+            if (!(xoppFile instanceof TFile)) return false;
 
             if (!checking) {
-                deleteXoppAndPdf(plugin, xoppFile, pdfFile);
+                void deleteXoppAndPdf(plugin, xoppFile, pdfFile);
             }
             return true;
         },

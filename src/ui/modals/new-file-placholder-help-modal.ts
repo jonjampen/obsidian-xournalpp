@@ -15,8 +15,9 @@ export class NewFilePlacholderHelpModal extends Modal {
     }
 
     onOpen() {
+        void super.onOpen();
         const { contentEl, modalEl } = this;
-        modalEl.style.width = "1000px";
+        modalEl.addClass("xopp-placeholder-help-modal");
 
         contentEl.createEl("h2", { text: "Supported Placeholders" });
 

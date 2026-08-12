@@ -1,6 +1,5 @@
 import XoppPlugin from "src/main";
 import { findCorrespondingXoppToPdf, openXournalppFile } from "./xopp-actions";
-import { TFile } from "obsidian";
 
 interface FileExplorerView {
     containerEl?: HTMLElement;
@@ -51,7 +50,7 @@ function applyXournalppTags(plugin: XoppPlugin) {
                         tagEl.innerText = "X++";
                         tagEl.classList.add("clickable-tag");
                         tagEl.onclick = () => {
-                            openXournalppFile(xoppFile as TFile, plugin);
+                            void openXournalppFile(xoppFile, plugin);
                         };
                     }
                 }

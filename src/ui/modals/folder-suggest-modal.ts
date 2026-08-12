@@ -39,7 +39,7 @@ export default class FolderSuggestModal extends FuzzySuggestModal<TFolder> {
     }
 
     onOpen(): void {
-        super.onOpen();
+        void super.onOpen();
 
         this.inputEl.addEventListener("keydown", (event) => {
             if (event.key === "Tab") {

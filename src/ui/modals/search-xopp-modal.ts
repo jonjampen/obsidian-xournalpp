@@ -33,7 +33,7 @@ export default class SearchXoppModal extends FuzzySuggestModal<TFile> {
     }
 
     onOpen(): void {
-        super.onOpen();
+        void super.onOpen();
 
         this.inputEl.addEventListener("keydown", (event) => {
             if (event.key === "Tab") {
@@ -58,7 +58,7 @@ export default class SearchXoppModal extends FuzzySuggestModal<TFile> {
 
     onChooseItem(file: TFile, event: MouseEvent | KeyboardEvent): void {
         if (event.shiftKey) {
-            openXournalppFile(file, this.plugin);
+            void openXournalppFile(file, this.plugin);
             this.close();
         } else {
             const pdfFilePath = file.path.replace(".xopp", ".pdf");
@@ -68,7 +68,7 @@ export default class SearchXoppModal extends FuzzySuggestModal<TFile> {
                 return;
             }
 
-            this.plugin.app.workspace
+            void this.plugin.app.workspace
                 .getLeaf(event.ctrlKey || event.metaKey ? "split" : undefined, "vertical")
                 .openFile(pdfFile);
             this.close();

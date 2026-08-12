@@ -49,3 +49,7 @@
     justify-content: flex-end;
     gap: 0.5rem;
 }
+
+.xopp-placeholder-help-modal {
+    width: 1000px;
+}
