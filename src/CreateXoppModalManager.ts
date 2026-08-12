@@ -54,7 +54,7 @@ export default class CreateXoppModalManager {
             { command: "Enter", purpose: "to select folder" },
         ]);
 
-        if (this.filePath == "") {
+        if (this.filePath === "") {
             folderSuggestModal.open();
         } else {
             onCloseFolderModal(this.filePath);

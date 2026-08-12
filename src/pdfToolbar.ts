@@ -1,8 +1,6 @@
 import XoppPlugin from "main";
-import { MarkdownView, TFile, getLinkpath } from "obsidian";
-import { findCorrespondingXoppToPdf } from "./xoppActions";
-import { ButtonComponent, App } from "obsidian";
-import { openXournalppFile } from "./xoppActions";
+import { ButtonComponent, TFile } from "obsidian";
+import { findCorrespondingXoppToPdf, openXournalppFile } from "./xoppActions";
 
 export function addOpenInXournalppToPdfToolbar(file: TFile, plugin: XoppPlugin) {
     if (file && file.extension === "pdf") {
@@ -10,7 +8,7 @@ export function addOpenInXournalppToPdfToolbar(file: TFile, plugin: XoppPlugin) 
         const oldIcons = document.querySelectorAll(".xournalpp-open-icon");
         oldIcons.forEach((old) => old.remove());
 
-        let xoppFile = findCorrespondingXoppToPdf(file.path, plugin);
+        const xoppFile = findCorrespondingXoppToPdf(file.path, plugin);
 
         if (xoppFile) {
             // show toolbar icon
@@ -24,7 +22,7 @@ export function addOpenInXournalppToPdfToolbar(file: TFile, plugin: XoppPlugin) 
 }
 
 export function createPdfToolbarButton(pdfToolbar: HTMLElement, xoppFile: TFile, plugin: XoppPlugin): void {
-    let xoppButton = new ButtonComponent(pdfToolbar)
+    const xoppButton = new ButtonComponent(pdfToolbar)
         .setClass("clickable-icon")
         .setClass("xournalpp-open-icon")
         .setButtonText("Edit in Xournal++")

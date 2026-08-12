@@ -11,10 +11,10 @@ export function createCommands(plugin: XoppPlugin) {
         id: "open-in-xournalpp",
         name: "Open current note",
         checkCallback: (checking: boolean) => {
-            let pdfFilePath = plugin.app.workspace.getActiveFile()?.path;
+            const pdfFilePath = plugin.app.workspace.getActiveFile()?.path;
             if (!pdfFilePath || plugin.app.workspace.getActiveFile()?.extension !== "pdf") return false;
 
-            let xoppFile = findCorrespondingXoppToPdf(pdfFilePath, plugin);
+            const xoppFile = findCorrespondingXoppToPdf(pdfFilePath, plugin);
             if (!xoppFile) return false;
 
             if (!checking) openXournalppFile(xoppFile, plugin);
@@ -91,10 +91,10 @@ export function createCommands(plugin: XoppPlugin) {
         id: "rename-xournalpp",
         name: "Rename current PDF and corresponding Xournal++ note",
         checkCallback: (checking: boolean) => {
-            let pdfFile = plugin.app.workspace.getActiveFile();
+            const pdfFile = plugin.app.workspace.getActiveFile();
             if (!pdfFile || !pdfFile.name.endsWith(".pdf")) return false;
 
-            let xoppFile = findCorrespondingXoppToPdf(pdfFile.path, plugin);
+            const xoppFile = findCorrespondingXoppToPdf(pdfFile.path, plugin);
             if (!xoppFile) return false;
 
             if (!checking) {
@@ -110,10 +110,10 @@ export function createCommands(plugin: XoppPlugin) {
         id: "delete-xournalpp",
         name: "Delete current PDF and corresponding Xournal++ note",
         checkCallback: (checking: boolean) => {
-            let pdfFile = plugin.app.workspace.getActiveFile();
+            const pdfFile = plugin.app.workspace.getActiveFile();
             if (!pdfFile || !pdfFile.name.endsWith(".pdf")) return false;
 
-            let xoppFile = findCorrespondingXoppToPdf(pdfFile.path, plugin);
+            const xoppFile = findCorrespondingXoppToPdf(pdfFile.path, plugin);
             if (!xoppFile) return false;
 
             if (!checking) {
