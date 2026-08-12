@@ -18,6 +18,6 @@ Click [here](https://obsidian.md/plugins?id=xounralpp) to go directly to the ins
 
 1. Open Obsidian and got to **Settings → Community Plugins**
 1. Turn on Community Plugins
-1. Select **Browse** and search for `Xournal++`
+1. Select **Browse** and search for `Xournalpp`
 1. Select **Install** and then **Enable**
 1. The plugin is now installed. Select **Options** if you want to change the default [plugin settings](Settings).
