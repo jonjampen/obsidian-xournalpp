@@ -15,6 +15,8 @@ We recommend using **BRAT** (Beta Reviewer's Auto-update Tool) to easily manage 
 
 ### Step 1: Install BRAT
 
+Click [here](obsidian://show-plugin?id=obsidian42-brat) or:
+
 1. Open Obsidian and go to **Settings → Community Plugins**.
 2. Click **Browse** and search for `BRAT` (Beta Reviewer's Auto-update Tool).
 3. Click **Install**, then **Enable**.

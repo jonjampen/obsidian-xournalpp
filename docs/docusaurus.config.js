@@ -95,7 +95,11 @@ const config = {
                         items: [
                             {
                                 label: "Plugin Link",
-                                to: "https://obsidian.md/plugins?id=xounralpp",
+                                to: "https://community.obsidian.md/plugins/xournalpp",
+                            },
+                            {
+                                label: "Install",
+                                to: "obsidian://show-plugin?id=xournalpp",
                             },
                             {
                                 label: "Documentation",

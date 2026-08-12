@@ -122,7 +122,7 @@ export default function InstallationPage() {
                                             <div className={styles.buttonRow}>
                                                 <Link
                                                     className={styles.btnPrimary}
-                                                    to="https://obsidian.md/plugins?id=xournalpp"
+                                                    to="obsidian://show-plugin?id=xournalpp"
                                                 >
                                                     Install Plugin
                                                 </Link>
@@ -172,7 +172,7 @@ export default function InstallationPage() {
                                             <div className={styles.buttonRow}>
                                                 <Link
                                                     className={styles.btnPrimary}
-                                                    to="https://obsidian.md/plugins?id=obsidian42-brat"
+                                                    to="obsidian://show-plugin?id=obsidian42-brat"
                                                 >
                                                     Install BRAT
                                                 </Link>

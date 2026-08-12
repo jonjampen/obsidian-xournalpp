@@ -7,7 +7,7 @@
   <a href="https://github.com/jonjampen/obsidian-xournalpp/releases">
     <img src="https://img.shields.io/github/v/release/jonjampen/obsidian-xournalpp?include_prereleases&color=blue&style=flat-square" alt="Latest Release" />
   </a>
-  <a href="https://obsidian.md/plugins?id=xournalpp">
+  <a href="https://community.obsidian.md/plugins/xournalpp">
     <img src="https://img.shields.io/badge/Obsidian-Community_Plugin-purple?style=flat-square" alt="Obsidian Plugin" />
   </a>
   <a href="https://discord.gg/VngwVHJQg5">
@@ -17,8 +17,7 @@
 
 A seamless integration with [Xournal++](https://xournalpp.github.io). Xournal++ is an open-source, cross-platform note-taking application for digital, **handwritten notes** and PDF **annotations**. This plugin bridges Xournal++ with your Obsidian vault.
 
-[Install Plugin](https://obsidian.md/plugins?id=xournalpp) | [Documentation Site](https://jonjampen.github.io/obsidian-xournalpp/) | [Report an Issue](https://github.com/jonjampen/obsidian-xournalpp/issues) | [Discord](https://discord.gg/VngwVHJQg5)
-
+[Install Plugin](obsidian://show-plugin?id=xournalpp) | [Documentation Site](https://jonjampen.github.io/obsidian-xournalpp/) | [Report an Issue](https://github.com/jonjampen/obsidian-xournalpp/issues) | [Discord](https://discord.gg/VngwVHJQg5)
 
 ## Features
 
@@ -26,7 +25,6 @@ A seamless integration with [Xournal++](https://xournalpp.github.io). Xournal++ 
 - **➕ Easy Creation:** Create new Xournal++ files directly from the ribbon icon, file explorer context menu, or command palette.
 - **⚡ Direct Editing:** Click the edit icon in the PDF toolbar or select "Edit in Xournal++" from the file explorer context menu to instantly open the file in Xournal++.
 - **🎨 Custom Templates:** Configure default page sizes, grid backgrounds, and custom colors when creating new notes.
-
 
 ## How to Install
 
