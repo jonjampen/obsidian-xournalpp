@@ -1,7 +1,7 @@
 import { FileSystemAdapter, Notice } from "obsidian";
 import { exec } from "child_process";
 import XoppPlugin from "src/main";
-import { checkXoppSetup } from "./checks";
+import { checkXoppSetup } from "./core/environment-checks";
 
 export function exportXoppToPDF(plugin: XoppPlugin, filePaths: Array<string>, notify = true) {
     let errors = false;

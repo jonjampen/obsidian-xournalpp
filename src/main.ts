@@ -1,8 +1,8 @@
 import { Plugin } from "obsidian";
 import { XoppSettingsTab } from "src/XoppSettingsTab";
-import { checkXoppSetup } from "src/checks";
-import { createCommands } from "src/commands";
-import { setupListeners } from "src/listeners";
+import { checkXoppSetup } from "src/core/environment-checks";
+import { createCommands } from "src/core/commands";
+import { setupListeners } from "src/core/listeners";
 import { createRibbonIcons } from "src/ribbonIcons";
 
 interface XoppPluginSettings {
