@@ -30,7 +30,7 @@ function addOpenInXournalppMenu(menu: Menu, xoppFile: TFile, plugin: XoppPlugin)
         item.setTitle("Open in Xournal++")
             .setIcon("pen-tool")
             .onClick(() => {
-                openXournalppFile(xoppFile, plugin);
+                void openXournalppFile(xoppFile, plugin);
             });
     });
     menu.addItem((item) => {
@@ -39,7 +39,7 @@ function addOpenInXournalppMenu(menu: Menu, xoppFile: TFile, plugin: XoppPlugin)
             .onClick(() => {
                 let filePath = plugin.app.workspace.getActiveFile()?.path as string;
                 filePath = filePath?.replace(".pdf", ".xopp");
-                exportXoppToPDF(plugin, [filePath]);
+                void exportXoppToPDF(plugin, [filePath]);
             });
     });
 }
@@ -60,7 +60,7 @@ function addXournalppDeleteMenu(menu: Menu, pdfFile: TFile, xoppFile: TFile, plu
             .setIcon("trash")
             .setSection("danger")
             .onClick(() => {
-                deleteXoppAndPdf(plugin, xoppFile, pdfFile);
+                void deleteXoppAndPdf(plugin, xoppFile, pdfFile);
             });
     });
 }
@@ -75,7 +75,9 @@ function addXournalppRenameMenu(menu: Menu, pdfFile: TFile, xoppFile: TFile, plu
             });
     });
 
-    const renameFile = (fileName: string) => renameXoppFile(plugin, xoppFile, pdfFile, fileName);
+    const renameFile = (fileName: string) => {
+        void renameXoppFile(plugin, xoppFile, pdfFile, fileName);
+    };
 }
 
 function removeDeleteRenameMenuItem() {

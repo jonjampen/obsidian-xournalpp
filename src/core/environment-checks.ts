@@ -15,7 +15,8 @@ export async function checkXoppSetup(plugin: XoppPlugin): Promise<string> {
             await executeCommand(userPath + versionCmd);
             return userPath;
         } catch (error) {
-            errors.push("User defined Xournal++ path not working: " + error.message);
+            const message = error instanceof Error ? error.message : String(error);
+            errors.push("User defined Xournal++ path not working: " + message);
         }
     }
 
@@ -23,7 +24,8 @@ export async function checkXoppSetup(plugin: XoppPlugin): Promise<string> {
         await executeCommand(aliasPath + versionCmd);
         return aliasPath;
     } catch (error) {
-        errors.push(error.message);
+        const message = error instanceof Error ? error.message : String(error);
+        errors.push(message);
     }
 
     if (Platform.isWin) {
@@ -31,7 +33,8 @@ export async function checkXoppSetup(plugin: XoppPlugin): Promise<string> {
             await executeCommand(windowsPath + versionCmd);
             return windowsPath;
         } catch (error) {
-            errors.push(error.message);
+            const message = error instanceof Error ? error.message : String(error);
+            errors.push(message);
         }
     }
 
@@ -40,7 +43,8 @@ export async function checkXoppSetup(plugin: XoppPlugin): Promise<string> {
             await executeCommand(macPath + versionCmd);
             return macPath;
         } catch (error) {
-            errors.push(error.message);
+            const message = error instanceof Error ? error.message : String(error);
+            errors.push(message);
         }
     }
 
@@ -53,7 +57,7 @@ function executeCommand(command: string): Promise<void> {
     return new Promise<void>((resolve, reject) => {
         exec(command, (error) => {
             if (error) {
-                reject(error);
+                reject(error instanceof Error ? error : new Error(String(error)));
             } else {
                 resolve();
             }

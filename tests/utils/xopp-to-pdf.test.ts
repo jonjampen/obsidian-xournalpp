@@ -12,8 +12,8 @@ vi.mock("src/core/environment-checks", () => ({
 describe("xopp-to-pdf", () => {
     let mockPlugin: XoppPlugin;
     let mockAdapter: obsidian.FileSystemAdapter;
-    let mockVault: any; // eslint-disable-line @typescript-eslint/no-explicit-any
-    let noticeSpy: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+    let mockVault: any;
+    let noticeSpy: any;
 
     beforeEach(() => {
         mockAdapter = new obsidian.FileSystemAdapter();
@@ -41,7 +41,7 @@ describe("xopp-to-pdf", () => {
     });
 
     it("should abort if the vault adapter is not FileSystemAdapter", async () => {
-        mockVault.adapter = {} as any; // eslint-disable-line @typescript-eslint/no-explicit-any
+        mockVault.adapter = {} as any;
 
         await exportXoppToPDF(mockPlugin, ["file1.xopp"]);
         expect(checkXoppSetup).not.toHaveBeenCalled();

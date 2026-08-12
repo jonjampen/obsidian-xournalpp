@@ -40,7 +40,8 @@ export async function createXoppFile(plugin: XoppPlugin, newNoteName: string, se
         await fs.copy(templatePath, newNotePath);
         new Notice("Xournal++ note created");
     } catch (e) {
-        new Notice("Error: Could not create a Xournal++ note: " + e.message);
+        const message = e instanceof Error ? e.message : String(e);
+        new Notice("Error: Could not create a Xournal++ note: " + message);
     }
 }
 

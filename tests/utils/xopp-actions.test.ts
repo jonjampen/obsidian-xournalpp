@@ -11,8 +11,8 @@ import { TFile, TFolder, DataAdapter } from "obsidian";
 
 describe("xopp-actions", () => {
     let mockPlugin: XoppPlugin;
-    let mockVault: any; // eslint-disable-line @typescript-eslint/no-explicit-any
-    let mockFileManager: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+    let mockVault: any;
+    let mockFileManager: any;
 
     beforeEach(() => {
         mockVault = {
