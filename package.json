@@ -4,6 +4,7 @@
     "description": "Integration with Xournal++ for handwritten notes and annotations.",
     "main": "main.js",
     "scripts": {
+        "postinstall": "node scripts/setup-test-vault.js",
         "dev": "node esbuild.config.mjs",
         "build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
         "version": "node version-bump.mjs && git add manifest.json versions.json",
