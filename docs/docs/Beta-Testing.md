@@ -4,14 +4,33 @@ sidebar_position: 7
 
 # Beta Testing
 
-New beta releases are always announced on the [Discord server](https://discord.gg/VngwVHJQg5) a week before the expected launch.
+New beta releases are announced on our [Discord Server](https://discord.gg/VngwVHJQg5) before they are officially published to the Obsidian Community Plugin catalog. Your feedback as a beta tester helps ensure stability for all users!
 
-To beta-test the plugin, you can follow the steps below:
+## How to Install Beta Releases
 
-1. Set up a test vault. It is not recommended to use your main vault for this, however, you can copy your main one so you have a real representation of your setup for testing.
-1. Install the [BRAT](https://obsidian.md/plugins?id=obsidian42-brat) (Beta Reviewer's Auto-update Tool for Obsidian) plugin
-1. Open the BRAT plugin options and click `add beta plugin`, enter this url: `https://github.com/jonjampen/obsidian-xournalpp`, and select `Latest version`.
-1. Test if everything works as expected.
-1. To report problems with the beta release, you can create an issue on GitHub directly or join the Discord Server, activate beta testing for your account in the #welcome channel and send me a message in the #beta-testing channel.
+We recommend using **BRAT** (Beta Reviewer's Auto-update Tool) to easily manage beta installations.
 
-Thank you to anyone testing the plugin!
+> [!WARNING]
+> Always use a **test vault** (or a backup copy of your vault) when testing beta releases. Do not run beta software on production data without backups.
+
+### Step 1: Install BRAT
+
+1. Open Obsidian and go to **Settings → Community Plugins**.
+2. Click **Browse** and search for `BRAT` (Beta Reviewer's Auto-update Tool).
+3. Click **Install**, then **Enable**.
+
+### Step 2: Add the Plugin to BRAT
+
+1. Go to the **BRAT settings** page in your Obsidian options.
+2. Under **Beta Plugin List**, click the **Add Beta plugin** button.
+3. Enter the repository URL: `https://github.com/jonjampen/obsidian-xournalpp`
+4. Click **Add Plugin**. BRAT will download the latest beta release and enable it automatically.
+
+## Providing Feedback & Reporting Bugs
+
+If you encounter any issues, bugs, or have suggestions:
+
+1. **GitHub Issues:** Open a bug report or feature request on our [GitHub Issues](https://github.com/jonjampen/obsidian-xournalpp/issues) page using our structured issue forms.
+2. **Discord:** Join the [Discord Server](https://discord.gg/VngwVHJQg5) and chat in the `#beta-testing` channel. You can request the `@Beta Tester` role in `#welcome` to get notifications when new test builds are released.
+
+Thank you for helping test and improve the plugin!
