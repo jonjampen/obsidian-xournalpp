@@ -1,4 +1,4 @@
-import XoppPlugin from "main";
+import XoppPlugin from "src/main";
 import dayjs from "dayjs";
 import advancedFormat from "dayjs/plugin/advancedFormat";
 import weekOfYear from "dayjs/plugin/weekOfYear";
@@ -43,11 +43,7 @@ export interface ParsedFileName {
     cursorIndex?: number;
 }
 
-export default function parseFileName(
-    template: string,
-    plugin: XoppPlugin,
-    showCursor = false
-): ParsedFileName {
+export default function parseFileName(template: string, plugin: XoppPlugin, showCursor = false): ParsedFileName {
     for (const substitution of SUBSTITUTIONS) {
         const replacement = substitution.substitution(plugin);
         template = template.replace(substitution.match, replacement);

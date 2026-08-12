@@ -1,4 +1,4 @@
-import XoppPlugin from "main";
+import XoppPlugin from "src/main";
 import CreateXoppModalManager from "./CreateXoppModalManager";
 
 export function createRibbonIcons(plugin: XoppPlugin) {
