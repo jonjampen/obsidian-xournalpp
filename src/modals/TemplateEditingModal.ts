@@ -1,4 +1,4 @@
-import XoppPlugin from "main";
+import XoppPlugin from "src/main";
 import { App, ButtonComponent, Modal, Setting } from "obsidian";
 import { parseTemplateFile, fetchTemplates } from "src/TemplateEditingModalManager";
 import { TemplateSpec } from "./TemplateCreationModal";

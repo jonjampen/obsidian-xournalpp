@@ -1,4 +1,4 @@
-import XoppPlugin from "main";
+import XoppPlugin from "src/main";
 import { App, FuzzySuggestModal, TFolder } from "obsidian";
 
 export default class FolderSuggestModal extends FuzzySuggestModal<TFolder> {

@@ -1,6 +1,6 @@
 import { Notice, Platform } from "obsidian";
 import { exec } from "child_process";
-import XoppPlugin from "main";
+import XoppPlugin from "src/main";
 
 export async function checkXoppSetup(plugin: XoppPlugin): Promise<string> {
     const errors = [];

@@ -1,4 +1,4 @@
-import XoppPlugin from "main";
+import XoppPlugin from "src/main";
 import { findCorrespondingXoppToPdf, openXournalppFile } from "./xoppActions";
 import { TFile } from "obsidian";
 

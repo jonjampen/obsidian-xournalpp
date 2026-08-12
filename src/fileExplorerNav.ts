@@ -1,4 +1,4 @@
-import XoppPlugin from "main";
+import XoppPlugin from "src/main";
 import { ButtonComponent } from "obsidian";
 import CreateXoppModalManager from "./CreateXoppModalManager";
 

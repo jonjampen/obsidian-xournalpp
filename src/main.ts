@@ -42,6 +42,4 @@ export default class XoppPlugin extends Plugin {
     async saveSettings() {
         await this.saveData(this.settings);
     }
-
-    onunload() {}
 }

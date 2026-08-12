@@ -1,4 +1,4 @@
-import XoppPlugin from "main";
+import XoppPlugin from "src/main";
 import { TFile, Notice, DataAdapter, FileSystemAdapter } from "obsidian";
 import { base64Template } from "./template";
 import { checkXoppSetup } from "./checks";

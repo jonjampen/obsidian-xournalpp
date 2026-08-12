@@ -1,4 +1,4 @@
-import XoppPlugin from "main";
+import XoppPlugin from "src/main";
 import { ButtonComponent, TFile } from "obsidian";
 import { findCorrespondingXoppToPdf, openXournalppFile } from "./xoppActions";
 

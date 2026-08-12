@@ -1,4 +1,4 @@
-import XoppPlugin from "main";
+import XoppPlugin from "src/main";
 import { App, normalizePath, Notice } from "obsidian";
 import type { TemplateSpec } from "src/modals/TemplateCreationModal";
 import * as pako from "pako";

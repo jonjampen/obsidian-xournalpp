@@ -2,7 +2,7 @@ import { Notice, TFile, TFolder } from "obsidian";
 import { ParsedTemplateEditing } from "./modals/TemplateEditingModal";
 import { PAGE_PRESETS } from "./TemplateCreationModalManager";
 import { TemplateBackgroundStyle, TemplateSpec } from "./modals/TemplateCreationModal";
-import XoppPlugin from "main";
+import XoppPlugin from "src/main";
 import * as pako from "pako";
 
 type PagePresetName = keyof typeof PAGE_PRESETS;

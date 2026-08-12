@@ -1,4 +1,4 @@
-import XoppPlugin from "main";
+import XoppPlugin from "src/main";
 import { App, Setting, PluginSettingTab, getIcon, TFile } from "obsidian";
 import ConfirmationModal from "./modals/ConfirmationModal";
 import { exportAllXoppToPDF } from "src/xopp2pdf";
