@@ -5,5 +5,13 @@
     "singleQuote": false,
     "trailingComma": "es5",
     "printWidth": 120,
-    "endOfLine": "lf"
+    "endOfLine": "lf",
+    "overrides": [
+        {
+            "files": ["**/*.yml", "**/*.yaml"],
+            "options": {
+                "tabWidth": 2
+            }
+        }
+    ]
 }
