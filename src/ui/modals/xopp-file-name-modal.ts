@@ -52,7 +52,9 @@ export default class XoppFileNameModal extends Modal {
             selectedTemplatePath = value;
         });
 
-        this.templates.forEach((t) => dropdown.addOption(t.path, t.name));
+        this.templates.forEach((t) => {
+            dropdown.addOption(t.path, t.name);
+        });
 
         dropdown.setValue("");
         selectedTemplatePath = "";
@@ -68,7 +70,7 @@ export default class XoppFileNameModal extends Modal {
         textComponent.setValue(fileName);
 
         // Using a timeout to ensure the focus is set after the modal is fully rendered.
-        setTimeout(() => textComponent.inputEl.focus(), 0);
+        window.setTimeout(() => textComponent.inputEl.focus(), 0);
 
         // set cursor position
         if (parsed.cursorIndex !== undefined) {

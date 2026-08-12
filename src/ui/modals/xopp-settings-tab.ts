@@ -108,7 +108,9 @@ export class XoppSettingsTab extends PluginSettingTab {
                 if (templateFiles.length === 0) {
                     dropdown.addOption("", "No templates found");
                 } else {
-                    templateFiles.forEach((file) => dropdown.addOption(file.path, file.path));
+                    templateFiles.forEach((file) => {
+                        dropdown.addOption(file.path, file.path);
+                    });
                 }
                 dropdown.setValue(this.plugin.settings.defaultTemplatePath || "").onChange((value) => {
                     this.plugin.settings.defaultTemplatePath = value;
@@ -183,7 +185,7 @@ export class XoppSettingsTab extends PluginSettingTab {
         ).descEl;
 
         const titleEl = defaultNameSetting.nameEl;
-        const helpIcon = titleEl.createEl("span");
+        const helpIcon = titleEl.createSpan();
         const helpIconEl = getIcon("help-circle");
         if (helpIconEl) {
             helpIcon.appendChild(helpIconEl);

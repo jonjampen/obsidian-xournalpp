@@ -30,7 +30,7 @@ export function createPdfToolbarButton(pdfToolbar: HTMLElement, xoppFile: TFile,
         .setTooltip("Edit in Xournal++");
 
     xoppButton.onClick(() => {
-        openXournalppFile(xoppFile, plugin);
+        void openXournalppFile(xoppFile, plugin);
     });
 
     pdfToolbar.appendChild(xoppButton.buttonEl);

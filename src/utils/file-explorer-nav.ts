@@ -17,7 +17,7 @@ export function addCreateXournalppNavIcon(plugin: XoppPlugin) {
         const navButtonsEl = headerDom?.navButtonsEl;
 
         if (navButtonsEl && navButtonsEl.children.length > 2 && !navButtonsEl.querySelector(".xournalpp-create-icon")) {
-            const createXoppButton = new ButtonComponent(navButtonsEl as HTMLElement)
+            const createXoppButton = new ButtonComponent(navButtonsEl)
                 .setClass("clickable-icon")
                 .setClass("xournalpp-create-icon")
                 .setIcon("pen-tool")
