@@ -1,29 +1,49 @@
-# Xournal++
+# Xournal++ Integration for Obsidian
 
-A seamless integration with [Xournal++](https://xournalpp.github.io). Xournal++ is an open-source and cross-platform note taking application for digital, **handwritten notes** and PDF **annotations**.
+<p align="center">
+  <a href="https://github.com/jonjampen/obsidian-xournalpp/actions/workflows/ci.yml">
+    <img src="https://github.com/jonjampen/obsidian-xournalpp/actions/workflows/ci.yml/badge.svg" alt="CI Status" />
+  </a>
+  <a href="https://github.com/jonjampen/obsidian-xournalpp/releases">
+    <img src="https://img.shields.io/github/v/release/jonjampen/obsidian-xournalpp?include_prereleases&color=blue&style=flat-square" alt="Latest Release" />
+  </a>
+  <a href="https://obsidian.md/plugins?id=xournalpp">
+    <img src="https://img.shields.io/badge/Obsidian-Community_Plugin-purple?style=flat-square" alt="Obsidian Plugin" />
+  </a>
+  <a href="https://discord.gg/VngwVHJQg5">
+    <img src="https://img.shields.io/badge/discord-join_chat-5865F2?logo=discord&style=flat-square" alt="Discord" />
+  </a>
+</p>
 
-[Install Plugin](https://obsidian.md/plugins?id=xournalpp) | [Documentation](https://jonjampen.github.io/obsidian-xournalpp/) | [GitHub](https://github.com/jonjampen/obsidian-xournalpp/) | [Discord](https://discord.gg/VngwVHJQg5)
+A seamless integration with [Xournal++](https://xournalpp.github.io). Xournal++ is an open-source, cross-platform note-taking application for digital, **handwritten notes** and PDF **annotations**. This plugin bridges Xournal++ with your Obsidian vault.
+
+[Install Plugin](https://obsidian.md/plugins?id=xournalpp) | [Documentation Site](https://jonjampen.github.io/obsidian-xournalpp/) | [Report an Issue](https://github.com/jonjampen/obsidian-xournalpp/issues) | [Discord](https://discord.gg/VngwVHJQg5)
+
 
 ## Features
 
-- Automatically **export** Xournal++ notes **to PDF** whenever they are modified, so that they can be linked, embedded, and viewed in Obsidian
-- Easily **create** new Xournal++ files (.xopp) directly from within Obsidian, accessible from the ribbon icon, file explorer, and command palette
-- Access the **"Edit in Xournal++"** option via an icon in the PDF preview as well as in file explorer (by clicking on `X++`), enabling quick navigation to the corresponding Xournal++ file.
+- **🔄 Automatic PDF Export:** Automatically exports Xournal++ notes (`.xopp`) to PDF whenever they are modified, allowing them to be linked, embedded, and viewed inside Obsidian.
+- **➕ Easy Creation:** Create new Xournal++ files directly from the ribbon icon, file explorer context menu, or command palette.
+- **⚡ Direct Editing:** Click the edit icon in the PDF toolbar or select "Edit in Xournal++" from the file explorer context menu to instantly open the file in Xournal++.
+- **🎨 Custom Templates:** Configure default page sizes, grid backgrounds, and custom colors when creating new notes.
 
-## Usage
+
+## How to Install
+
+1. Install [Xournal++](https://xournalpp.github.io) on your system.
+2. In Obsidian, go to **Settings → Community Plugins** and turn them on.
+3. Select **Browse**, search for `Xournalpp`, and click **Install** then **Enable**.
+4. Configure the path where Xournal++ is installed on your system in the plugin settings (leave empty if installed in the default system path).
 
 > [!IMPORTANT]
-> Be mindful that any PDF files sharing the same name and location as Xournal++ (.xopp) files will be overwritten with the exported version. This ensures seamless integration and consistent file management within Obsidian (regular vault backups are therefore recommended).
+> Any PDF files sharing the exact same name and location as a Xournal++ (`.xopp`) file will be overwritten with the exported version when modified. Ensure your vault is backed up.
 
-1. Ensure you have [Xournal++](https://xournalpp.github.io) installed on your device
-1. Open Obsidian and got to **Settings → Community Plugins**
-1. Turn on Community Plugins
-1. Select **Browse** and search for `Xournal++`
-1. Select **Install** and then **Enable**
-1. The plugin is now installed. Select **Options** if you want to change the default plugin settings.
+## Contributing
 
-You can head over to the [documentation](https://jonjampen.github.io/obsidian-xournalpp/) for more information on how to use the plugin and customize the settings.
+Contributions are welcome! For guidelines on how to contribute code, report bugs, or request features, please see our [Contributing Guide](https://jonjampen.github.io/obsidian-xournalpp/docs/contributing/) in the documentation.
 
-## Developer
+## Maintainer
 
 This plugin is created and maintained by [Jon Jampen](mailto:hello@jonjampen.ch). Thanks to the contributors for their valuable input and improvements. I hope you find this plugin useful!
+
+[Support on Ko-fi](https://ko-fi.com/jonjampen)
