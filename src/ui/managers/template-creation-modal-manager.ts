@@ -79,7 +79,7 @@ function buildTemplateXML(spec: TemplateSpec): string {
     const backgroundTag = buildBackgroundTag(spec);
 
     return `<?xml version="1.0" standalone="no"?>
-<xournal creator="xournalpp 1.2.5" fileversion="1">
+<xournal creator="xournalpp 1.2.5" fileversion="4">
 <title>Xournal++ document - see https://xournalpp.github.io/</title>
   <page width="${widthPt}" height="${heightPt}">
     ${backgroundTag}
