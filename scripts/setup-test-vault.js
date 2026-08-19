@@ -30,3 +30,11 @@ download(
     "https://raw.githubusercontent.com/pjeby/hot-reload/master/manifest.json",
     path.join(destDir, "manifest.json")
 );
+
+// Create .hotreload file in xournalpp plugin directory for hot-reload plugin detection
+const pluginDir = path.join(__dirname, "../test-vault/.obsidian/plugins/xournalpp");
+if (!fs.existsSync(pluginDir)) {
+    fs.mkdirSync(pluginDir, { recursive: true });
+}
+fs.writeFileSync(path.join(pluginDir, ".hotreload"), "");
+console.log("Created .hotreload in test-vault plugin directory.");

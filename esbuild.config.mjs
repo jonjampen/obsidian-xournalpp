@@ -23,6 +23,7 @@ const copyToTestVault = {
                 fs.copyFileSync("main.js", `${dest}/main.js`);
                 fs.copyFileSync("manifest.json", `${dest}/manifest.json`);
                 fs.copyFileSync("styles.css", `${dest}/styles.css`);
+                fs.writeFileSync(`${dest}/.hotreload`, "");
                 console.log("⚡ Copied plugin files to test-vault");
             }
         });
