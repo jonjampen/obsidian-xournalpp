@@ -24,7 +24,7 @@
         "@typescript-eslint/eslint-plugin": "^8.35.1",
         "@typescript-eslint/parser": "^8.35.1",
         "esbuild": "^0.28.2",
-        "eslint": "^9.39.5",
+        "eslint": "^10.8.1",
         "eslint-plugin-obsidianmd": "^0.4.1",
         "husky": "^9.1.7",
         "jsdom": "^30.0.1",
