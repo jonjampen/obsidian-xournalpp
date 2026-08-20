@@ -37,7 +37,7 @@ jobs:
             main.js
             manifest.json
             styles.css
-          draft: false
+          draft: true
           prerelease: ${{ contains(github.ref_name, '-') || contains(github.ref_name, 'beta') || contains(github.ref_name, 'alpha') }}
           generate_release_notes: true
         env:
