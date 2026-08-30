@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [v1.2.1] - 2026-08-30
+
+### Fixed
+
+- Fixed Obsidian PDF viewer crashing (`InvalidPDFException`) and vault freezing during PDF auto-export by rendering to temporary `.pdf.tmp` files before atomically renaming [#36](https://github.com/jonjampen/obsidian-xournalpp/pull/36)
+- Added debounced file export listeners and retry attempts for transient file-saving errors [#36](https://github.com/jonjampen/obsidian-xournalpp/pull/36)
+
 ## [v1.2.0] - 2026-08-30
 
 ### Added
