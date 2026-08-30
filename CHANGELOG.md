@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [v1.2.0] - 2026-08-30
+
+### Added
+
+- Added default name setting with dynamic placeholder values [#23](https://github.com/jonjampen/obsidian-xournalpp/pull/23)
+- Added template creation and editing support through settings page [#25](https://github.com/jonjampen/obsidian-xournalpp/pull/25)
+- Added template selection during creation process [#24](https://github.com/jonjampen/obsidian-xournalpp/pull/24)
+- Added a documentation website (this deprecates the current wiki) [#29](https://github.com/jonjampen/obsidian-xournalpp/pull/29)
+- Implemented CI/CD processes [#29](https://github.com/jonjampen/obsidian-xournalpp/pull/29)
+- Improved code base in multiple aspects [#29](https://github.com/jonjampen/obsidian-xournalpp/pull/29)
+
 ## [v1.1.2] - 2025-06-21
 
 ### Added
