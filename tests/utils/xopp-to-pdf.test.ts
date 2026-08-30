@@ -9,6 +9,15 @@ vi.mock("src/core/environment-checks", () => ({
     checkXoppSetup: vi.fn(),
 }));
 
+vi.mock("fs/promises", async (importOriginal) => {
+    const actual = await importOriginal<typeof import("fs/promises")>();
+    return {
+        ...actual,
+        rename: vi.fn().mockResolvedValue(undefined),
+        unlink: vi.fn().mockResolvedValue(undefined),
+    };
+});
+
 describe("xopp-to-pdf", () => {
     let mockPlugin: XoppPlugin;
     let mockAdapter: obsidian.FileSystemAdapter;
@@ -67,7 +76,7 @@ describe("xopp-to-pdf", () => {
         await exportXoppToPDF(mockPlugin, ["notes/lecture.xopp"]);
 
         expect(exec).toHaveBeenCalledWith(
-            'xournalpp --create-pdf="/mocked/vault/path/notes/lecture.pdf" "/mocked/vault/path/notes/lecture.xopp"',
+            'xournalpp --create-pdf="/mocked/vault/path/notes/lecture.pdf.tmp" "/mocked/vault/path/notes/lecture.xopp"',
             expect.any(Function)
         );
         expect(noticeSpy).toHaveBeenCalledWith("Exported all Xournal++ notes successfully.");
@@ -133,11 +142,11 @@ describe("xopp-to-pdf", () => {
 
         expect(exec).toHaveBeenCalledTimes(2);
         expect(exec).toHaveBeenCalledWith(
-            'xournalpp --create-pdf="/mocked/vault/path/note1.pdf" "/mocked/vault/path/note1.xopp"',
+            'xournalpp --create-pdf="/mocked/vault/path/note1.pdf.tmp" "/mocked/vault/path/note1.xopp"',
             expect.any(Function)
         );
         expect(exec).toHaveBeenCalledWith(
-            'xournalpp --create-pdf="/mocked/vault/path/folder/note3.pdf" "/mocked/vault/path/folder/note3.xopp"',
+            'xournalpp --create-pdf="/mocked/vault/path/folder/note3.pdf.tmp" "/mocked/vault/path/folder/note3.xopp"',
             expect.any(Function)
         );
         expect(noticeSpy).toHaveBeenCalledWith("Exported all Xournal++ notes successfully.");
