@@ -34,10 +34,24 @@ export function setupListeners(plugin: XoppPlugin) {
         })
     );
 
+    const exportDebounceTimers = new Map<string, number | NodeJS.Timeout>();
+
+    const debouncedExport = (filePath: string) => {
+        const existing = exportDebounceTimers.get(filePath);
+        if (existing) window.clearTimeout(existing as number);
+        exportDebounceTimers.set(
+            filePath,
+            window.setTimeout(() => {
+                exportDebounceTimers.delete(filePath);
+                void exportXoppToPDF(plugin, [filePath], false);
+            }, 1000)
+        );
+    };
+
     plugin.registerEvent(
         plugin.app.vault.on("modify", (file: TFile) => {
             if (file.extension === "xopp" && plugin.settings.autoExport) {
-                void exportXoppToPDF(plugin, [file.path], false);
+                debouncedExport(file.path);
             }
         })
     );
@@ -46,7 +60,7 @@ export function setupListeners(plugin: XoppPlugin) {
         plugin.registerEvent(
             plugin.app.vault.on("create", (file: TFile) => {
                 if (file.extension === "xopp" && plugin.settings.autoExport) {
-                    void exportXoppToPDF(plugin, [file.path], false);
+                    debouncedExport(file.path);
                 }
             })
         );

@@ -30,10 +30,25 @@ export async function exportXoppToPDF(plugin: XoppPlugin, filePaths: Array<strin
             const pdfFilePath = xoppFilePath.replace(".xopp", ".pdf");
             const command = `${path} --create-pdf="${pdfFilePath}" "${xoppFilePath}"`;
 
-            try {
-                await execPromise(command);
-            } catch (error) {
-                console.error(`Error converting Xournal++ to PDF (${filePath}):`, error);
+            const maxRetries = 3;
+            let success = false;
+            let lastError: unknown;
+
+            for (let attempt = 1; attempt <= maxRetries; attempt++) {
+                try {
+                    await execPromise(command);
+                    success = true;
+                    break;
+                } catch (error) {
+                    lastError = error;
+                    if (attempt < maxRetries) {
+                        await new Promise((resolve) => window.setTimeout(resolve, 500));
+                    }
+                }
+            }
+
+            if (!success) {
+                console.error(`Error converting Xournal++ to PDF (${filePath}):`, lastError);
                 hasErrors = true;
             }
         });
