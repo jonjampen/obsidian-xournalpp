@@ -1,4 +1,4 @@
-# Xournal++ Integration for Obsidian
+# Xournalpp
 
 <p align="center">
   <a href="https://github.com/jonjampen/obsidian-xournalpp/actions/workflows/ci.yml">
