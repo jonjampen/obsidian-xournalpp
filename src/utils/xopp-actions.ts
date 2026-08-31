@@ -11,7 +11,7 @@ export async function openXournalppFile(xoppFile: TFile, plugin: XoppPlugin): Pr
     if (fs instanceof FileSystemAdapter) {
         const vaultPath = fs.getBasePath();
 
-        if (!path || path === "error") {
+        if (!path) {
             new Notice("Error: Xournal++ path not setup correctly. Please check docs on how to set it up.", 10000);
             return;
         }
