@@ -34,11 +34,11 @@ export function setupListeners(plugin: XoppPlugin) {
         })
     );
 
-    const exportDebounceTimers = new Map<string, number | NodeJS.Timeout>();
+    const exportDebounceTimers = new Map<string, number>();
 
     const debouncedExport = (filePath: string) => {
         const existing = exportDebounceTimers.get(filePath);
-        if (existing) window.clearTimeout(existing as number);
+        if (existing) window.clearTimeout(existing);
         exportDebounceTimers.set(
             filePath,
             window.setTimeout(() => {
