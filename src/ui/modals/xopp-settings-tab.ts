@@ -16,14 +16,51 @@ export class XoppSettingsTab extends PluginSettingTab {
         this.plugin = plugin;
     }
 
+    getSettingDefinitions() {
+        return [
+            {
+                id: "autoExport",
+                name: "Auto export Xournal++ files",
+                description: "Automatically export Xournal++ files to PDF upon modification.",
+            },
+            {
+                id: "xournalppPath",
+                name: "Xournal++ installation path",
+                description: "The path where Xournal++ is installed (leave empty for system default).",
+            },
+            {
+                id: "templatesFolder",
+                name: "Xournal++ templates folder",
+                description: "Relative path to the folder that contains your Xournal++ .xopp templates.",
+            },
+            {
+                id: "defaultTemplatePath",
+                name: "Default Xournal++ template",
+                description: "The default template to use when creating new Xournal++ files from the templates folder.",
+            },
+            {
+                id: "defaultNewFilePath",
+                name: "Default path for new Xournal++ files",
+                description: "The relative path for new Xournal++ files.",
+            },
+            {
+                id: "defaultNewFileName",
+                name: "Default name for new Xournal++ files",
+                description: "The default name for new Xournal++ files.",
+            },
+        ];
+    }
+
     display(): void {
         const { containerEl } = this;
 
         containerEl.empty();
 
+        const defs = Object.fromEntries(this.getSettingDefinitions().map((def) => [def.id, def]));
+
         new Setting(containerEl)
-            .setName("Auto export Xournal++ files")
-            .setDesc("Automatically export Xournal++ files to PDF upon modification.")
+            .setName(defs.autoExport.name)
+            .setDesc(defs.autoExport.description)
             .addToggle((toggle) => {
                 toggle.setValue(this.plugin.settings.autoExport).onChange((value) => {
                     void (async () => {
@@ -61,8 +98,8 @@ export class XoppSettingsTab extends PluginSettingTab {
             });
 
         new Setting(containerEl)
-            .setName("Xournal++ installation path")
-            .setDesc("The path where Xournal++ is installed (leave empty for system default).")
+            .setName(defs.xournalppPath.name)
+            .setDesc(defs.xournalppPath.description)
             .addText((toggle) => {
                 toggle.setValue(this.plugin.settings.xournalppPath).onChange((value) => {
                     this.plugin.settings.xournalppPath = value;
@@ -71,8 +108,8 @@ export class XoppSettingsTab extends PluginSettingTab {
             });
 
         new Setting(containerEl)
-            .setName("Xournal++ templates folder")
-            .setDesc("Relative path to the folder that contains your Xournal++ .xopp templates.")
+            .setName(defs.templatesFolder.name)
+            .setDesc(defs.templatesFolder.description)
             .addText((text) => {
                 text.setValue(this.plugin.settings.templatesFolder)
                     .setPlaceholder("e.g. templates/xournalpp")
@@ -94,8 +131,8 @@ export class XoppSettingsTab extends PluginSettingTab {
             });
 
         new Setting(containerEl)
-            .setName("Default Xournal++ template")
-            .setDesc("The default template to use when creating new Xournal++ files from the templates folder.")
+            .setName(defs.defaultTemplatePath.name)
+            .setDesc(defs.defaultTemplatePath.description)
             .addDropdown((dropdown) => {
                 const templatesFolder = this.plugin.settings.templatesFolder?.trim();
                 let templateFiles: TFile[] = [];
@@ -149,10 +186,8 @@ export class XoppSettingsTab extends PluginSettingTab {
             });
 
         new Setting(containerEl)
-            .setName("Default path for new Xournal++ files")
-            .setDesc(
-                "The relative path for new Xournal++ files. This folder will be used unless a full path is specified during file creation (leave empty to use root folder)."
-            )
+            .setName(defs.defaultNewFilePath.name)
+            .setDesc(defs.defaultNewFilePath.description)
             .addText((toggle) => {
                 toggle
                     .setValue(this.plugin.settings.defaultNewFilePath)
@@ -166,19 +201,17 @@ export class XoppSettingsTab extends PluginSettingTab {
         // Default Name
         const defaultNameDesc =
             "The default name for new Xournal++ files. Use placeholders `${}` to insert dynamic values. Preview: ";
-        const defaultNameSetting = new Setting(containerEl)
-            .setName("Default name for new Xournal++ files")
-            .addText((toggle) => {
-                toggle
-                    .setValue(this.plugin.settings.defaultNewFileName)
-                    .setPlaceholder("e.g. ${MM}-${cursor}-note")
-                    .onChange((value) => {
-                        this.plugin.settings.defaultNewFileName = value;
-                        void this.plugin.saveSettings().then(() => {
-                            descEl.setText(defaultNameDesc + parseFileName(value, this.plugin, true).text);
-                        });
+        const defaultNameSetting = new Setting(containerEl).setName(defs.defaultNewFileName.name).addText((toggle) => {
+            toggle
+                .setValue(this.plugin.settings.defaultNewFileName)
+                .setPlaceholder("e.g. ${MM}-${cursor}-note")
+                .onChange((value) => {
+                    this.plugin.settings.defaultNewFileName = value;
+                    void this.plugin.saveSettings().then(() => {
+                        descEl.setText(defaultNameDesc + parseFileName(value, this.plugin, true).text);
                     });
-            });
+                });
+        });
 
         const descEl = defaultNameSetting.setDesc(
             defaultNameDesc + parseFileName(this.plugin.settings.defaultNewFileName, this.plugin, true).text
