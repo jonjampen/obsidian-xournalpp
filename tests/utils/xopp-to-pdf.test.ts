@@ -9,15 +9,6 @@ vi.mock("src/core/environment-checks", () => ({
     checkXoppSetup: vi.fn(),
 }));
 
-vi.mock("fs/promises", async (importOriginal) => {
-    const actual = await importOriginal<typeof import("fs/promises")>();
-    return {
-        ...actual,
-        rename: vi.fn().mockResolvedValue(undefined),
-        unlink: vi.fn().mockResolvedValue(undefined),
-    };
-});
-
 describe("xopp-to-pdf", () => {
     let mockPlugin: XoppPlugin;
     let mockAdapter: obsidian.FileSystemAdapter;
@@ -26,6 +17,9 @@ describe("xopp-to-pdf", () => {
 
     beforeEach(() => {
         mockAdapter = new obsidian.FileSystemAdapter();
+        mockAdapter.rename = vi.fn().mockResolvedValue(undefined);
+        mockAdapter.remove = vi.fn().mockResolvedValue(undefined);
+
         mockVault = {
             adapter: mockAdapter,
             getFiles: vi.fn(),
@@ -57,7 +51,7 @@ describe("xopp-to-pdf", () => {
     });
 
     it("should show notice and abort if checkXoppSetup returns error", async () => {
-        vi.mocked(checkXoppSetup).mockResolvedValue("error");
+        vi.mocked(checkXoppSetup).mockResolvedValue(null);
 
         await exportXoppToPDF(mockPlugin, ["file1.xopp"]);
         expect(noticeSpy).toHaveBeenCalledWith(expect.stringContaining("Xournal++ path not setup correctly"), 10000);

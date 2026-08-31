@@ -1,4 +1,4 @@
-# Xournal++ Integration for Obsidian
+# Xournalpp
 
 <p align="center">
   <a href="https://github.com/jonjampen/obsidian-xournalpp/actions/workflows/ci.yml">
@@ -17,7 +17,7 @@
 
 A seamless integration with [Xournal++](https://xournalpp.github.io). Xournal++ is an open-source, cross-platform note-taking application for digital, **handwritten notes** and PDF **annotations**. This plugin bridges Xournal++ with your Obsidian vault.
 
-[Install Plugin](obsidian://show-plugin?id=xournalpp) | [Documentation Site](https://jonjampen.github.io/obsidian-xournalpp/) | [Report an Issue](https://github.com/jonjampen/obsidian-xournalpp/issues) | [Discord](https://discord.gg/VngwVHJQg5)
+[Install Plugin](https://community.obsidian.md/plugins/xournalpp) | [Documentation Site](https://jonjampen.github.io/obsidian-xournalpp/) | [Report an Issue](https://github.com/jonjampen/obsidian-xournalpp/issues) | [Discord](https://discord.gg/VngwVHJQg5)
 
 ## Features
 
