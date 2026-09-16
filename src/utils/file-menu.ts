@@ -1,5 +1,11 @@
 import { Menu, TFile, TFolder } from "obsidian";
-import { deleteXoppAndPdf, findCorrespondingXoppToPdf, openXournalppFile, renameXoppFile } from "./xopp-actions";
+import {
+    createAnnotatedXoppFromPdf,
+    deleteXoppAndPdf,
+    findCorrespondingXoppToPdf,
+    openXournalppFile,
+    renameXoppFile,
+} from "./xopp-actions";
 import CreateXoppModalManager from "src/ui/managers/create-xopp-modal-manager";
 import XoppPlugin from "src/main";
 import { exportXoppToPDF } from "./xopp-to-pdf";
@@ -13,9 +19,14 @@ export function addXournalppOptionsToFileMenu(menu: Menu, file: TFile | TFolder,
             const xoppFile = findCorrespondingXoppToPdf(file.path, plugin);
             if (xoppFile) {
                 addOpenInXournalppMenu(menu, xoppFile, plugin);
-                addXournalppRenameMenu(menu, file, xoppFile, plugin);
-                addXournalppDeleteMenu(menu, file, xoppFile, plugin);
-                removeDeleteRenameMenuItem();
+                const isAnnotationJournal = xoppFile.name === `${file.basename}-批注.xopp`;
+                if (!isAnnotationJournal) {
+                    addXournalppRenameMenu(menu, file, xoppFile, plugin);
+                    addXournalppDeleteMenu(menu, file, xoppFile, plugin);
+                    removeDeleteRenameMenuItem();
+                }
+            } else {
+                addAnnotatePdfMenu(menu, file, plugin);
             }
         }
     } else if (file instanceof TFolder) {
@@ -23,6 +34,16 @@ export function addXournalppOptionsToFileMenu(menu: Menu, file: TFile | TFolder,
             addCreateXournalppMenu(menu, file, plugin);
         }
     }
+}
+
+function addAnnotatePdfMenu(menu: Menu, pdfFile: TFile, plugin: XoppPlugin) {
+    menu.addItem((item) => {
+        item.setTitle("Annotate PDF in Xournal++")
+            .setIcon("pen-tool")
+            .onClick(() => {
+                void createAnnotatedXoppFromPdf(pdfFile, plugin);
+            });
+    });
 }
 
 function addOpenInXournalppMenu(menu: Menu, xoppFile: TFile, plugin: XoppPlugin) {
@@ -37,9 +58,7 @@ function addOpenInXournalppMenu(menu: Menu, xoppFile: TFile, plugin: XoppPlugin)
         item.setTitle("Update from Xournal++")
             .setIcon("rotate-cw")
             .onClick(() => {
-                let filePath = plugin.app.workspace.getActiveFile()?.path as string;
-                filePath = filePath?.replace(".pdf", ".xopp");
-                void exportXoppToPDF(plugin, [filePath]);
+                void exportXoppToPDF(plugin, [xoppFile.path]);
             });
     });
 }
