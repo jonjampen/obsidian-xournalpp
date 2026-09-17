@@ -24,7 +24,7 @@ A seamless integration with [Xournal++](https://xournalpp.github.io). Xournal++ 
 - **🔄 Automatic PDF Export:** Automatically exports Xournal++ notes (`.xopp`) to PDF whenever they are modified, allowing them to be linked, embedded, and viewed inside Obsidian.
 - **➕ Easy Creation:** Create new Xournal++ files directly from the ribbon icon, file explorer context menu, or command palette.
 - **⚡ Direct Editing:** Click the edit icon in the PDF toolbar or select "Edit in Xournal++" from the file explorer context menu to instantly open the file in Xournal++.
-- **🖊️ Fast PDF Annotation:** Right-click a PDF without an existing journal and choose "Annotate PDF in Xournal++". The plugin creates and opens a same-folder `<name>-批注.xopp` using Xournal++ attach mode.
+- **🖊️ Fast PDF Annotation:** Enable the optional PDF annotation context-menu action, then right-click a PDF without an existing journal and choose "Annotate PDF in Xournal++". The plugin creates and opens a same-folder `<name>-annotated.xopp` using Xournal++ attach mode.
 - **🎨 Custom Templates:** Configure default page sizes, grid backgrounds, and custom colors when creating new notes.
 
 ## How to Install
@@ -33,11 +33,12 @@ A seamless integration with [Xournal++](https://xournalpp.github.io). Xournal++ 
 2. In Obsidian, go to **Settings → Community Plugins** and turn them on.
 3. Select **Browse**, search for `Xournalpp`, and click **Install** then **Enable**.
 4. Configure the path where Xournal++ is installed on your system in the plugin settings (leave empty if installed in the default system path).
+5. Optional: enable **Enable PDF annotation context menu** in the plugin settings to add the fast PDF annotation action.
 
 > [!IMPORTANT]
 > Any PDF files sharing the exact same name and location as a Xournal++ (`.xopp`) file will be overwritten with the exported version when modified. Ensure your vault is backed up.
 
-The fast annotation flow keeps the clean source PDF unchanged and exports annotations to `<name>-批注.pdf`. The attached journal references the clean PDF by its same-folder filename, so keep the source PDF beside `<name>-批注.xopp`; creation stops if the journal or annotated PDF already exists.
+The fast annotation flow keeps the clean source PDF unchanged and exports annotations to `<name>-annotated.pdf`. The attached journal references the clean PDF by its same-folder filename, so keep the source PDF beside `<name>-annotated.xopp`; creation stops if the journal or annotated PDF already exists.
 
 ## Contributing
 

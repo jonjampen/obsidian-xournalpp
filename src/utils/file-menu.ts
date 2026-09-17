@@ -3,6 +3,7 @@ import {
     createAnnotatedXoppFromPdf,
     deleteXoppAndPdf,
     findCorrespondingXoppToPdf,
+    isAnnotatedXoppForPdf,
     openXournalppFile,
     renameXoppFile,
 } from "./xopp-actions";
@@ -19,13 +20,13 @@ export function addXournalppOptionsToFileMenu(menu: Menu, file: TFile | TFolder,
             const xoppFile = findCorrespondingXoppToPdf(file.path, plugin);
             if (xoppFile) {
                 addOpenInXournalppMenu(menu, xoppFile, plugin);
-                const isAnnotationJournal = xoppFile.name === `${file.basename}-批注.xopp`;
+                const isAnnotationJournal = isAnnotatedXoppForPdf(file.path, xoppFile.path);
                 if (!isAnnotationJournal) {
                     addXournalppRenameMenu(menu, file, xoppFile, plugin);
                     addXournalppDeleteMenu(menu, file, xoppFile, plugin);
                     removeDeleteRenameMenuItem();
                 }
-            } else {
+            } else if (plugin.settings.enablePdfAnnotation) {
                 addAnnotatePdfMenu(menu, file, plugin);
             }
         }

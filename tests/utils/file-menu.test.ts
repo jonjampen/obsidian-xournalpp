@@ -8,6 +8,11 @@ vi.mock("src/utils/xopp-actions", () => ({
     createAnnotatedXoppFromPdf: vi.fn(),
     deleteXoppAndPdf: vi.fn(),
     findCorrespondingXoppToPdf: vi.fn().mockReturnValue(undefined),
+    isAnnotatedXoppForPdf: vi.fn(
+        (pdfPath: string, xoppPath: string) =>
+            xoppPath === pdfPath.replace(/\.pdf$/i, "-annotated.xopp") ||
+            xoppPath === pdfPath.replace(/\.pdf$/i, "-批注.xopp")
+    ),
     openXournalppFile: vi.fn(),
     renameXoppFile: vi.fn(),
 }));
@@ -53,6 +58,19 @@ function createMenu(): { items: MenuItemStub[]; addItem: (callback: (item: MenuI
 }
 
 describe("PDF file menu", () => {
+    it("does not offer the PDF annotation action when the setting is disabled", () => {
+        const pdfFile = new TFile("chapter.pdf", "math/chapter.pdf");
+        const plugin = {
+            settings: { enablePdfAnnotation: false },
+            app: { vault: {} },
+        } as unknown as XoppPlugin;
+        const menu = createMenu();
+
+        addXournalppOptionsToFileMenu(menu as unknown as Menu, pdfFile, plugin);
+
+        expect(menu.items.map((item) => item.title)).not.toContain("Annotate PDF in Xournal++");
+    });
+
     it("offers creating an attached annotation journal when the PDF has no journal", () => {
         const pdfFile = new TFile("chapter.pdf", "math/chapter.pdf");
         const folder = new TFolder("math", "math");
@@ -60,6 +78,7 @@ describe("PDF file menu", () => {
         pdfFile.parent = folder;
 
         const plugin = {
+            settings: { enablePdfAnnotation: true },
             app: {
                 vault: {
                     getFileByPath: vi.fn().mockReturnValue(pdfFile),
