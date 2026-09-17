@@ -64,7 +64,7 @@ describe("xopp-actions", () => {
     });
 
     describe("findCorrespondingXoppToPdf", () => {
-        it("should return the matching XOPP file from the parent folder children", () => {
+        it("should return the matching XOPP file from the vault path lookup", () => {
             const pdfFile = new TFile("test.pdf", "folder/test.pdf");
             const xoppFile = new TFile("test.xopp", "folder/test.xopp");
 
@@ -72,7 +72,11 @@ describe("xopp-actions", () => {
             parentFolder.children = [pdfFile, xoppFile];
             pdfFile.parent = parentFolder;
 
-            mockVault.getFileByPath.mockReturnValue(pdfFile);
+            mockVault.getFileByPath.mockImplementation((path: string) => {
+                if (path === pdfFile.path) return pdfFile;
+                if (path === xoppFile.path) return xoppFile;
+                return undefined;
+            });
 
             const result = findCorrespondingXoppToPdf("folder/test.pdf", mockPlugin);
             expect(result).toBe(xoppFile);
@@ -84,7 +88,33 @@ describe("xopp-actions", () => {
             parentFolder.children = [pdfFile];
             pdfFile.parent = parentFolder;
 
-            mockVault.getFileByPath.mockReturnValue(pdfFile);
+            mockVault.getFileByPath.mockImplementation((path: string) => (path === pdfFile.path ? pdfFile : undefined));
+
+            const result = findCorrespondingXoppToPdf("folder/test.pdf", mockPlugin);
+            expect(result).toBeUndefined();
+        });
+
+        it("should ignore a journal left in the stale parent-folder cache after deletion", () => {
+            const pdfFile = new TFile("test.pdf", "folder/test.pdf");
+            const deletedXoppFile = new TFile("test.xopp", "folder/test.xopp");
+            const parentFolder = new TFolder("folder", "folder");
+            parentFolder.children = [pdfFile, deletedXoppFile];
+            pdfFile.parent = parentFolder;
+
+            mockVault.getFileByPath.mockImplementation((path: string) => (path === pdfFile.path ? pdfFile : undefined));
+
+            const result = findCorrespondingXoppToPdf("folder/test.pdf", mockPlugin);
+            expect(result).toBeUndefined();
+        });
+
+        it("should ignore a deleted annotation journal left in the stale parent-folder cache", () => {
+            const pdfFile = new TFile("test.pdf", "folder/test.pdf");
+            const deletedAnnotationFile = new TFile("test-annotated.xopp", "folder/test-annotated.xopp");
+            const parentFolder = new TFolder("folder", "folder");
+            parentFolder.children = [pdfFile, deletedAnnotationFile];
+            pdfFile.parent = parentFolder;
+
+            mockVault.getFileByPath.mockImplementation((path: string) => (path === pdfFile.path ? pdfFile : undefined));
 
             const result = findCorrespondingXoppToPdf("folder/test.pdf", mockPlugin);
             expect(result).toBeUndefined();
@@ -97,7 +127,11 @@ describe("xopp-actions", () => {
             parentFolder.children = [pdfFile, annotationFile];
             pdfFile.parent = parentFolder;
 
-            mockVault.getFileByPath.mockReturnValue(pdfFile);
+            mockVault.getFileByPath.mockImplementation((path: string) => {
+                if (path === pdfFile.path) return pdfFile;
+                if (path === annotationFile.path) return annotationFile;
+                return undefined;
+            });
 
             const result = findCorrespondingXoppToPdf("folder/test.pdf", mockPlugin);
             expect(result).toBe(annotationFile);
@@ -111,7 +145,12 @@ describe("xopp-actions", () => {
             parentFolder.children = [pdfFile, annotationFile, regularFile];
             pdfFile.parent = parentFolder;
 
-            mockVault.getFileByPath.mockReturnValue(pdfFile);
+            mockVault.getFileByPath.mockImplementation((path: string) => {
+                if (path === pdfFile.path) return pdfFile;
+                if (path === annotationFile.path) return annotationFile;
+                if (path === regularFile.path) return regularFile;
+                return undefined;
+            });
 
             const result = findCorrespondingXoppToPdf("folder/test.pdf", mockPlugin);
             expect(result).toBe(regularFile);

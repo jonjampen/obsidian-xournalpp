@@ -66,6 +66,14 @@ export class FileSystemAdapter {
     }
 }
 
+export function createDiv(): HTMLDivElement {
+    return document.createElement("div");
+}
+
+export function createSpan(): HTMLSpanElement {
+    return document.createElement("span");
+}
+
 export class DataAdapter {
     exists = vi.fn();
     copy = vi.fn();

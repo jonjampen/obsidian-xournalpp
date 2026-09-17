@@ -156,20 +156,16 @@ export async function createAnnotatedXoppFromPdf(pdfFile: TFile, plugin: XoppPlu
 }
 
 export function findCorrespondingXoppToPdf(pdfFilePath: string, plugin: XoppPlugin): TFile | undefined {
-    const xoppFilePath = pdfFilePath?.replace(/\.pdf$/i, ".xopp");
-    const xoppFilename = xoppFilePath.substring(xoppFilePath.lastIndexOf("/") + 1);
-    const pdfFile = plugin.app.vault.getFileByPath(pdfFilePath);
+    const xoppPaths = [
+        pdfFilePath?.replace(/\.pdf$/i, ".xopp"),
+        getAnnotatedXoppPath(pdfFilePath),
+        getLegacyAnnotatedXoppPath(pdfFilePath),
+    ];
 
-    // set parent folder or root vault folder
-    const parentFolder = pdfFile?.parent ?? plugin.app.vault.getFolderByPath("/");
-    const xoppFile = parentFolder?.children.find((child) => child.name === xoppFilename);
-    if (xoppFile instanceof TFile) return xoppFile;
-
-    const annotationXoppFilenames = [getAnnotatedXoppPath(pdfFilePath), getLegacyAnnotatedXoppPath(pdfFilePath)].map(
-        (path) => path.substring(path.lastIndexOf("/") + 1)
-    );
-    const annotationXoppFile = parentFolder?.children.find((child) => annotationXoppFilenames.includes(child.name));
-    if (annotationXoppFile instanceof TFile) return annotationXoppFile;
+    for (const xoppPath of xoppPaths) {
+        const xoppFile = plugin.app.vault.getFileByPath(xoppPath);
+        if (xoppFile instanceof TFile && xoppFile.path === xoppPath) return xoppFile;
+    }
 }
 
 async function waitForFileToBeIndexed(plugin: XoppPlugin, path: string, timeout = 5000): Promise<TFile | null> {
