@@ -106,7 +106,10 @@ export async function createAnnotatedXoppFromPdf(pdfFile: TFile, plugin: XoppPlu
     const annotationFile = await waitForFileToBeIndexed(plugin, annotationXoppPath);
     if (!annotationFile) {
         new Notice("Xournal++ annotation journal was created but could not be indexed by Obsidian.");
+        return;
     }
+
+    await openXournalppFile(annotationFile, plugin);
 }
 
 export function findCorrespondingXoppToPdf(pdfFilePath: string, plugin: XoppPlugin): TFile | undefined {

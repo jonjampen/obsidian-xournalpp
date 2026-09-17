@@ -142,7 +142,12 @@ describe("xopp-actions", () => {
                 "xournalpp --attach-mode --save='/mocked/vault/path/folder/test-批注.xopp' '/mocked/vault/path/folder/test.pdf'",
                 expect.any(Function)
             );
-            expect(execMock).toHaveBeenCalledTimes(1);
+            expect(execMock).toHaveBeenNthCalledWith(
+                2,
+                "xournalpp '/mocked/vault/path/folder/test-批注.xopp'",
+                expect.any(Function)
+            );
+            expect(execMock).toHaveBeenCalledTimes(2);
         });
 
         it("launches Xournal++ without waiting for the process to exit", async () => {
@@ -180,10 +185,15 @@ describe("xopp-actions", () => {
                 await Promise.resolve();
                 await Promise.resolve();
 
-                expect(execMock).toHaveBeenCalledTimes(1);
+                expect(execMock).toHaveBeenCalledTimes(2);
+                expect(execMock).toHaveBeenNthCalledWith(
+                    2,
+                    "xournalpp '/mocked/vault/path/folder/test-批注.xopp'",
+                    expect.any(Function)
+                );
                 vi.runOnlyPendingTimers();
                 await operation;
-                expect(execMock).toHaveBeenCalledTimes(1);
+                expect(execMock).toHaveBeenCalledTimes(2);
             } finally {
                 vi.useRealTimers();
             }
