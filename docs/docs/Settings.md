@@ -29,6 +29,13 @@ If your path contains spaces, make sure to add double quotes around it (`"`).
 
 > If you run into the following issue, you need to review this setting: `Error: Xournal++ path not setup correctly. Please check docs on how to set it up.`
 
+## PDF annotation context menu
+
+- **Description**: Adds **Annotate PDF in Xournal++** to the file menu for PDFs without a corresponding Xournal++ journal.
+- **Default**: Disabled.
+- **Result**: Creates and opens a same-folder `<name>-annotated.xopp` using Xournal++ attach mode and keeps the source PDF unchanged. When automatic export is enabled, annotations are also exported to `<name>-annotated.pdf`.
+- **Requirement**: Xournal++ must support the `--attach-mode` command-line option.
+
 ### Finding the correct installation path
 
 To find the right installation path for your system, you need to find out where Xournal++ is installed to. On Windows you need to link to the `.exe` file, which is usually found in the `Program Files` folder. On MacOS you need to link to the `xournalpp` file inside a `.app` folder, usually within the `Applications` folder. On Linux, if you have both Obsidian and Xournal++ installed through Flatpak, you can use `flatpak-spawn --host flatpak run com.github.xournalpp.xournalpp` (note: **do not** surround with double quotes as this is a command, not a path) as the installation path (more information: [Issue #2](https://github.com/jonjampen/obsidian-xournalpp/issues/2)).

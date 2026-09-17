@@ -61,6 +61,18 @@ export class XoppSettingsTab extends PluginSettingTab {
             });
 
         new Setting(containerEl)
+            .setName("Enable PDF annotation context menu")
+            .setDesc(
+                "Show an action for PDFs without a corresponding Xournal++ journal. It creates an -annotated journal using Xournal++ attach mode."
+            )
+            .addToggle((toggle) => {
+                toggle.setValue(this.plugin.settings.enablePdfAnnotation).onChange((value) => {
+                    this.plugin.settings.enablePdfAnnotation = value;
+                    void this.plugin.saveSettings();
+                });
+            });
+
+        new Setting(containerEl)
             .setName("Xournal++ installation path")
             .setDesc("The path where Xournal++ is installed (leave empty for system default).")
             .addText((toggle) => {

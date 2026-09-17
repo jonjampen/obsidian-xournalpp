@@ -1,7 +1,8 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { EventEmitter } from "events";
 import { exportXoppToPDF, exportAllXoppToPDF } from "src/utils/xopp-to-pdf";
 import { checkXoppSetup } from "src/core/environment-checks";
-import { exec } from "child_process";
+import { spawn } from "child_process";
 import * as obsidian from "obsidian";
 import XoppPlugin from "src/main";
 
@@ -38,7 +39,7 @@ describe("xopp-to-pdf", () => {
         } as unknown as XoppPlugin;
 
         vi.mocked(checkXoppSetup).mockReset();
-        vi.mocked(exec).mockReset();
+        vi.mocked(spawn).mockReset();
 
         // Spy on the Notice class constructor from our obsidian mock
         noticeSpy = vi.spyOn(obsidian, "Notice");
@@ -66,18 +67,18 @@ describe("xopp-to-pdf", () => {
     it("should execute conversion command with base paths", async () => {
         vi.mocked(checkXoppSetup).mockResolvedValue("xournalpp");
 
-        vi.mocked(exec).mockImplementation(
-            (cmd: string, callback: (error: Error | null, stdout: string, stderr: string) => void) => {
-                callback(null, "", "");
-                return {} as ReturnType<typeof exec>;
-            }
-        );
+        vi.mocked(spawn).mockImplementation(((_command: string, _args: string[]) => {
+            const child = new EventEmitter();
+            queueMicrotask(() => child.emit("close", 0));
+            return child as never;
+        }) as unknown as typeof spawn);
 
         await exportXoppToPDF(mockPlugin, ["notes/lecture.xopp"]);
 
-        expect(exec).toHaveBeenCalledWith(
-            'xournalpp --create-pdf="/mocked/vault/path/notes/lecture.pdf.tmp" "/mocked/vault/path/notes/lecture.xopp"',
-            expect.any(Function)
+        expect(spawn).toHaveBeenCalledWith(
+            "xournalpp",
+            ["--create-pdf=/mocked/vault/path/notes/lecture.pdf.tmp", "/mocked/vault/path/notes/lecture.xopp"],
+            { shell: false }
         );
         expect(noticeSpy).toHaveBeenCalledWith("Exported all Xournal++ notes successfully.");
     });
@@ -85,33 +86,31 @@ describe("xopp-to-pdf", () => {
     it("should process conversions concurrently", async () => {
         vi.mocked(checkXoppSetup).mockResolvedValue("xournalpp");
 
-        const runningExecs: string[] = [];
-        vi.mocked(exec).mockImplementation(
-            (cmd: string, callback: (error: Error | null, stdout: string, stderr: string) => void) => {
-                runningExecs.push(cmd);
-                callback(null, "", "");
-                return {} as ReturnType<typeof exec>;
-            }
-        );
+        const runningSpawns: Array<[string, string[]]> = [];
+        vi.mocked(spawn).mockImplementation(((command: string, args: string[]) => {
+            runningSpawns.push([command, args]);
+            const child = new EventEmitter();
+            queueMicrotask(() => child.emit("close", 0));
+            return child as never;
+        }) as unknown as typeof spawn);
 
         const filePaths = Array.from({ length: 12 }, (_, i) => `note${i}.xopp`);
 
         await exportXoppToPDF(mockPlugin, filePaths);
 
-        expect(exec).toHaveBeenCalledTimes(12);
-        expect(runningExecs.length).toBe(12);
+        expect(spawn).toHaveBeenCalledTimes(12);
+        expect(runningSpawns.length).toBe(12);
         expect(noticeSpy).toHaveBeenCalledWith("Exported all Xournal++ notes successfully.");
     });
 
     it("should handle conversion errors gracefully and notify user", async () => {
         vi.mocked(checkXoppSetup).mockResolvedValue("xournalpp");
 
-        vi.mocked(exec).mockImplementation(
-            (cmd: string, callback: (error: Error | null, stdout: string, stderr: string) => void) => {
-                callback(new Error("Command failed"), "", "");
-                return {} as ReturnType<typeof exec>;
-            }
-        );
+        vi.mocked(spawn).mockImplementation(((_command: string, _args: string[]) => {
+            const child = new EventEmitter();
+            queueMicrotask(() => child.emit("close", 1));
+            return child as never;
+        }) as unknown as typeof spawn);
 
         await exportXoppToPDF(mockPlugin, ["note.xopp"]);
 
@@ -124,12 +123,11 @@ describe("xopp-to-pdf", () => {
     it("should filter vault files for XOPP and export all of them", async () => {
         vi.mocked(checkXoppSetup).mockResolvedValue("xournalpp");
 
-        vi.mocked(exec).mockImplementation(
-            (cmd: string, callback: (error: Error | null, stdout: string, stderr: string) => void) => {
-                callback(null, "", "");
-                return {} as ReturnType<typeof exec>;
-            }
-        );
+        vi.mocked(spawn).mockImplementation(((_command: string, _args: string[]) => {
+            const child = new EventEmitter();
+            queueMicrotask(() => child.emit("close", 0));
+            return child as never;
+        }) as unknown as typeof spawn);
 
         const files = [
             new obsidian.TFile("note1.xopp", "note1.xopp"),
@@ -140,14 +138,16 @@ describe("xopp-to-pdf", () => {
 
         await exportAllXoppToPDF(mockPlugin);
 
-        expect(exec).toHaveBeenCalledTimes(2);
-        expect(exec).toHaveBeenCalledWith(
-            'xournalpp --create-pdf="/mocked/vault/path/note1.pdf.tmp" "/mocked/vault/path/note1.xopp"',
-            expect.any(Function)
+        expect(spawn).toHaveBeenCalledTimes(2);
+        expect(spawn).toHaveBeenCalledWith(
+            "xournalpp",
+            ["--create-pdf=/mocked/vault/path/note1.pdf.tmp", "/mocked/vault/path/note1.xopp"],
+            { shell: false }
         );
-        expect(exec).toHaveBeenCalledWith(
-            'xournalpp --create-pdf="/mocked/vault/path/folder/note3.pdf.tmp" "/mocked/vault/path/folder/note3.xopp"',
-            expect.any(Function)
+        expect(spawn).toHaveBeenCalledWith(
+            "xournalpp",
+            ["--create-pdf=/mocked/vault/path/folder/note3.pdf.tmp", "/mocked/vault/path/folder/note3.xopp"],
+            { shell: false }
         );
         expect(noticeSpy).toHaveBeenCalledWith("Exported all Xournal++ notes successfully.");
     });

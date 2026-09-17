@@ -43,9 +43,10 @@ function applyXournalppTags(plugin: XoppPlugin) {
         Object.entries(allFiles).forEach(([filePath, value]) => {
             if (filePath.endsWith(".pdf")) {
                 const xoppFile = findCorrespondingXoppToPdf(filePath, plugin);
-                if (xoppFile && value?.tagEl) {
-                    const tagEl = value.tagEl;
+                const tagEl = value?.tagEl;
+                if (!tagEl) return;
 
+                if (xoppFile) {
                     if (tagEl.innerText !== "X++" || !tagEl.classList.contains("clickable-tag")) {
                         tagEl.innerText = "X++";
                         tagEl.classList.add("clickable-tag");
@@ -53,6 +54,10 @@ function applyXournalppTags(plugin: XoppPlugin) {
                             void openXournalppFile(xoppFile, plugin);
                         };
                     }
+                } else if (tagEl.classList.contains("clickable-tag")) {
+                    tagEl.innerText = "PDF";
+                    tagEl.classList.remove("clickable-tag");
+                    tagEl.onclick = null;
                 }
             }
         });

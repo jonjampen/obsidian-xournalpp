@@ -1,18 +1,17 @@
 import { Notice, Platform } from "obsidian";
-import { exec } from "child_process";
 import XoppPlugin from "src/main";
+import { runXournalpp } from "../utils/xournalpp-process";
 
 export async function checkXoppSetup(plugin: XoppPlugin): Promise<string> {
     const errors = [];
     const userPath = plugin.settings.xournalppPath;
     const aliasPath = "xournalpp";
-    const windowsPath = '"c:/Program Files/Xournal++/bin/xournalpp.exe"';
-    const macPath = '"/Applications/Xournal++.app/Contents/MacOS/xournalpp"';
-    const versionCmd = " --version";
+    const windowsPath = "c:/Program Files/Xournal++/bin/xournalpp.exe";
+    const macPath = "/Applications/Xournal++.app/Contents/MacOS/xournalpp";
 
     if (userPath) {
         try {
-            await executeCommand(userPath + versionCmd);
+            await runXournalpp(userPath, ["--version"]);
             return userPath;
         } catch (error) {
             const message = error instanceof Error ? error.message : String(error);
@@ -21,7 +20,7 @@ export async function checkXoppSetup(plugin: XoppPlugin): Promise<string> {
     }
 
     try {
-        await executeCommand(aliasPath + versionCmd);
+        await runXournalpp(aliasPath, ["--version"]);
         return aliasPath;
     } catch (error) {
         const message = error instanceof Error ? error.message : String(error);
@@ -30,7 +29,7 @@ export async function checkXoppSetup(plugin: XoppPlugin): Promise<string> {
 
     if (Platform.isWin) {
         try {
-            await executeCommand(windowsPath + versionCmd);
+            await runXournalpp(windowsPath, ["--version"]);
             return windowsPath;
         } catch (error) {
             const message = error instanceof Error ? error.message : String(error);
@@ -40,7 +39,7 @@ export async function checkXoppSetup(plugin: XoppPlugin): Promise<string> {
 
     if (Platform.isMacOS) {
         try {
-            await executeCommand(macPath + versionCmd);
+            await runXournalpp(macPath, ["--version"]);
             return macPath;
         } catch (error) {
             const message = error instanceof Error ? error.message : String(error);
@@ -51,16 +50,4 @@ export async function checkXoppSetup(plugin: XoppPlugin): Promise<string> {
     new Notice("Error: Xournal++ path not setup correctly. Please check docs on how to set it up.", 10000);
     errors.forEach((error) => console.error("Xournal++ Error:" + error));
     return "error";
-}
-
-function executeCommand(command: string): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
-        exec(command, (error) => {
-            if (error) {
-                reject(error instanceof Error ? error : new Error(String(error)));
-            } else {
-                resolve();
-            }
-        });
-    });
 }
