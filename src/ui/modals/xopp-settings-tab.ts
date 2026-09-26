@@ -1,5 +1,5 @@
 import XoppPlugin from "src/main";
-import { App, Setting, PluginSettingTab, getIcon, TFile } from "obsidian";
+import { App, Setting, PluginSettingTab, getIcon, TFile, SettingDefinitionItem } from "obsidian";
 import ConfirmationModal from "src/ui/modals/confirmation-modal";
 import { exportAllXoppToPDF } from "src/utils/xopp-to-pdf";
 import parseFileName from "src/utils/file-name-parser";
@@ -16,49 +16,209 @@ export class XoppSettingsTab extends PluginSettingTab {
         this.plugin = plugin;
     }
 
+    private getTemplateOptions(): Record<string, string> {
+        const templatesFolder = this.plugin.settings.templatesFolder?.trim();
+        let templateFiles: TFile[] = [];
+        if (templatesFolder) {
+            templateFiles = this.app.vault
+                .getFiles()
+                .filter((f: TFile) => f.path.startsWith(templatesFolder + "/") && f.extension === "xopp");
+        }
+
+        const options: Record<string, string> = {};
+        if (templateFiles.length === 0) {
+            options[""] = "No templates found";
+        } else {
+            templateFiles.forEach((file) => {
+                options[file.path] = file.path;
+            });
+        }
+        return options;
+    }
+
+    private attachHelpIcon(setting: Setting): void {
+        const titleEl = setting.nameEl;
+        if (!titleEl.querySelector(".xopp-help-icon")) {
+            const helpIcon = titleEl.createSpan();
+            const helpIconEl = getIcon("help-circle");
+            if (helpIconEl) {
+                helpIcon.appendChild(helpIconEl);
+            }
+            helpIcon.addClass("xopp-help-icon");
+            helpIcon.onclick = () => {
+                new NewFilePlacholderHelpModal(this.app, newFilePlaceholders).open();
+            };
+        }
+    }
+
+    private setupAutoExportToggle(setting: Setting): void {
+        setting.addToggle((toggle) => {
+            toggle.setValue(this.plugin.settings.autoExport);
+
+            toggle.toggleEl.addEventListener(
+                "click",
+                (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    const isCurrentlyEnabled = this.plugin.settings.autoExport;
+
+                    if (!isCurrentlyEnabled) {
+                        const confirmationModal = new ConfirmationModal(
+                            this.app,
+                            async () => {
+                                this.plugin.settings.autoExport = true;
+                                await this.plugin.saveSettings();
+                                toggle.setValue(true);
+                                await exportAllXoppToPDF(this.plugin);
+                            },
+                            async () => {
+                                this.plugin.settings.autoExport = false;
+                                await this.plugin.saveSettings();
+                                toggle.setValue(false);
+                            },
+                            false
+                        );
+                        confirmationModal.open();
+                    } else {
+                        this.plugin.settings.autoExport = false;
+                        void this.plugin.saveSettings();
+                        toggle.setValue(false);
+                    }
+                },
+                true
+            );
+        });
+    }
+
+    getSettingDefinitions(): SettingDefinitionItem[] {
+        return [
+            {
+                name: "Auto export Xournal++ files",
+                desc: "Automatically export Xournal++ files to PDF upon modification.",
+                render: (setting) => {
+                    this.setupAutoExportToggle(setting);
+                },
+            },
+            {
+                name: "Xournal++ installation path",
+                desc: "The path where Xournal++ is installed (leave empty for system default).",
+                control: {
+                    type: "text",
+                    key: "xournalppPath",
+                },
+            },
+            {
+                name: "Xournal++ templates folder",
+                desc: "Relative path to the folder that contains your Xournal++ .xopp templates.",
+                control: {
+                    type: "text",
+                    key: "templatesFolder",
+                    placeholder: "e.g. templates/xournalpp",
+                },
+            },
+            {
+                name: "Default Xournal++ template",
+                desc: "The default template to use when creating new Xournal++ files from the templates folder.",
+                control: {
+                    type: "dropdown",
+                    key: "defaultTemplatePath",
+                    options: this.getTemplateOptions(),
+                },
+            },
+            {
+                name: "Create a new Xournal++ template",
+                desc: "Create a new Xournal++ template file in the templates folder.",
+                render: (setting) => {
+                    setting.addButton((button) => {
+                        button
+                            .setButtonText("Create Template")
+                            .setCta()
+                            .onClick(() => {
+                                new TemplateCreationModal(this.app, this.plugin, (createdPath) => {
+                                    if (!this.plugin.settings.defaultTemplatePath) {
+                                        this.plugin.settings.defaultTemplatePath = createdPath;
+                                    }
+                                    void this.plugin.saveSettings();
+                                }).open();
+                            });
+                    });
+                },
+            },
+            {
+                name: "Edit existing Xournal++ templates",
+                desc: "A GUI to edit or delete existing Xournal++ templates.",
+                render: (setting) => {
+                    setting.addButton((button) => {
+                        button
+                            .setButtonText("Manage Templates")
+                            .setCta()
+                            .onClick(() => {
+                                new TemplateEditingModal(this.app, this.plugin).open();
+                            });
+                    });
+                },
+            },
+            {
+                name: "Default path for new Xournal++ files",
+                desc: "The relative path for new Xournal++ files. This folder will be used unless a full path is specified during file creation (leave empty to use root folder).",
+                control: {
+                    type: "text",
+                    key: "defaultNewFilePath",
+                    placeholder: "e.g. Notes",
+                },
+            },
+            {
+                name: "Default name for new Xournal++ files",
+                desc: "The default name for new Xournal++ files. Use placeholders `${}` to insert dynamic values.",
+                render: (setting) => {
+                    const defaultNameDesc =
+                        "The default name for new Xournal++ files. Use placeholders `${}` to insert dynamic values. Preview: ";
+
+                    setting.addText((toggle) => {
+                        toggle
+                            .setValue(this.plugin.settings.defaultNewFileName)
+                            .setPlaceholder("e.g. ${MM}-${cursor}-note")
+                            .onChange((value) => {
+                                this.plugin.settings.defaultNewFileName = value;
+                                void this.plugin.saveSettings().then(() => {
+                                    setting.setDesc(defaultNameDesc + parseFileName(value, this.plugin, true).text);
+                                });
+                            });
+                    });
+
+                    setting.setDesc(
+                        defaultNameDesc + parseFileName(this.plugin.settings.defaultNewFileName, this.plugin, true).text
+                    );
+
+                    this.attachHelpIcon(setting);
+                },
+            },
+        ];
+    }
+
+    async setControlValue(key: string, value: unknown): Promise<void> {
+        (this.plugin.settings as unknown as Record<string, unknown>)[key] = value;
+        await this.plugin.saveSettings();
+
+        if (
+            key === "templatesFolder" &&
+            "update" in this &&
+            typeof (this as { update?: () => void }).update === "function"
+        ) {
+            (this as unknown as { update: () => void }).update();
+        }
+    }
+
     display(): void {
         const { containerEl } = this;
 
         containerEl.empty();
 
-        new Setting(containerEl)
+        const autoExportSetting = new Setting(containerEl)
             .setName("Auto export Xournal++ files")
-            .setDesc("Automatically export Xournal++ files to PDF upon modification.")
-            .addToggle((toggle) => {
-                toggle.setValue(this.plugin.settings.autoExport).onChange((value) => {
-                    void (async () => {
-                        if (value) {
-                            const initialValue = this.plugin.settings.autoExport;
-                            const confirmationModal = new ConfirmationModal(
-                                this.app,
-                                async () => {
-                                    this.plugin.settings.autoExport = true;
-                                    await this.plugin.saveSettings();
-                                    toggle.setValue(true);
-
-                                    await exportAllXoppToPDF(this.plugin);
-                                },
-                                async () => {
-                                    this.plugin.settings.autoExport = false;
-                                    await this.plugin.saveSettings();
-                                    toggle.setValue(false);
-                                },
-                                initialValue
-                            );
-                            confirmationModal.onClose = () => {
-                                if (!confirmationModal.confirmed) {
-                                    toggle.setValue(false);
-                                }
-                            };
-                            confirmationModal.open();
-                        } else {
-                            this.plugin.settings.autoExport = false;
-                            await this.plugin.saveSettings();
-                            toggle.setValue(false);
-                        }
-                    })();
-                });
-            });
+            .setDesc("Automatically export Xournal++ files to PDF upon modification.");
+        this.setupAutoExportToggle(autoExportSetting);
 
         new Setting(containerEl)
             .setName("Xournal++ installation path")
@@ -166,6 +326,7 @@ export class XoppSettingsTab extends PluginSettingTab {
         // Default Name
         const defaultNameDesc =
             "The default name for new Xournal++ files. Use placeholders `${}` to insert dynamic values. Preview: ";
+
         const defaultNameSetting = new Setting(containerEl)
             .setName("Default name for new Xournal++ files")
             .addText((toggle) => {
@@ -184,15 +345,6 @@ export class XoppSettingsTab extends PluginSettingTab {
             defaultNameDesc + parseFileName(this.plugin.settings.defaultNewFileName, this.plugin, true).text
         ).descEl;
 
-        const titleEl = defaultNameSetting.nameEl;
-        const helpIcon = titleEl.createSpan();
-        const helpIconEl = getIcon("help-circle");
-        if (helpIconEl) {
-            helpIcon.appendChild(helpIconEl);
-        }
-        helpIcon.addClass("xopp-help-icon");
-        helpIcon.onclick = () => {
-            new NewFilePlacholderHelpModal(this.app, newFilePlaceholders).open();
-        };
+        this.attachHelpIcon(defaultNameSetting);
     }
 }
