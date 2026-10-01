@@ -14,7 +14,7 @@ interface XoppPluginSettings {
     defaultNewFileName: string;
 }
 
-const DEFAULT_SETTINGS: Partial<XoppPluginSettings> = {
+export const DEFAULT_SETTINGS: Partial<XoppPluginSettings> = {
     autoExport: false,
     xournalppPath: "",
     templatesFolder: "",

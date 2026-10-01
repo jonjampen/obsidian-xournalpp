@@ -1,10 +1,8 @@
 import { FileSystemAdapter, Notice } from "obsidian";
-import { exec } from "child_process";
+import { join } from "path";
 import XoppPlugin from "src/main";
 import { checkXoppSetup } from "../core/environment-checks";
-import { promisify } from "util";
-
-const execPromise = promisify(exec);
+import { runXournalpp } from "./xournalpp-process";
 
 const activeExports = new Set<string>();
 const pendingExports = new Set<string>();
@@ -43,10 +41,9 @@ export async function exportXoppToPDF(plugin: XoppPlugin, filePaths: Array<strin
     for (let i = 0; i < pathsToProcess.length; i += concurrencyLimit) {
         const batch = pathsToProcess.slice(i, i + concurrencyLimit);
         const batchPromises = batch.map(async (filePath) => {
-            const xoppFilePath = vaultPath + "/" + filePath;
+            const xoppFilePath = join(vaultPath, ...filePath.split("/"));
             const pdfFilePath = xoppFilePath.replace(/\.xopp$/i, ".pdf");
             const tempPdfFilePath = `${pdfFilePath}.tmp`;
-            const command = `${path} --create-pdf="${tempPdfFilePath}" "${xoppFilePath}"`;
 
             const pdfVaultPath = filePath.replace(/\.xopp$/i, ".pdf");
             const tempPdfVaultPath = `${pdfVaultPath}.tmp`;
@@ -57,7 +54,7 @@ export async function exportXoppToPDF(plugin: XoppPlugin, filePaths: Array<strin
 
             for (let attempt = 1; attempt <= maxRetries; attempt++) {
                 try {
-                    await execPromise(command);
+                    await runXournalpp(path, [`--create-pdf=${tempPdfFilePath}`, xoppFilePath]);
                     await fs.rename(tempPdfVaultPath, pdfVaultPath).catch(() => {});
                     success = true;
                     break;

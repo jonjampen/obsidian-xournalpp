@@ -27,6 +27,12 @@ There are several ways to open a specific file in Xournal++. First locate the co
 1. File Menu: In the file explorer, right-click on the corresponding PDF and select `Open in Xournal++`
 1. Command: Open the corresponding PDF and open the command palette and type `Xournal++: Open current note`.
 
+## Annotating a PDF
+
+For an eligible PDF, right-click it in the file explorer and choose **Annotate PDF in Xournal++**, or open it and run **Xournal++: Annotate current PDF in Xournal++** from the command palette. The source PDF stays a regular PDF and the action remains available after an annotation journal exists. The first action creates `<name>-annotated.xopp` in the same folder, attaches the source PDF as its background, and opens the journal. Later actions open that existing journal. If automatic export is enabled, Xournal++ exports to `<name>-annotated.pdf`; that PDF and `<name>-annotated.xopp` are an ordinary same-basename pair. The source PDF is not paired with the annotation journal.
+
+To verify the association manually, open the source PDF and confirm it has no `X++` association from `<name>-annotated.xopp`. Run the annotation action twice and confirm the first call creates the journal while the second opens it. Then open `<name>-annotated.pdf` and confirm its `X++` tag opens the same-basename `<name>-annotated.xopp` journal.
+
 ## Renaming a Xournal++ file
 
 To rename a Xournal++ file, locate the corresponding PDF (labeled with `X++`) and either use the command `Xournal++: Rename current PDF and corresponding Xournal++ note` or open the file menu and click `Rename PDF & Xournal++...`.

@@ -1,5 +1,11 @@
 import { Editor, TFile } from "obsidian";
-import { deleteXoppAndPdf, findCorrespondingXoppToPdf, openXournalppFile, renameXoppFile } from "../utils/xopp-actions";
+import {
+    createAnnotatedXoppFromPdf,
+    deleteXoppAndPdf,
+    findCorrespondingXoppToPdf,
+    openXournalppFile,
+    renameXoppFile,
+} from "../utils/xopp-actions";
 import XoppPlugin from "../main";
 import { exportAllXoppToPDF, exportXoppToPDF } from "../utils/xopp-to-pdf";
 import CreateXoppModalManager from "src/ui/managers/create-xopp-modal-manager";
@@ -7,6 +13,24 @@ import RenameModal from "../ui/modals/rename-modal";
 import SearchXoppModal from "../ui/modals/search-xopp-modal";
 
 export function createCommands(plugin: XoppPlugin) {
+    plugin.addCommand({
+        id: "annotate-pdf-in-xournalpp",
+        name: "Annotate current PDF in Xournal++",
+        checkCallback: (checking: boolean) => {
+            const pdfFile = plugin.app.workspace.getActiveFile();
+            if (
+                !(pdfFile instanceof TFile) ||
+                pdfFile.extension !== "pdf" ||
+                findCorrespondingXoppToPdf(pdfFile.path, plugin)
+            ) {
+                return false;
+            }
+
+            if (!checking) void createAnnotatedXoppFromPdf(pdfFile, plugin);
+            return true;
+        },
+    });
+
     plugin.addCommand({
         id: "open-in-xournalpp",
         name: "Open current note",
