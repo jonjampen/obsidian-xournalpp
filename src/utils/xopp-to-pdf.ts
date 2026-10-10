@@ -1,4 +1,4 @@
-import { FileSystemAdapter, Notice } from "obsidian";
+import { FileSystemAdapter, Notice, TFile } from "obsidian";
 import { exec } from "child_process";
 import XoppPlugin from "src/main";
 import { checkXoppSetup } from "../core/environment-checks";
@@ -58,7 +58,16 @@ export async function exportXoppToPDF(plugin: XoppPlugin, filePaths: Array<strin
             for (let attempt = 1; attempt <= maxRetries; attempt++) {
                 try {
                     await execPromise(command);
-                    await fs.rename(tempPdfVaultPath, pdfVaultPath).catch(() => {});
+                    const buffer = await fs.readBinary(tempPdfVaultPath);
+                    const existingFile = plugin.app.vault.getFileByPath(pdfVaultPath);
+                    if (existingFile instanceof TFile) {
+                        await plugin.app.vault.modifyBinary(existingFile, buffer);
+                    } else if (await fs.exists(pdfVaultPath)) {
+                        await fs.writeBinary(pdfVaultPath, buffer);
+                    } else {
+                        await plugin.app.vault.createBinary(pdfVaultPath, buffer);
+                    }
+                    await fs.remove(tempPdfVaultPath).catch(() => {});
                     success = true;
                     break;
                 } catch (error) {
