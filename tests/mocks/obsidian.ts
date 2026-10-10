@@ -8,11 +8,11 @@ export class TFile {
     stat: { mtime: number; size: number; ctime: number };
     parent: TFolder | null;
 
-    constructor(name: string, path: string) {
+    constructor(name: string = "", path: string = "") {
         this.name = name;
         this.path = path;
-        this.basename = name.replace(/\.[^/.]+$/, "");
-        this.extension = name.split(".").pop() || "";
+        this.basename = name ? name.replace(/\.[^/.]+$/, "") : "";
+        this.extension = name ? name.split(".").pop() || "" : "";
         this.stat = { mtime: Date.now(), size: 0, ctime: Date.now() };
         this.parent = null;
     }
