@@ -12,6 +12,7 @@ interface XoppPluginSettings {
     defaultTemplatePath: string;
     defaultNewFilePath: string;
     defaultNewFileName: string;
+    pdfAnnotationWorkflow: string;
 }
 
 const DEFAULT_SETTINGS: Partial<XoppPluginSettings> = {
@@ -21,6 +22,7 @@ const DEFAULT_SETTINGS: Partial<XoppPluginSettings> = {
     defaultTemplatePath: "",
     defaultNewFilePath: "",
     defaultNewFileName: "",
+    pdfAnnotationWorkflow: "backroundFile",
 };
 
 export default class XoppPlugin extends Plugin {

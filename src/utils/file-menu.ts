@@ -16,6 +16,8 @@ export function addXournalppOptionsToFileMenu(menu: Menu, file: TFile | TFolder,
                 addXournalppRenameMenu(menu, file, xoppFile, plugin);
                 addXournalppDeleteMenu(menu, file, xoppFile, plugin);
                 removeDeleteRenameMenuItem();
+            } else {
+                addAnnotatePdfMenu(menu, file, plugin);
             }
         }
     } else if (file instanceof TFolder) {
@@ -42,6 +44,26 @@ function addOpenInXournalppMenu(menu: Menu, xoppFile: TFile, plugin: XoppPlugin)
                 void exportXoppToPDF(plugin, [filePath]);
             });
     });
+}
+
+function addAnnotatePdfMenu(menu: Menu, pdfFile: TFile, plugin: XoppPlugin) {
+    if (plugin.settings.pdfAnnotationWorkflow === "open") {
+        menu.addItem((item) => {
+            item.setTitle("View PDF in Xournal++")
+                .setIcon("pencil-ruler")
+                .onClick(() => {
+                    void openXournalppFile(pdfFile, plugin);
+                });
+        });
+    } else {
+        menu.addItem((item) => {
+            item.setTitle("Annotate PDF in Xournal++")
+                .setIcon("pen-tool")
+                .onClick(() => {
+                    //void createAnnotatedXoppFromPdf(pdfFile, plugin);
+                });
+        });
+    }
 }
 
 function addCreateXournalppMenu(menu: Menu, folder: TFolder, plugin: XoppPlugin) {
